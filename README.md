@@ -3,7 +3,7 @@
 
 # Ссылки
 
-[Дизайн Figma](https://www.figma.com/file/owAO4CAPTJdpM1BZU5JHv7/Tracker-(YP)?t=SZDLmkWeOPX4y6mp-0)
+[Дизайн Figma](https://www.figma.com/file/GSDoee2Kq1ydoAyAAlW5mE/Tracker?type=design&node-id=0%3A1&mode=design&t=SEH8RGgBQ29LmVhR-1)
 
 # Назначение и цели приложения
 
