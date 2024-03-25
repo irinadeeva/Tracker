@@ -15,7 +15,6 @@ let tracker3 = Tracker(id: UUID(), name: "Свидания в апреле", col
 
 let tracker4 = Tracker(id: UUID(), name: "Поливать растения", color: .ypSelection5, emoji: "❤️", timetable: [.friday, .saturday, .wednesday])
 
-
 let trackersHabits = TrackerCategory(title: "Домашний уют", trackers: [tracker4])
 
 let trackersEvents = TrackerCategory(title: "Радостные мелочи", trackers: [tracker1, tracker2, tracker3])
