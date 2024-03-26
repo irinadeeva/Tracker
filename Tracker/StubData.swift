@@ -17,4 +17,4 @@ let tracker4 = Tracker(id: UUID(), name: "Поливать растения", co
 
 let trackersHabits = TrackerCategory(title: "Домашний уют", trackers: [tracker4])
 
-let trackersEvents = TrackerCategory(title: "Радостные мелочи", trackers: [tracker1, tracker2, tracker3])
+let trackersEvents = TrackerCategory(title: "Радостные мелочи", trackers: [tracker1, tracker2, tracker3, tracker1, tracker2, tracker3])

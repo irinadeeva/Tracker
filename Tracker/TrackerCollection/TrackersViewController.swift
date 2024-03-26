@@ -12,9 +12,19 @@ final class TrackersViewController: UIViewController {
     private var datePicker: UIDatePicker!
     private var imageStub: UIImageView!
     private var labelStub: UILabel!
+    private var searchController: UISearchController!
 
     var categories: [TrackerCategory] = [trackersHabits, trackersEvents]
     var completedTrackers: Set<TrackerRecord> = []
+    var filteredCategories: [TrackerCategory] = []
+    var isSearchBarEmpty: Bool {
+        return searchController.searchBar.text?.isEmpty ?? true
+    }
+    var isFiltering: Bool {
+        searchController.isActive && !isSearchBarEmpty
+    }
+
+
     //    var currentDate: Date = Date()
     //для хранения текущей даты в TrackersViewController добавлено свойство var currentDate: Date. Выбор даты в UIDatePicker меняет значение этого свойства, в результате показываются только те трекеры, у которых в расписании выбран день, совпадающий с датой в currentDate;
 
@@ -79,9 +89,18 @@ extension TrackersViewController {
     }
 
     private func setUpSearchBar() {
-        let searchBar = UISearchController(searchResultsController: nil)
-        searchBar.searchBar.placeholder = "Поиск"
-        navigationItem.searchController = searchBar
+        searchController = UISearchController(searchResultsController: nil)
+        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchResultsUpdater = self
+
+//        searchBar.obscuresBackgroundDuringPresentation = false
+        //By default, UISearchController obscures the view controller containing the information you’re searching. This is useful if you’re using another view controller for your searchResultsController. In this instance, you’ve set the current view to show the results, so you don’t want to obscure your view.
+
+        navigationItem.searchController = searchController
+
+//        definesPresentationContext = true
+        //the search bar doesn’t remain on the screen if the user navigates to another view controller while the UISearchController is active.
+
     }
 
     @objc
@@ -140,10 +159,18 @@ extension TrackersViewController {
 
 extension TrackersViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
+        if isFiltering {
+            return filteredCategories.count
+        }
+
         return categories.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if isFiltering {
+            return filteredCategories[section].trackers.count
+        }
+
         return categories[section].trackers.count
     }
 
@@ -155,12 +182,19 @@ extension TrackersViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
+        var tracker: Tracker
+        if isFiltering {
+            tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
+          } else {
+            tracker = categories[indexPath.section].trackers[indexPath.row]
+        }
+
         trackerCell.prepareForReuse()
 
-        trackerCell.emojiLabel.text = categories[indexPath.section].trackers[indexPath.row].emoji
-        trackerCell.titleLabel.text = categories[indexPath.section].trackers[indexPath.row].name
-        trackerCell.rectangleView.backgroundColor = categories[indexPath.section].trackers[indexPath.row].color
-        trackerCell.addButton.backgroundColor = categories[indexPath.section].trackers[indexPath.row].color
+        trackerCell.emojiLabel.text = tracker.emoji
+        trackerCell.titleLabel.text = tracker.name
+        trackerCell.rectangleView.backgroundColor = tracker.color
+        trackerCell.addButton.backgroundColor = tracker.color
 
         return trackerCell
     }
@@ -184,7 +218,14 @@ extension TrackersViewController: UICollectionViewDataSource {
             return UICollectionReusableView()
         }
 
-        view.titleLabel.text = categories[indexPath.section].title
+        var title: String
+        if isFiltering {
+            title = filteredCategories[indexPath.section].title
+          } else {
+            title = categories[indexPath.section].title
+        }
+
+        view.titleLabel.text = title
         return view
     }
 }
@@ -219,5 +260,27 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return params.cellSpacing
+    }
+}
+
+extension TrackersViewController: UISearchResultsUpdating {
+    func updateSearchResults(for searchController: UISearchController) {
+        let searchBar = searchController.searchBar
+        filterContentForSearchText(searchBar.text)
+    }
+
+    private func filterContentForSearchText(_ searchText: String?) {
+        guard let searchText else { return }
+
+        filteredCategories = categories.map { category in
+            let filteredTrackers = category.trackers.filter { tracker in
+                tracker.name.lowercased().contains(searchText.lowercased())
+            }
+
+                return TrackerCategory(title: category.title, trackers: filteredTrackers)
+            
+        }
+
+        trackerCollection.reloadData()
     }
 }

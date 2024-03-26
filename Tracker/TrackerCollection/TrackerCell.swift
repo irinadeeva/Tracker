@@ -18,12 +18,26 @@ final class TrackerCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        setupLayout()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension TrackerCell {
+    private func setupLayout() {
         setupRectangleView()
         setupTitleLabel()
         setupEmojiLabel()
         setupCounterLabel()
         setupAddButton()
 
+        setupConstraints()
+    }
+
+    private func setupConstraints() {
         NSLayoutConstraint.activate([
 
             rectangleView.topAnchor.constraint(equalTo: contentView.topAnchor),
@@ -48,10 +62,6 @@ final class TrackerCell: UICollectionViewCell {
             addButton.widthAnchor.constraint(equalToConstant: 34),
             addButton.heightAnchor.constraint(equalToConstant: 34)
         ])
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupRectangleView() {
@@ -111,118 +121,5 @@ final class TrackerCell: UICollectionViewCell {
     @objc private func addButtonPressed() {
         print("add cell Button Pressed")
     }
+
 }
-
-
-//class CustomCollectionViewCell: UICollectionViewCell {
-//
-//// Elements inside the green block
-//let iconView = UIView()
-//let iconImageView = UIImageView()
-//let titleLabel = UILabel()
-//let greenBlockView = UIView()
-//
-//// Elements outside the green block
-//let dayLabel = UILabel()
-//let addButton = UIButton()
-//
-//override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-//    super.init(style: style, reuseIdentifier: reuseIdentifier)
-//
-//    // Green block view setup
-//    greenBlockView.backgroundColor = UIColor.systemGreen
-//    greenBlockView.layer.cornerRadius = 15
-//    contentView.addSubview(greenBlockView)
-//
-//    // Icon view setup inside the green block
-//    iconView.backgroundColor = .red
-//    iconView.layer.cornerRadius = 15 // Adjust to make it circular
-//    greenBlockView.addSubview(iconView)
-//
-//    // Icon image setup inside the icon view
-//    iconImageView.image = UIImage(systemName: "heart.fill")
-//    iconImageView.tintColor = .white
-//    iconImageView.contentMode = .center
-//    iconView.addSubview(iconImageView)
-//
-//    // Title label setup inside the green block
-//    titleLabel.text = "Поливать растения"
-//    titleLabel.textColor = .white
-//    titleLabel.font = UIFont.boldSystemFont(ofSize: 16)
-//    greenBlockView.addSubview(titleLabel)
-//
-//    // Day label setup outside the green block
-//    dayLabel.text = "1 день"
-//    dayLabel.textColor = .black
-//    dayLabel.font = UIFont.systemFont(ofSize: 14)
-//    contentView.addSubview(dayLabel)
-//
-//    // Add button setup outside the green block
-//    addButton.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-//    addButton.tintColor = .systemGreen
-//    contentView.addSubview(addButton)
-//
-//    setupConstraints()
-//}
-//
-//required init?(coder aDecoder: NSCoder) {
-//    fatalError("init(coder:) has not been implemented")
-//}
-//
-//private func setupConstraints() {
-//    // Disabling auto resizing mask and enabling auto layout
-//    greenBlockView.translatesAutoresizingMaskIntoConstraints = false
-//    iconView.translatesAutoresizingMaskIntoConstraints = false
-//    iconImageView.translatesAutoresizingMaskIntoConstraints = false
-//    titleLabel.translatesAutoresizingMaskIntoConstraints = false
-//    dayLabel.translatesAutoresizingMaskIntoConstraints = false
-//    addButton.translatesAutoresizingMaskIntoConstraints = false
-//
-//    // Constraints for the green block view
-//    NSLayoutConstraint.activate([
-//        greenBlockView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
-//        greenBlockView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-//        greenBlockView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-//        greenBlockView.trailingAnchor.constraint(equalTo: addButton.leadingAnchor, constant: -10)
-//    ])
-//
-//    // Constraints for the icon view
-//    NSLayoutConstraint.activate([
-//        iconView.leadingAnchor.constraint(equalTo: greenBlockView.leadingAnchor, constant: 10),
-//        iconView.centerYAnchor.constraint(equalTo: greenBlockView.centerYAnchor),
-//        iconView.widthAnchor.constraint(equalToConstant: 30),
-//        iconView.heightAnchor.constraint(equalToConstant: 30)
-//    ])
-//
-//    // Constraints for the icon image view
-//    NSLayoutConstraint.activate([
-//        iconImageView.centerXAnchor.constraint(equalTo: iconView.centerXAnchor),
-//        iconImageView.centerYAnchor.constraint(equalTo: iconView.centerYAnchor),
-//        iconImageView.widthAnchor.constraint(equalToConstant: 20),
-//        iconImageView.heightAnchor.constraint(equalToConstant: 20)
-//    ])
-//
-//    // Constraints for the title label
-//    NSLayoutConstraint.activate([
-//        titleLabel.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 10),
-//
-//titleLabel.centerYAnchor.constraint(equalTo: greenBlockView.centerYAnchor),
-//        titleLabel.trailingAnchor.constraint(lessThanOrEqualTo: greenBlockView.trailingAnchor, constant: -10)
-//    ])
-//
-//    // Constraints for the day label
-//    NSLayoutConstraint.activate([
-//        dayLabel.leadingAnchor.constraint(equalTo: greenBlockView.trailingAnchor, constant: 10),
-//        dayLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
-//        dayLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
-//    ])
-//
-//    // Constraints for the add button
-//    NSLayoutConstraint.activate([
-//        addButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-//        addButton.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
-//        addButton.widthAnchor.constraint(equalToConstant: 30),
-//        addButton.heightAnchor.constraint(equalToConstant: 30)
-//    ])
-//}
-//}
