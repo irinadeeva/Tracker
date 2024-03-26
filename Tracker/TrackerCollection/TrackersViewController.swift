@@ -147,11 +147,11 @@ extension TrackersViewController: UICollectionViewDataSource {
 
         trackerCell.prepareForReuse()
 
-        trackerCell.layer.masksToBounds = true
-        trackerCell.layer.cornerRadius = 16
         trackerCell.emojiLabel.text = categories[indexPath.section].trackers[indexPath.row].emoji
-        trackerCell.backgroundColor = categories[indexPath.section].trackers[indexPath.row].color
+        trackerCell.rectangleView.backgroundColor = categories[indexPath.section].trackers[indexPath.row].color
         trackerCell.titleLabel.text = categories[indexPath.section].trackers[indexPath.row].name
+        trackerCell.addButton.backgroundColor = categories[indexPath.section].trackers[indexPath.row].color
+
         return trackerCell
     }
 
@@ -194,7 +194,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
         let cellWidth =  availableWidth / CGFloat(params.cellCount)
 
         return CGSize(width: cellWidth,
-                      height: cellWidth * 0.50)
+                      height: cellWidth * 3/4)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {

@@ -17,9 +17,9 @@ final class SupplementaryView: UICollectionReusableView {
         titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 19, weight: .bold)
         titleLabel.textColor = .ypBlackDay
-        addSubview(titleLabel)
-        
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(titleLabel)
 
         NSLayoutConstraint.activate([
             titleLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 28),
