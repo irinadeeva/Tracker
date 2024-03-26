@@ -272,13 +272,18 @@ extension TrackersViewController: UISearchResultsUpdating {
     private func filterContentForSearchText(_ searchText: String?) {
         guard let searchText else { return }
 
-        filteredCategories = categories.map { category in
+        filteredCategories.removeAll()
+
+        for category in categories {
+            // Filter the trackers inside the category based on the name
             let filteredTrackers = category.trackers.filter { tracker in
                 tracker.name.lowercased().contains(searchText.lowercased())
             }
 
-                return TrackerCategory(title: category.title, trackers: filteredTrackers)
-            
+            // Only create a new TrackerCategory if there are filtered trackers available
+            if !filteredTrackers.isEmpty {
+                filteredCategories.append(TrackerCategory(title: category.title, trackers: filteredTrackers))
+            }
         }
 
         trackerCollection.reloadData()
