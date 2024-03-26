@@ -37,19 +37,23 @@ final class TrackersViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
 
-        setUpLayout()
+        setupLayout()
     }
 }
 
 extension TrackersViewController {
-    private func setUpLayout() {
-        setUpNavigationBar()
-        setUpTrackerCollectionView()
-        setUpStub()
-        setupConstraints()
+    private func setupLayout() {
+        setupNavigationBar()
+        if categories.isEmpty {
+            setupStub()
+            setupStubConstraints()
+        } else {
+            setupTrackerCollectionView()
+            setupTrackerCollectionConstraints()
+        }
     }
 
-    private func setUpTrackerCollectionView() {
+    private func setupTrackerCollectionView() {
         let layout = UICollectionViewFlowLayout()
 
         trackerCollection = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -70,7 +74,7 @@ extension TrackersViewController {
         view.addSubview(trackerCollection)
     }
 
-    private func setUpNavigationBar() {
+    private func setupNavigationBar() {
         setUpDatePicker()
 
         if let navBar = navigationController?.navigationBar {
@@ -93,14 +97,7 @@ extension TrackersViewController {
         searchController.searchBar.placeholder = "Поиск"
         searchController.searchResultsUpdater = self
 
-//        searchBar.obscuresBackgroundDuringPresentation = false
-        //By default, UISearchController obscures the view controller containing the information you’re searching. This is useful if you’re using another view controller for your searchResultsController. In this instance, you’ve set the current view to show the results, so you don’t want to obscure your view.
-
         navigationItem.searchController = searchController
-
-//        definesPresentationContext = true
-        //the search bar doesn’t remain on the screen if the user navigates to another view controller while the UISearchController is active.
-
     }
 
     @objc
@@ -126,7 +123,7 @@ extension TrackersViewController {
         print("Selected date: \(formattedDate)")
     }
 
-    private func setUpStub() {
+    private func setupStub() {
         imageStub = UIImageView()
         imageStub.image = UIImage(named: "emptyTracker") ?? UIImage()
 
@@ -138,22 +135,27 @@ extension TrackersViewController {
         view.addSubview(labelStub)
     }
 
-    private func setupConstraints() {
+    private func setupTrackerCollectionConstraints() {
         trackerCollection.translatesAutoresizingMaskIntoConstraints = false
-        labelStub.translatesAutoresizingMaskIntoConstraints = false
-        imageStub.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             trackerCollection.topAnchor.constraint(equalTo: view.topAnchor),
             trackerCollection.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             trackerCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            trackerCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            trackerCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+    }
+
+    private func setupStubConstraints() {
+        labelStub.translatesAutoresizingMaskIntoConstraints = false
+        imageStub.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
             imageStub.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             imageStub.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            labelStub.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            labelStub.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             labelStub.topAnchor.constraint(equalTo: imageStub.bottomAnchor, constant: 8)
         ])
-
     }
 }
 
@@ -273,6 +275,8 @@ extension TrackersViewController: UISearchResultsUpdating {
         guard let searchText else { return }
 
         filteredCategories.removeAll()
+
+        guard !categories.isEmpty else { return }
 
         for category in categories {
             // Filter the trackers inside the category based on the name
