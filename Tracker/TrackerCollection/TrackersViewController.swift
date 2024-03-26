@@ -15,7 +15,7 @@ final class TrackersViewController: UIViewController {
 
     var categories: [TrackerCategory] = [trackersHabits, trackersEvents]
     var completedTrackers: Set<TrackerRecord> = []
-    var currentDate: Date = Date()
+    //    var currentDate: Date = Date()
     //для хранения текущей даты в TrackersViewController добавлено свойство var currentDate: Date. Выбор даты в UIDatePicker меняет значение этого свойства, в результате показываются только те трекеры, у которых в расписании выбран день, совпадающий с датой в currentDate;
 
     let params = GeometricParams(cellCount: 2,
@@ -27,10 +27,15 @@ final class TrackersViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
 
+        setUpLayout()
+    }
+}
+
+extension TrackersViewController {
+    private func setUpLayout() {
         setUpNavigationBar()
         setUpTrackerCollectionView()
         setUpStub()
-
         setupConstraints()
     }
 
@@ -41,7 +46,10 @@ final class TrackersViewController: UIViewController {
         trackerCollection.delegate = self
         trackerCollection.dataSource = self
 
-        trackerCollection.register(TrackerCell.self, forCellWithReuseIdentifier: TrackerCell.reuseIdentifier)
+        trackerCollection.register(
+            TrackerCell.self,
+            forCellWithReuseIdentifier: TrackerCell.reuseIdentifier
+        )
 
         trackerCollection.register(
             SupplementaryView.self,
@@ -126,7 +134,7 @@ final class TrackersViewController: UIViewController {
             labelStub.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             labelStub.topAnchor.constraint(equalTo: imageStub.bottomAnchor, constant: 8)
         ])
-        
+
     }
 }
 
@@ -140,16 +148,18 @@ extension TrackersViewController: UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let trackerCell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCell.reuseIdentifier,
-                                                             for: indexPath) as? TrackerCell else {
+        guard let trackerCell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: TrackerCell.reuseIdentifier,
+            for: indexPath
+        ) as? TrackerCell else {
             return UICollectionViewCell()
         }
 
         trackerCell.prepareForReuse()
 
         trackerCell.emojiLabel.text = categories[indexPath.section].trackers[indexPath.row].emoji
-        trackerCell.rectangleView.backgroundColor = categories[indexPath.section].trackers[indexPath.row].color
         trackerCell.titleLabel.text = categories[indexPath.section].trackers[indexPath.row].name
+        trackerCell.rectangleView.backgroundColor = categories[indexPath.section].trackers[indexPath.row].color
         trackerCell.addButton.backgroundColor = categories[indexPath.section].trackers[indexPath.row].color
 
         return trackerCell
@@ -157,7 +167,7 @@ extension TrackersViewController: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
         var id: String
-        switch kind{
+        switch kind {
         case UICollectionView.elementKindSectionHeader:
             id = "header"
         case UICollectionView.elementKindSectionHeader:
@@ -166,9 +176,11 @@ extension TrackersViewController: UICollectionViewDataSource {
             id = ""
         }
 
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: id, for: indexPath) as? SupplementaryView
-
-        guard let view else {
+        guard let view = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: id,
+            for: indexPath
+        ) as? SupplementaryView else {
             return UICollectionReusableView()
         }
 
@@ -194,15 +206,15 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
         let cellWidth =  availableWidth / CGFloat(params.cellCount)
 
         return CGSize(width: cellWidth,
-                      height: cellWidth * 3/4)
+                      height: cellWidth * 0.88)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: params.leftInset, bottom: 10, right: params.rightInset)
+        return UIEdgeInsets(top: 0, left: params.leftInset, bottom: 0, right: params.rightInset)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return CGFloat(10)
+        return CGFloat(0)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
