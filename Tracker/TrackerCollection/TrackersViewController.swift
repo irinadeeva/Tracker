@@ -10,8 +10,6 @@ import UIKit
 final class TrackersViewController: UIViewController {
     private var trackerCollection: UICollectionView!
     private var datePicker: UIDatePicker!
-    private var imageStub: UIImageView!
-    private var labelStub: UILabel!
     private var searchController: UISearchController!
 
     var categories: [TrackerCategory] = 
@@ -46,13 +44,7 @@ final class TrackersViewController: UIViewController {
 extension TrackersViewController {
     private func setupLayout() {
         setupNavigationBar()
-        if categories.isEmpty {
-            setupStub()
-            setupStubConstraints()
-        } else {
-            setupTrackerCollectionView()
-            setupTrackerCollectionConstraints()
-        }
+        setupTrackerCollectionView()
     }
 
     private func setupTrackerCollectionView() {
@@ -74,6 +66,15 @@ extension TrackersViewController {
         )
 
         view.addSubview(trackerCollection)
+
+        trackerCollection.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            trackerCollection.topAnchor.constraint(equalTo: view.topAnchor),
+            trackerCollection.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            trackerCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            trackerCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
     }
 
     private func setupNavigationBar() {
@@ -128,57 +129,25 @@ extension TrackersViewController {
         currentDate = selectedDate
         print(currentDate)
     }
-
-    private func setupStub() {
-        imageStub = UIImageView()
-        labelStub = UILabel()
-
-        if categories.isEmpty {
-            imageStub.image = UIImage(named: "emptyTracker") ?? UIImage()
-            labelStub.text = "Что будем отслеживать?"
-        } 
-        else {
-            imageStub.image = UIImage(named: "emptySearch") ?? UIImage()
-            labelStub.text = "Ничего не найдено"
-        }
-
-        labelStub.font = .systemFont(ofSize: 12)
-
-        view.addSubview(imageStub)
-        view.addSubview(labelStub)
-    }
-
-    private func setupTrackerCollectionConstraints() {
-        trackerCollection.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            trackerCollection.topAnchor.constraint(equalTo: view.topAnchor),
-            trackerCollection.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            trackerCollection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            trackerCollection.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-    }
-
-    private func setupStubConstraints() {
-        labelStub.translatesAutoresizingMaskIntoConstraints = false
-        imageStub.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            imageStub.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            imageStub.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            labelStub.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            labelStub.topAnchor.constraint(equalTo: imageStub.bottomAnchor, constant: 8)
-        ])
-    }
 }
 
 extension TrackersViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if isFiltering {
+            if filteredCategories.isEmpty {
+                collectionView.setEmptyMessage(message: "Ничего не найдено", image: "emptySearch")
+            } else {
+                collectionView.restore()
+            }
             return filteredCategories.count
+        } else {
+            if categories.isEmpty {
+                collectionView.setEmptyMessage(message: "Что будем отслеживать?", image: "emptyTracker")
+            } else {
+                collectionView.restore()
+            }
+            return categories.count
         }
-
-        return categories.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -304,5 +273,39 @@ extension TrackersViewController: UISearchResultsUpdating {
         }
 
         trackerCollection.reloadData()
+    }
+}
+
+extension UICollectionView {
+    func setEmptyMessage(message: String, image: String) {
+        let emptyView = UIView(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
+        emptyView.backgroundColor = .ypWhite
+        emptyView.sizeToFit()
+
+        let imageStub = UIImageView()
+        imageStub.image = UIImage(named: image) ?? UIImage()
+        emptyView.addSubview(imageStub)
+
+        let labelStub = UILabel()
+        labelStub.text = message
+        labelStub.font = .systemFont(ofSize: 12, weight: .medium)
+        labelStub.textColor = .ypBlackDay
+        emptyView.addSubview(labelStub)
+
+        imageStub.translatesAutoresizingMaskIntoConstraints = false
+        labelStub.translatesAutoresizingMaskIntoConstraints = false
+
+        NSLayoutConstraint.activate([
+            imageStub.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
+            imageStub.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor),
+            labelStub.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
+            labelStub.topAnchor.constraint(equalTo: imageStub.bottomAnchor, constant: 8)
+        ])
+
+        self.backgroundView = emptyView
+    }
+
+    func restore() {
+        self.backgroundView = nil
     }
 }
