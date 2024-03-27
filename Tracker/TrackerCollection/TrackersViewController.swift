@@ -14,8 +14,11 @@ final class TrackersViewController: UIViewController {
     private var labelStub: UILabel!
     private var searchController: UISearchController!
 
-    var categories: [TrackerCategory] = [trackersHabits, trackersEvents]
+    var categories: [TrackerCategory] = 
+//    []
+    [trackersHabits, trackersEvents]
     var completedTrackers: Set<TrackerRecord> = []
+
     var filteredCategories: [TrackerCategory] = []
     var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
@@ -24,8 +27,7 @@ final class TrackersViewController: UIViewController {
         searchController.isActive && !isSearchBarEmpty
     }
 
-
-    //    var currentDate: Date = Date()
+    var currentDate: Date = Date()
     //для хранения текущей даты в TrackersViewController добавлено свойство var currentDate: Date. Выбор даты в UIDatePicker меняет значение этого свойства, в результате показываются только те трекеры, у которых в расписании выбран день, совпадающий с датой в currentDate;
 
     let params = GeometricParams(cellCount: 2,
@@ -116,19 +118,30 @@ extension TrackersViewController {
     }
 
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
+        print(currentDate)
         let selectedDate = sender.date
+        print("Selected date: \(selectedDate)")
         let dateFormater = DateFormatter()
         dateFormater.dateFormat = "dd.MM.yy"
         let formattedDate = dateFormater.string(from: selectedDate)
         print("Selected date: \(formattedDate)")
+        currentDate = selectedDate
+        print(currentDate)
     }
 
     private func setupStub() {
         imageStub = UIImageView()
-        imageStub.image = UIImage(named: "emptyTracker") ?? UIImage()
-
         labelStub = UILabel()
-        labelStub.text = "Что будем отслеживать?"
+
+        if categories.isEmpty {
+            imageStub.image = UIImage(named: "emptyTracker") ?? UIImage()
+            labelStub.text = "Что будем отслеживать?"
+        } 
+        else {
+            imageStub.image = UIImage(named: "emptySearch") ?? UIImage()
+            labelStub.text = "Ничего не найдено"
+        }
+
         labelStub.font = .systemFont(ofSize: 12)
 
         view.addSubview(imageStub)
