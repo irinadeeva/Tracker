@@ -12,26 +12,32 @@ final class TrackersViewController: UIViewController {
     private var datePicker: UIDatePicker!
     private var searchController: UISearchController!
 
-    var categories: [TrackerCategory] = 
+    private var categories: [TrackerCategory] =
 //    []
     [trackersHabits, trackersEvents]
-    var completedTrackers: Set<TrackerRecord> = []
+    private var completedTrackers: Set<TrackerRecord> = []
 
-    var filteredCategories: [TrackerCategory] = []
-    var isSearchBarEmpty: Bool {
+    private var filteredCategories: [TrackerCategory] = []
+    private var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
-    var isFiltering: Bool {
-        searchController.isActive && !isSearchBarEmpty
+
+    private var isSearchingByDate: Bool = false
+
+    private var isFiltering: Bool {
+        searchController.isActive && !isSearchBarEmpty || isSearchingByDate
     }
 
-    var currentDate: Date = Date()
-    //для хранения текущей даты в TrackersViewController добавлено свойство var currentDate: Date. Выбор даты в UIDatePicker меняет значение этого свойства, в результате показываются только те трекеры, у которых в расписании выбран день, совпадающий с датой в currentDate;
+    private var currentWeekDate: WeekDay = .monday
 
-    let params = GeometricParams(cellCount: 2,
+    private let params = GeometricParams(cellCount: 2,
                                  leftInset: 16,
                                  rightInset: 16,
                                  cellSpacing: 9)
+
+    var daysOfTheWeek: [String] {
+         return  ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,15 +125,41 @@ extension TrackersViewController {
     }
 
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
-        print(currentDate)
-        let selectedDate = sender.date
-        print("Selected date: \(selectedDate)")
-        let dateFormater = DateFormatter()
-        dateFormater.dateFormat = "dd.MM.yy"
-        let formattedDate = dateFormater.string(from: selectedDate)
-        print("Selected date: \(formattedDate)")
-        currentDate = selectedDate
-        print(currentDate)
+        print(currentWeekDate)
+        print(categories[0].trackers[0].timetable)
+//        let selectedDate = sender.date
+//        print("Selected date: \(selectedDate)")
+//        let dateFormater = DateFormatter()
+//        dateFormater.dateFormat = "dd.MM.yy"
+//        let formattedDate = dateFormater.string(from: selectedDate)
+//        print("Selected date: \(formattedDate)")
+//        currentDate = selectedDate
+        let dayNumber = Calendar.current.component(.weekday, from: sender.date)
+        currentWeekDate = WeekDay.allCases[dayNumber - 1]
+        print(currentWeekDate)
+        filterContentForData()
+    }
+
+    private func filterContentForData() {
+        isSearchingByDate = true
+        filteredCategories.removeAll()
+
+        guard !categories.isEmpty else { return }
+
+        for category in categories {
+            // Filter the trackers inside the category based on the name
+            let filteredTrackers = category.trackers.filter { tracker in
+                tracker.timetable.contains(where: { $0 == currentWeekDate})
+            }
+
+            // Only create a new TrackerCategory if there are filtered trackers available
+            if !filteredTrackers.isEmpty {
+                filteredCategories.append(TrackerCategory(title: category.title, trackers: filteredTrackers))
+            }
+        }
+
+        print(filteredCategories)
+        trackerCollection.reloadData()
     }
 }
 
@@ -261,12 +293,10 @@ extension TrackersViewController: UISearchResultsUpdating {
         guard !categories.isEmpty else { return }
 
         for category in categories {
-            // Filter the trackers inside the category based on the name
             let filteredTrackers = category.trackers.filter { tracker in
                 tracker.name.lowercased().contains(searchText.lowercased())
             }
 
-            // Only create a new TrackerCategory if there are filtered trackers available
             if !filteredTrackers.isEmpty {
                 filteredCategories.append(TrackerCategory(title: category.title, trackers: filteredTrackers))
             }

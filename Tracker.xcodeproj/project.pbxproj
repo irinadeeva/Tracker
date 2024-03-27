@@ -14,7 +14,7 @@
 		BE75C9972BAC4197000506D3 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C9962BAC4197000506D3 /* Tracker.swift */; };
 		BE75C9992BAC41AF000506D3 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C9982BAC41AF000506D3 /* TrackerCategory.swift */; };
 		BE75C99B2BAC41BB000506D3 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C99A2BAC41BB000506D3 /* TrackerRecord.swift */; };
-		BE75C9A02BB0E1B1000506D3 /* DayOfWeek.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C99F2BB0E1B1000506D3 /* DayOfWeek.swift */; };
+		BE75C9A02BB0E1B1000506D3 /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C99F2BB0E1B1000506D3 /* WeekDay.swift */; };
 		BE75C9A22BB15289000506D3 /* GeometricParams.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C9A12BB15289000506D3 /* GeometricParams.swift */; };
 		BE75C9A42BB1C005000506D3 /* StubData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C9A32BB1C005000506D3 /* StubData.swift */; };
 		BE75C9A62BB1C54B000506D3 /* SupplementaryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C9A52BB1C54B000506D3 /* SupplementaryView.swift */; };
@@ -32,7 +32,7 @@
 		BE75C9962BAC4197000506D3 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		BE75C9982BAC41AF000506D3 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		BE75C99A2BAC41BB000506D3 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
-		BE75C99F2BB0E1B1000506D3 /* DayOfWeek.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayOfWeek.swift; sourceTree = "<group>"; };
+		BE75C99F2BB0E1B1000506D3 /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		BE75C9A12BB15289000506D3 /* GeometricParams.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeometricParams.swift; sourceTree = "<group>"; };
 		BE75C9A32BB1C005000506D3 /* StubData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StubData.swift; sourceTree = "<group>"; };
 		BE75C9A52BB1C54B000506D3 /* SupplementaryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupplementaryView.swift; sourceTree = "<group>"; };
@@ -61,7 +61,7 @@
 				BE75C9962BAC4197000506D3 /* Tracker.swift */,
 				BE75C99A2BAC41BB000506D3 /* TrackerRecord.swift */,
 				BE75C9982BAC41AF000506D3 /* TrackerCategory.swift */,
-				BE75C99F2BB0E1B1000506D3 /* DayOfWeek.swift */,
+				BE75C99F2BB0E1B1000506D3 /* WeekDay.swift */,
 				BE75C9A12BB15289000506D3 /* GeometricParams.swift */,
 			);
 			path = Model;
@@ -189,7 +189,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE29CB8A2BA0C25500BA4C7E /* TrackersViewController.swift in Sources */,
-				BE75C9A02BB0E1B1000506D3 /* DayOfWeek.swift in Sources */,
+				BE75C9A02BB0E1B1000506D3 /* WeekDay.swift in Sources */,
 				BE29CB882BA0C1E000BA4C7E /* StatisticViewController.swift in Sources */,
 				BE75C9992BAC41AF000506D3 /* TrackerCategory.swift in Sources */,
 				BE75C9A22BB15289000506D3 /* GeometricParams.swift in Sources */,
