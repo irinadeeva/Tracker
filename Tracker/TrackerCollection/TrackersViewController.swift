@@ -18,32 +18,30 @@ final class TrackersViewController: UIViewController {
     private var completedTrackers: Set<TrackerRecord> = []
 
     private var filteredCategories: [TrackerCategory] = []
+    
     private var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
 
-    private var isSearchingByDate: Bool = false
-
     private var isFiltering: Bool {
-        searchController.isActive && !isSearchBarEmpty || isSearchingByDate
+        searchController.isActive && !isSearchBarEmpty
     }
 
-    private var currentWeekDate: WeekDay = .monday
+    private var currentDate: Date = Date()
 
     private let params = GeometricParams(cellCount: 2,
                                  leftInset: 16,
                                  rightInset: 16,
                                  cellSpacing: 9)
 
-    var daysOfTheWeek: [String] {
-         return  ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
 
         setupLayout()
+
+        filterContentForData()
     }
 }
 
@@ -125,40 +123,27 @@ extension TrackersViewController {
     }
 
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
-        print(currentWeekDate)
-        print(categories[0].trackers[0].timetable)
-//        let selectedDate = sender.date
-//        print("Selected date: \(selectedDate)")
-//        let dateFormater = DateFormatter()
-//        dateFormater.dateFormat = "dd.MM.yy"
-//        let formattedDate = dateFormater.string(from: selectedDate)
-//        print("Selected date: \(formattedDate)")
-//        currentDate = selectedDate
-        let dayNumber = Calendar.current.component(.weekday, from: sender.date)
-        currentWeekDate = WeekDay.allCases[dayNumber - 1]
-        print(currentWeekDate)
+        currentDate = sender.date
         filterContentForData()
     }
 
     private func filterContentForData() {
-        isSearchingByDate = true
+        let dayNumber = Calendar.current.component(.weekday, from: currentDate)
+        let currentWeekDate = WeekDay.allCases[dayNumber - 1]
         filteredCategories.removeAll()
 
         guard !categories.isEmpty else { return }
 
         for category in categories {
-            // Filter the trackers inside the category based on the name
             let filteredTrackers = category.trackers.filter { tracker in
                 tracker.timetable.contains(where: { $0 == currentWeekDate})
             }
 
-            // Only create a new TrackerCategory if there are filtered trackers available
             if !filteredTrackers.isEmpty {
                 filteredCategories.append(TrackerCategory(title: category.title, trackers: filteredTrackers))
             }
         }
 
-        print(filteredCategories)
         trackerCollection.reloadData()
     }
 }
@@ -171,23 +156,19 @@ extension TrackersViewController: UICollectionViewDataSource {
             } else {
                 collectionView.restore()
             }
-            return filteredCategories.count
         } else {
-            if categories.isEmpty {
+            filterContentForData()
+            if filteredCategories.isEmpty {
                 collectionView.setEmptyMessage(message: "Что будем отслеживать?", image: "emptyTracker")
             } else {
                 collectionView.restore()
             }
-            return categories.count
         }
+        return filteredCategories.count
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if isFiltering {
-            return filteredCategories[section].trackers.count
-        }
-
-        return categories[section].trackers.count
+        return filteredCategories[section].trackers.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -198,15 +179,11 @@ extension TrackersViewController: UICollectionViewDataSource {
             return UICollectionViewCell()
         }
 
-        var tracker: Tracker
-        if isFiltering {
-            tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
-          } else {
-            tracker = categories[indexPath.section].trackers[indexPath.row]
-        }
+        let tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
 
         trackerCell.prepareForReuse()
 
+        trackerCell.delegate = self
         trackerCell.emojiLabel.text = tracker.emoji
         trackerCell.titleLabel.text = tracker.name
         trackerCell.rectangleView.backgroundColor = tracker.color
@@ -234,14 +211,7 @@ extension TrackersViewController: UICollectionViewDataSource {
             return UICollectionReusableView()
         }
 
-        var title: String
-        if isFiltering {
-            title = filteredCategories[indexPath.section].title
-          } else {
-            title = categories[indexPath.section].title
-        }
-
-        view.titleLabel.text = title
+        view.titleLabel.text = filteredCategories[indexPath.section].title
         return view
     }
 }
@@ -337,5 +307,18 @@ extension UICollectionView {
 
     func restore() {
         self.backgroundView = nil
+    }
+}
+
+extension TrackersViewController: TrackerCellButtonDelegate {
+    func didTapButtonInCell(_ cell: TrackerCell) {
+//        if let indexPath = collectionView.indexPath(for: cell) {
+//                    // Создание объекта типа "record"
+//
+//
+//            let record = TrackerRecord(completedTrackerId: cell., completedTrackerDate: <#T##Date#>)
+//
+//                    // Выполнение необходимых действий с записью
+//                }
     }
 }

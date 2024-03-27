@@ -7,6 +7,10 @@
 
 import UIKit
 
+protocol TrackerCellButtonDelegate: AnyObject {
+    func didTapButtonInCell(_ cell: TrackerCell)
+}
+
 final class TrackerCell: UICollectionViewCell {
     var emojiLabel: UILabel!
     var titleLabel: UILabel!
@@ -14,6 +18,8 @@ final class TrackerCell: UICollectionViewCell {
     var addButton: UIButton!
     var rectangleView: UIView!
     static let reuseIdentifier = "trackerCell"
+
+    weak var delegate: TrackerCellButtonDelegate?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -119,6 +125,7 @@ extension TrackerCell {
     }
 
     @objc private func addButtonPressed() {
+        delegate?.didTapButtonInCell(self)
         print("add cell Button Pressed")
     }
 
