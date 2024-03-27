@@ -8,15 +8,17 @@
 import UIKit
 
 protocol TrackerCellButtonDelegate: AnyObject {
-    func didTapButtonInCell(_ cell: TrackerCell)
+    func didTapButtonInCell(_ cell: TrackerCell) -> Bool
 }
 
 final class TrackerCell: UICollectionViewCell {
+    var counter: Int = 0
     var emojiLabel: UILabel!
     var titleLabel: UILabel!
     var counterLabel: UILabel!
     var addButton: UIButton!
     var rectangleView: UIView!
+    private var isButtonSelected: Bool = false
     static let reuseIdentifier = "trackerCell"
 
     weak var delegate: TrackerCellButtonDelegate?
@@ -104,7 +106,7 @@ extension TrackerCell {
 
     private func setupCounterLabel() {
         counterLabel = UILabel()
-        counterLabel.text = "0 дней"
+        counterLabel.text = "\(counter) дней"
         counterLabel.font = .systemFont(ofSize: 12, weight: .medium)
         counterLabel.textColor = .ypBlackDay
         counterLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -114,18 +116,32 @@ extension TrackerCell {
 
     private func setupAddButton() {
         addButton = UIButton(type: .custom)
-        addButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        addButton.imageView?.tintColor = .ypWhite
         addButton.layer.cornerRadius = 16
         addButton.layer.masksToBounds = true
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
+        updateAddButtonUI()
+        addButton.imageView?.tintColor = .ypWhite
         addButton.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(addButton)
     }
 
+    private func updateAddButtonUI() {
+        if isButtonSelected {
+            addButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+            addButton.alpha = 0.3
+            isButtonSelected = false
+        } else {
+            addButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            addButton.alpha = 1
+            isButtonSelected = true
+        }
+    }
+
     @objc private func addButtonPressed() {
-        delegate?.didTapButtonInCell(self)
+        if ((delegate?.didTapButtonInCell(self)) != nil) {
+            updateAddButtonUI()
+        }
         print("add cell Button Pressed")
     }
 

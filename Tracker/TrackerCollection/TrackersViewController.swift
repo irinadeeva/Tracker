@@ -183,6 +183,7 @@ extension TrackersViewController: UICollectionViewDataSource {
 
         trackerCell.prepareForReuse()
 
+//        trackerCell.counter = 
         trackerCell.delegate = self
         trackerCell.emojiLabel.text = tracker.emoji
         trackerCell.titleLabel.text = tracker.name
@@ -311,14 +312,23 @@ extension UICollectionView {
 }
 
 extension TrackersViewController: TrackerCellButtonDelegate {
-    func didTapButtonInCell(_ cell: TrackerCell) {
-//        if let indexPath = collectionView.indexPath(for: cell) {
-//                    // Создание объекта типа "record"
-//
-//
-//            let record = TrackerRecord(completedTrackerId: cell., completedTrackerDate: <#T##Date#>)
-//
-//                    // Выполнение необходимых действий с записью
-//                }
+    func didTapButtonInCell(_ cell: TrackerCell) -> Bool {
+        if Date() >= currentDate {
+            guard let indexPath = trackerCollection.indexPath(for: cell) else { return  false}
+
+            let tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
+            let record = TrackerRecord(completedTrackerId: tracker.id, completedTrackerDate: currentDate)
+
+            if completedTrackers.contains(record) {
+                completedTrackers.remove(record)
+            } else {
+                completedTrackers.insert(record)
+            }
+
+            print(completedTrackers)
+            return true
+        }
+
+        return false
     }
 }
