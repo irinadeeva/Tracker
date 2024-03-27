@@ -8,11 +8,10 @@
 import UIKit
 
 protocol TrackerCellButtonDelegate: AnyObject {
-    func didTapButtonInCell(_ cell: TrackerCell) -> Bool
+    func didTapButtonInCell(_ cell: TrackerCell)
 }
 
 final class TrackerCell: UICollectionViewCell {
-    var counter: Int = 0
     var emojiLabel: UILabel!
     var titleLabel: UILabel!
     var counterLabel: UILabel!
@@ -106,7 +105,6 @@ extension TrackerCell {
 
     private func setupCounterLabel() {
         counterLabel = UILabel()
-        counterLabel.text = "\(counter) дней"
         counterLabel.font = .systemFont(ofSize: 12, weight: .medium)
         counterLabel.textColor = .ypBlackDay
         counterLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -119,30 +117,18 @@ extension TrackerCell {
         addButton.layer.cornerRadius = 16
         addButton.layer.masksToBounds = true
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
-        updateAddButtonUI()
+//        addButton.setImage(UIImage(systemName: "plus"), for: .normal)
+//        addButton.alpha = 1
         addButton.imageView?.tintColor = .ypWhite
         addButton.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(addButton)
     }
 
-    private func updateAddButtonUI() {
-        if isButtonSelected {
-            addButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
-            addButton.alpha = 0.3
-            isButtonSelected = false
-        } else {
-            addButton.setImage(UIImage(systemName: "plus"), for: .normal)
-            addButton.alpha = 1
-            isButtonSelected = true
-        }
-    }
-
     @objc private func addButtonPressed() {
-        if ((delegate?.didTapButtonInCell(self)) != nil) {
-            updateAddButtonUI()
-        }
-        print("add cell Button Pressed")
+        guard let delegate else { return }
+        delegate.didTapButtonInCell(self)
+
     }
 
 }

@@ -183,8 +183,24 @@ extension TrackersViewController: UICollectionViewDataSource {
 
         trackerCell.prepareForReuse()
 
-//        trackerCell.counter = 
+        let counter = completedTrackers.filter {
+            $0.completedTrackerId == tracker.id
+        }.count
+
+        let flag = completedTrackers.filter {
+            $0.completedTrackerId == tracker.id && $0.completedTrackerDate == currentDate
+        }.isEmpty
+
+        if flag {
+            trackerCell.addButton.setImage(UIImage(systemName: "plus"), for: .normal)
+            trackerCell.addButton.alpha = 1
+        } else {
+            trackerCell.addButton.setImage(UIImage(systemName: "checkmark"), for: .normal)
+            trackerCell.addButton.alpha = 0.3
+        }
+
         trackerCell.delegate = self
+        trackerCell.counterLabel.text = "\(counter) дней"
         trackerCell.emojiLabel.text = tracker.emoji
         trackerCell.titleLabel.text = tracker.name
         trackerCell.rectangleView.backgroundColor = tracker.color
@@ -312,9 +328,11 @@ extension UICollectionView {
 }
 
 extension TrackersViewController: TrackerCellButtonDelegate {
-    func didTapButtonInCell(_ cell: TrackerCell) -> Bool {
+    func didTapButtonInCell(_ cell: TrackerCell) {
+        print("before \(completedTrackers)")
+
         if Date() >= currentDate {
-            guard let indexPath = trackerCollection.indexPath(for: cell) else { return  false}
+            guard let indexPath = trackerCollection.indexPath(for: cell) else { return }
 
             let tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
             let record = TrackerRecord(completedTrackerId: tracker.id, completedTrackerDate: currentDate)
@@ -325,10 +343,8 @@ extension TrackersViewController: TrackerCellButtonDelegate {
                 completedTrackers.insert(record)
             }
 
-            print(completedTrackers)
-            return true
+            print("after \(completedTrackers)")
+            trackerCollection.reloadData()
         }
-
-        return false
     }
 }
