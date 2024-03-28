@@ -25,6 +25,7 @@
 		BE9CF5B42BB55B3800D2DE8D /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9CF5B32BB55B3800D2DE8D /* AddTrackerViewController.swift */; };
 		BE9CF5B72BB577C800D2DE8D /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9CF5B62BB577C800D2DE8D /* ScheduleViewController.swift */; };
 		BE9CF5B92BB5783C00D2DE8D /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9CF5B82BB5783C00D2DE8D /* CategoryViewController.swift */; };
+		BE9CF5BB2BB5AC5B00D2DE8D /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9CF5BA2BB5AC5B00D2DE8D /* CustomTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		BE9CF5B32BB55B3800D2DE8D /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
 		BE9CF5B62BB577C800D2DE8D /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
 		BE9CF5B82BB5783C00D2DE8D /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
+		BE9CF5BA2BB5AC5B00D2DE8D /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 				BE9CF5B32BB55B3800D2DE8D /* AddTrackerViewController.swift */,
 				BE9CF5B62BB577C800D2DE8D /* ScheduleViewController.swift */,
 				BE9CF5B82BB5783C00D2DE8D /* CategoryViewController.swift */,
+				BE9CF5BA2BB5AC5B00D2DE8D /* CustomTableViewCell.swift */,
 			);
 			path = AddNewTracker;
 			sourceTree = "<group>";
@@ -214,6 +217,7 @@
 				BE75C9A22BB15289000506D3 /* GeometricParams.swift in Sources */,
 				BE75C9A42BB1C005000506D3 /* StubData.swift in Sources */,
 				BE29CB862BA0B48700BA4C7E /* TabBarController.swift in Sources */,
+				BE9CF5BB2BB5AC5B00D2DE8D /* CustomTableViewCell.swift in Sources */,
 				BE75C9A62BB1C54B000506D3 /* SupplementaryView.swift in Sources */,
 				BE7F96D22B987C760073F9FC /* AppDelegate.swift in Sources */,
 				BE75C99B2BAC41BB000506D3 /* TrackerRecord.swift in Sources */,

@@ -13,11 +13,22 @@ final class AddTrackerViewController: UIViewController{
     private var tableView: UITableView!
     private var typeTitle: UILabel!
     private var textField: UITextField!
+//        private var discardButton: UIButton!
+    private var saveButton: UIButton!
+    private var stackView: UIStackView!
     private var selectedTitle: [String] = ["Создание трекера", "Новая привычка", "Новое нерегулярное событие"]
+    private var cellTitle: [String] = ["Категория", "Расписание"]
+    private var cellsNumber = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setupUI()
+    }
+}
+
+extension AddTrackerViewController {
+    private func setupUI() {
         view.backgroundColor = .ypWhite
 
         habitButton = setupButtonUI()
@@ -26,15 +37,12 @@ final class AddTrackerViewController: UIViewController{
         eventButton = setupButtonUI()
         eventButton.setTitle("Нерегулярное событие", for: .normal)
 
-
-        // Configure table view
-
         tableView = UITableView()
-//        /tableView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - 100)
-//        tableView.delegate = self
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        tableView.delegate = self
         tableView.dataSource = self
         tableView.isHidden = true
+        tableView.layer.cornerRadius = 16
+        tableView.layer.masksToBounds = true
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
 
         typeTitle = UILabel()
@@ -46,22 +54,40 @@ final class AddTrackerViewController: UIViewController{
         textField.backgroundColor = .ypBackgroundDay
         textField.layer.cornerRadius = 16
         textField.placeholder = "Введите название трекера"
-//        textField.textAlignment = .
+        textField.textAlignment = .left
         textField.isHidden = true
 
-        // Add buttons to the view
+        let discardButton = setupActionButtonUI()
+        discardButton.setTitle("Отменить", for: .normal)
+        discardButton.setTitleColor(.ypRed, for: .normal)
+        discardButton.backgroundColor = .ypWhite
+        discardButton.layer.borderColor = UIColor.ypRed.cgColor
+        discardButton.layer.borderWidth = 1.0
+
+        saveButton = setupActionButtonUI()
+        saveButton.setTitle("Создать", for: .normal)
+        saveButton.setTitleColor(.ypWhite, for: .normal)
+        saveButton.backgroundColor = .ypGray
+
+        stackView = UIStackView(arrangedSubviews: [discardButton, saveButton])
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
+        stackView.spacing = 8
+        stackView.isHidden = true
+
         view.addSubview(habitButton)
         view.addSubview(eventButton)
         view.addSubview(typeTitle)
         view.addSubview(textField)
         view.addSubview(tableView)
+        view.addSubview(stackView)
 
-        // Layout buttons
         habitButton.translatesAutoresizingMaskIntoConstraints = false
         eventButton.translatesAutoresizingMaskIntoConstraints = false
         typeTitle.translatesAutoresizingMaskIntoConstraints = false
         textField.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             habitButton.heightAnchor.constraint(equalToConstant: 60),
@@ -83,11 +109,27 @@ final class AddTrackerViewController: UIViewController{
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             textField.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24),
 
-            tableView.heightAnchor.constraint(equalToConstant: 343),
+            //            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24)
+            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+
+            stackView.heightAnchor.constraint(equalToConstant: 60),
+            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34)
         ])
+    }
+
+    private func setupActionButtonUI() -> UIButton {
+        let button = UIButton(type: .system)
+        button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
+        button.addTarget(self, action: #selector(actionButtonTapped(_:)), for: .touchUpInside)
+        button.tintColor = .ypWhite
+        button.layer.cornerRadius = 20
+        button.layer.masksToBounds = true
+
+        return button
     }
 
     private func setupButtonUI() -> UIButton {
@@ -102,32 +144,50 @@ final class AddTrackerViewController: UIViewController{
         return button
     }
 
+    @objc private func actionButtonTapped(_ sender: UIButton) {
+        if sender == saveButton {
+        }
+
+        dismiss(animated: true, completion: nil)
+    }
+
     @objc private func buttonTapped(_ sender: UIButton) {
         eventButton.removeFromSuperview()
         habitButton.removeFromSuperview()
         textField.isHidden = false
         tableView.isHidden = false
+        stackView.isHidden = false
 
         if sender == habitButton {
             typeTitle.text = selectedTitle[1]
+            cellsNumber = 2
         } else {
             typeTitle.text = selectedTitle[2]
+            cellsNumber = 1
         }
+
+        tableView.reloadData()
     }
 }
 
-//extension AddTrackerViewController: UITableViewDelegate {
-//
-//}
+extension AddTrackerViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 75
+    }
+}
 
 extension AddTrackerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
+        return cellsNumber
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = "Cell \(indexPath.row + 1)"
+        cell.textLabel?.text = cellTitle[indexPath.row]
+        cell.backgroundColor = .ypBackgroundDay
+        cell.textLabel?.textColor = .ypBlackDay
+        cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+
         return cell
     }
 
