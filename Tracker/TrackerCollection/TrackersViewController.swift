@@ -123,7 +123,10 @@ extension TrackersViewController {
     }
 
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
-        currentDate = sender.date
+        let components = Calendar.current.dateComponents([.year, .month, .day], from: sender.date)
+        guard let date = Calendar.current.date(from: components) else { return }
+        currentDate = date
+
         filterContentForData()
     }
 

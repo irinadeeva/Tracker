@@ -7,9 +7,9 @@
 
 import Foundation
 
-let tracker1 = Tracker(id: UUID(), name: "Кошка, заслонила камеру на созвоне", color: .ypSelection2, emoji: "😻", timetable: [.monday, .tuesday])
+let tracker1 = Tracker(id: UUID(), name: "Кошка, заслонила камеру на созвоне", color: .ypSelection2, emoji: "😻", timetable: [.wednesday, .thursday])
 
-let tracker2 = Tracker(id: UUID(), name: "Бабушка прислала открытку в вотсапе", color: .ypSelection1, emoji: "🌺", timetable: [.wednesday, .friday])
+let tracker2 = Tracker(id: UUID(), name: "Бабушка прислала открытку в вотсапе", color: .ypSelection1, emoji: "🌺", timetable: [.monday,.tuesday, .wednesday, .friday])
 
 let tracker3 = Tracker(id: UUID(), name: "Свидания в апреле", color: .ypSelection14, emoji: "❤️", timetable: [.saturday, .sunday])
 
