@@ -17,4 +17,8 @@ enum WeekDay: String, CaseIterable {
     static var allCases: [WeekDay] {
         return [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     }
+
+    static var allCasesRawValue: [String] {
+        return allCases.map { $0.rawValue }
+    }
 }

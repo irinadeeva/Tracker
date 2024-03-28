@@ -108,13 +108,12 @@ extension AddTrackerViewController {
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             textField.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24),
 
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
+            tableView.bottomAnchor.constraint(equalTo: stackView.topAnchor),
 
             stackView.heightAnchor.constraint(equalToConstant: 60),
-            stackView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 500),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34)
@@ -126,7 +125,7 @@ extension AddTrackerViewController {
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(actionButtonTapped(_:)), for: .touchUpInside)
         button.tintColor = .ypWhite
-        button.layer.cornerRadius = 20
+        button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
 
         return button
@@ -138,7 +137,7 @@ extension AddTrackerViewController {
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         button.tintColor = .ypWhite
         button.backgroundColor = .ypBlackDay
-        button.layer.cornerRadius = 20
+        button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
 
         return button
@@ -174,6 +173,20 @@ extension AddTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+
+        let destinationViewController: UIViewController
+
+        if indexPath.row == 0 {
+            destinationViewController = CategoryViewController()
+        } else {
+            destinationViewController = ScheduleViewController()
+        }
+
+        present(destinationViewController, animated: true, completion: nil)
+    }
 }
 
 extension AddTrackerViewController: UITableViewDataSource {
@@ -190,26 +203,4 @@ extension AddTrackerViewController: UITableViewDataSource {
 
         return cell
     }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("here")
-
-        tableView.deselectRow(at: indexPath, animated: true)
-
-
-        // Present different views based on the button pressed
-        if indexPath.row == 0 {
-            print("here indexPath.row = 0")
-            let viewController = CategoryViewController()
-            //                viewController.view.backgroundColor = .blue
-            navigationController?.pushViewController(viewController, animated: true)
-
-        } else if indexPath.row == 1 {
-            print("here indexPath.row = 1")
-            let viewController = ScheduleViewController()
-            //                viewController.view.backgroundColor = .green
-            navigationController?.pushViewController(viewController, animated: true)
-        }
-    }
-
 }
