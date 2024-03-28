@@ -30,8 +30,9 @@ final class AddTrackerViewController: UIViewController{
         // Configure table view
 
         tableView = UITableView()
-        //        tableView.frame = view.bounds
-        //        tableView.delegate = self
+//        /tableView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height - 100)
+//        tableView.delegate = self
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         tableView.dataSource = self
         tableView.isHidden = true
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
@@ -80,7 +81,12 @@ final class AddTrackerViewController: UIViewController{
             textField.heightAnchor.constraint(equalToConstant: 75),
             textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            textField.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24)
+            textField.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24),
+
+            tableView.heightAnchor.constraint(equalToConstant: 343),
+            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24)
         ])
     }
 
@@ -97,8 +103,8 @@ final class AddTrackerViewController: UIViewController{
     }
 
     @objc private func buttonTapped(_ sender: UIButton) {
-        eventButton.isHidden = true
-        habitButton.isHidden = true
+        eventButton.removeFromSuperview()
+        habitButton.removeFromSuperview()
         textField.isHidden = false
         tableView.isHidden = false
 
