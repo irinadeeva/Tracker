@@ -22,6 +22,9 @@
 		BE7F96D42B987C760073F9FC /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE7F96D32B987C760073F9FC /* SceneDelegate.swift */; };
 		BE7F96DB2B987C770073F9FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE7F96DA2B987C770073F9FC /* Assets.xcassets */; };
 		BE7F96DE2B987C770073F9FC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE7F96DC2B987C770073F9FC /* LaunchScreen.storyboard */; };
+		BE9CF5B42BB55B3800D2DE8D /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9CF5B32BB55B3800D2DE8D /* AddTrackerViewController.swift */; };
+		BE9CF5B72BB577C800D2DE8D /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9CF5B62BB577C800D2DE8D /* ScheduleViewController.swift */; };
+		BE9CF5B92BB5783C00D2DE8D /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9CF5B82BB5783C00D2DE8D /* CategoryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,9 @@
 		BE7F96DA2B987C770073F9FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE7F96DD2B987C770073F9FC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BE7F96DF2B987C770073F9FC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BE9CF5B32BB55B3800D2DE8D /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
+		BE9CF5B62BB577C800D2DE8D /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
+		BE9CF5B82BB5783C00D2DE8D /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +76,7 @@
 		BE75C99D2BB0C35F000506D3 /* TrackerCollection */ = {
 			isa = PBXGroup;
 			children = (
+				BE9CF5B52BB577AA00D2DE8D /* AddNewTracker */,
 				BE29CB8B2BA4516800BA4C7E /* TrackerCell.swift */,
 				BE29CB892BA0C25500BA4C7E /* TrackersViewController.swift */,
 				BE75C9A52BB1C54B000506D3 /* SupplementaryView.swift */,
@@ -116,6 +123,16 @@
 				BE7F96DF2B987C770073F9FC /* Info.plist */,
 			);
 			path = Tracker;
+			sourceTree = "<group>";
+		};
+		BE9CF5B52BB577AA00D2DE8D /* AddNewTracker */ = {
+			isa = PBXGroup;
+			children = (
+				BE9CF5B32BB55B3800D2DE8D /* AddTrackerViewController.swift */,
+				BE9CF5B62BB577C800D2DE8D /* ScheduleViewController.swift */,
+				BE9CF5B82BB5783C00D2DE8D /* CategoryViewController.swift */,
+			);
+			path = AddNewTracker;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -192,6 +209,8 @@
 				BE75C9A02BB0E1B1000506D3 /* WeekDay.swift in Sources */,
 				BE29CB882BA0C1E000BA4C7E /* StatisticViewController.swift in Sources */,
 				BE75C9992BAC41AF000506D3 /* TrackerCategory.swift in Sources */,
+				BE9CF5B92BB5783C00D2DE8D /* CategoryViewController.swift in Sources */,
+				BE9CF5B72BB577C800D2DE8D /* ScheduleViewController.swift in Sources */,
 				BE75C9A22BB15289000506D3 /* GeometricParams.swift in Sources */,
 				BE75C9A42BB1C005000506D3 /* StubData.swift in Sources */,
 				BE29CB862BA0B48700BA4C7E /* TabBarController.swift in Sources */,
@@ -201,6 +220,7 @@
 				BE29CB8C2BA4516800BA4C7E /* TrackerCell.swift in Sources */,
 				BE7F96D42B987C760073F9FC /* SceneDelegate.swift in Sources */,
 				BE75C9972BAC4197000506D3 /* Tracker.swift in Sources */,
+				BE9CF5B42BB55B3800D2DE8D /* AddTrackerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

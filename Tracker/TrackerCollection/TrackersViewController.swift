@@ -109,6 +109,9 @@ extension TrackersViewController {
 
     @objc
     private func addTracker() {
+        let addTrackerViewController = AddTrackerViewController()
+        addTrackerViewController.modalPresentationStyle = .automatic
+        present(addTrackerViewController, animated: true, completion: nil)
     }
 
     private func setUpDatePicker() {
