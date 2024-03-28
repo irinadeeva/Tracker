@@ -13,7 +13,6 @@ final class AddTrackerViewController: UIViewController{
     private var tableView: UITableView!
     private var typeTitle: UILabel!
     private var textField: UITextField!
-//        private var discardButton: UIButton!
     private var saveButton: UIButton!
     private var stackView: UIStackView!
     private var selectedTitle: [String] = ["Создание трекера", "Новая привычка", "Новое нерегулярное событие"]
@@ -109,12 +108,13 @@ extension AddTrackerViewController {
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             textField.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24),
 
-            //            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
 
             stackView.heightAnchor.constraint(equalToConstant: 60),
+            stackView.topAnchor.constraint(equalTo: tableView.topAnchor, constant: 500),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34)
