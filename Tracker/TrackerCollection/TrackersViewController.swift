@@ -110,6 +110,7 @@ extension TrackersViewController {
     @objc
     private func addTracker() {
         let addTrackerViewController = AddTrackerViewController()
+        addTrackerViewController.delegate = self
         addTrackerViewController.modalPresentationStyle = .automatic
         present(addTrackerViewController, animated: true, completion: nil)
     }
@@ -352,5 +353,13 @@ extension TrackersViewController: TrackerCellButtonDelegate {
             print("after \(completedTrackers)")
             trackerCollection.reloadData()
         }
+    }
+}
+
+extension TrackersViewController: AddTrackerDelegate {
+    func didAddTracker(_ tracker: Tracker) {
+        let trackerCategory = TrackerCategory(title: "Новая категория", trackers: [tracker])
+        categories.append(trackerCategory)
+        trackerCollection.reloadData()
     }
 }

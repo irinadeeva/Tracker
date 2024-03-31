@@ -15,7 +15,7 @@ enum WeekDay: String, CaseIterable {
     case sunday = "Воскресенье"
 
     static var allCases: [WeekDay] {
-        return [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]
+        return [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     }
 
     static var allCasesRawValue: [String] {

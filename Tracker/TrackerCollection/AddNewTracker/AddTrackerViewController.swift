@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol AddTrackerDelegate: AnyObject {
+    func didAddTracker(_ tracker: Tracker)
+}
+
 final class AddTrackerViewController: UIViewController{
+    weak var delegate: AddTrackerDelegate?
+
     private var habitButton: UIButton!
     private var eventButton: UIButton!
     private var tableView: UITableView!
@@ -18,6 +24,7 @@ final class AddTrackerViewController: UIViewController{
     private var selectedTitle: [String] = ["Создание трекера", "Новая привычка", "Новое нерегулярное событие"]
     private var cellTitle: [String] = ["Категория", "Расписание"]
     private var cellsNumber = 0
+    private var trackerName: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -143,7 +150,15 @@ extension AddTrackerViewController {
 
     @objc private func actionButtonTapped(_ sender: UIButton) {
         if sender == saveButton {
-            // to do реализовать создание трекера
+            let newTracker = Tracker(
+                id: UUID(),
+                name: trackerName,
+                color: .blue,
+                emoji: "😊",
+                timetable: [.sunday, .monday]
+            )
+            
+            delegate?.didAddTracker(newTracker)
         }
 
         dismiss(animated: true, completion: nil)
