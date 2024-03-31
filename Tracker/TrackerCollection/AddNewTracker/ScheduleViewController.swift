@@ -80,8 +80,10 @@ extension ScheduleViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "weekdayCell", for: indexPath) as! WeekdayTableViewCell
-       
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "weekdayCell", for: indexPath) as? WeekdayTableViewCell else {
+            return UITableViewCell()
+        }
+
         let weekday = weekdays[indexPath.row]
         cell.weekdayLabel.text = weekday
         cell.backgroundColor = .ypBackgroundDay

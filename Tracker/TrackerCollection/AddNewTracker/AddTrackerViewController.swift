@@ -81,12 +81,10 @@ extension AddTrackerViewController {
         view.addSubview(tableView)
         view.addSubview(stackView)
 
-        habitButton.translatesAutoresizingMaskIntoConstraints = false
-        eventButton.translatesAutoresizingMaskIntoConstraints = false
-        typeTitle.translatesAutoresizingMaskIntoConstraints = false
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        [habitButton, eventButton, typeTitle, textField, tableView, stackView].forEach{
+            view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
 
         NSLayoutConstraint.activate([
             habitButton.heightAnchor.constraint(equalToConstant: 60),
@@ -145,6 +143,7 @@ extension AddTrackerViewController {
 
     @objc private func actionButtonTapped(_ sender: UIButton) {
         if sender == saveButton {
+            // to do реализовать создание трекера
         }
 
         dismiss(animated: true, completion: nil)

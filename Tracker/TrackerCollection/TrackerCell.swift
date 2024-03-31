@@ -12,15 +12,14 @@ protocol TrackerCellButtonDelegate: AnyObject {
 }
 
 final class TrackerCell: UICollectionViewCell {
+    static let reuseIdentifier = "trackerCell"
     var emojiLabel: UILabel!
     var titleLabel: UILabel!
     var counterLabel: UILabel!
     var addButton: UIButton!
     var rectangleView: UIView!
-    private var isButtonSelected: Bool = false
-    static let reuseIdentifier = "trackerCell"
-
     weak var delegate: TrackerCellButtonDelegate?
+    private var isButtonSelected: Bool = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
