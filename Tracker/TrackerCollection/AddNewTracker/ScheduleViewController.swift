@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol ScheduleDelegate: AnyObject {
+    func didDoneTapped(_ weekdays: [String])
+}
+
 final class ScheduleViewController: UIViewController {
+    weak var delegate: ScheduleDelegate?
+
     private let weekdays = WeekDay.allCasesRawValue
     private var selectedWeekdays: [String] = []
 
@@ -70,6 +76,7 @@ final class ScheduleViewController: UIViewController {
     }
 
     @objc private func doneButtonTapped(_ sender: UIButton){
+        delegate?.didDoneTapped(selectedWeekdays)
         dismiss(animated: true, completion: nil)
     }
 }
@@ -108,16 +115,20 @@ extension ScheduleViewController: UITableViewDelegate {
             return
         }
 
-        cell.weekdaySwitch.setOn(!cell.weekdaySwitch.isOn, animated: true)
+        cell.weekdaySwitch.setOn(!cell.weekdaySwitch.isOn, animated: false)
 
         if cell.weekdaySwitch.isOn {
             cell.weekdaySwitch.onTintColor = .ypBlue
         }
+
+        switchStateChanged(for: cell.weekdayLabel.text, isOn: cell.weekdaySwitch.isOn)
     }
 }
 
 extension ScheduleViewController: WeekdayTableViewCellDelegate {
-    func switchStateChanged(for weekday: String, isOn: Bool) {
+    func switchStateChanged(for weekday: String?, isOn: Bool) {
+        guard let weekday else { return }
+
         if isOn {
             selectedWeekdays.append(weekday)
         } else {
@@ -130,7 +141,7 @@ extension ScheduleViewController: WeekdayTableViewCellDelegate {
 }
 
 protocol WeekdayTableViewCellDelegate: AnyObject {
-    func switchStateChanged(for weekday: String, isOn: Bool)
+    func switchStateChanged(for weekday: String?, isOn: Bool)
 }
 
 class WeekdayTableViewCell: UITableViewCell {

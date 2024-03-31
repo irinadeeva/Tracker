@@ -24,6 +24,7 @@ final class AddTrackerViewController: UIViewController{
     private var selectedTitle: [String] = ["Создание трекера", "Новая привычка", "Новое нерегулярное событие"]
     private var cellTitle: [String] = ["Категория", "Расписание"]
     private var cellsNumber = 0
+    private var selectedWeekdays: [WeekDay] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -158,9 +159,9 @@ extension AddTrackerViewController {
                 name: trackerName,
                 color: .blue,
                 emoji: "😊",
-                timetable: [.sunday, .monday]
+                timetable: selectedWeekdays
             )
-            
+
             delegate?.didAddTracker(newTracker)
             dismiss(animated: true, completion: nil)
         } else {
@@ -195,15 +196,14 @@ extension AddTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
 
-        let destinationViewController: UIViewController
-
         if indexPath.row == 0 {
-            destinationViewController = CategoryViewController()
+            let destinationViewController = CategoryViewController()
+            present(destinationViewController, animated: true, completion: nil)
         } else {
-            destinationViewController = ScheduleViewController()
+            let destinationViewController = ScheduleViewController()
+            destinationViewController.delegate = self
+            present(destinationViewController, animated: true, completion: nil)
         }
-
-        present(destinationViewController, animated: true, completion: nil)
     }
 }
 
@@ -242,6 +242,16 @@ extension AddTrackerViewController: UITextFieldDelegate {
         if let text = textField.text, !text.isEmpty {
             saveButton.backgroundColor = .ypBlackDay
             saveButton.isEnabled = true
+        }
+    }
+}
+
+extension AddTrackerViewController: ScheduleDelegate {
+    func didDoneTapped(_ weekdays: [String]) {
+        for string in weekdays {
+            if let weekday = WeekDay(rawValue: string) {
+                self.selectedWeekdays.append(weekday)
+            }
         }
     }
 }
