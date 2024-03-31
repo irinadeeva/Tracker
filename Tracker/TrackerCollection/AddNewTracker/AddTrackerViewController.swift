@@ -24,7 +24,6 @@ final class AddTrackerViewController: UIViewController{
     private var selectedTitle: [String] = ["Создание трекера", "Новая привычка", "Новое нерегулярное событие"]
     private var cellTitle: [String] = ["Категория", "Расписание"]
     private var cellsNumber = 0
-    private var trackerName: String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,6 +56,7 @@ extension AddTrackerViewController {
         typeTitle.font = .systemFont(ofSize: 16, weight: .medium)
 
         textField = UITextField()
+        textField.delegate = self
         textField.backgroundColor = .ypBackgroundDay
         textField.layer.cornerRadius = 16
         textField.placeholder = "Введите название трекера"
@@ -74,6 +74,7 @@ extension AddTrackerViewController {
         saveButton.setTitle("Создать", for: .normal)
         saveButton.setTitleColor(.ypWhite, for: .normal)
         saveButton.backgroundColor = .ypGray
+        saveButton.isEnabled = false
 
         stackView = UIStackView(arrangedSubviews: [discardButton, saveButton])
         stackView.axis = .horizontal
@@ -149,6 +150,8 @@ extension AddTrackerViewController {
     }
 
     @objc private func actionButtonTapped(_ sender: UIButton) {
+        let trackerName = textField.text as? String ?? ""
+
         if sender == saveButton {
             let newTracker = Tracker(
                 id: UUID(),
@@ -159,9 +162,10 @@ extension AddTrackerViewController {
             )
             
             delegate?.didAddTracker(newTracker)
+            dismiss(animated: true, completion: nil)
+        } else {
+            dismiss(animated: true, completion: nil)
         }
-
-        dismiss(animated: true, completion: nil)
     }
 
     @objc private func buttonTapped(_ sender: UIButton) {
@@ -216,5 +220,28 @@ extension AddTrackerViewController: UITableViewDataSource {
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
 
         return cell
+    }
+}
+
+extension AddTrackerViewController: UITextFieldDelegate {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        return self.textLimit(existingText: textField.text,
+                              newText: string,
+                              limit: 38)
+    }
+
+    private func textLimit(existingText: String?,
+                           newText: String,
+                           limit: Int) -> Bool {
+        let text = existingText ?? ""
+        let isAtLimit = text.count + newText.count <= limit
+        return isAtLimit
+    }
+
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if let text = textField.text, !text.isEmpty {
+            saveButton.backgroundColor = .ypBlackDay
+            saveButton.isEnabled = true
+        }
     }
 }
