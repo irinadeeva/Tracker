@@ -239,6 +239,10 @@ extension AddTrackerViewController: UITextFieldDelegate {
     }
 
     func textFieldDidChangeSelection(_ textField: UITextField) {
+        if cellsNumber == 2 && selectedWeekdays.isEmpty {
+            return
+        }
+
         if let text = textField.text, !text.isEmpty {
             saveButton.backgroundColor = .ypBlackDay
             saveButton.isEnabled = true
@@ -252,6 +256,11 @@ extension AddTrackerViewController: ScheduleDelegate {
             if let weekday = WeekDay(rawValue: string) {
                 self.selectedWeekdays.append(weekday)
             }
+        }
+
+        if let text = textField.text, !text.isEmpty && !selectedWeekdays.isEmpty {
+            saveButton.backgroundColor = .ypBlackDay
+            saveButton.isEnabled = true
         }
     }
 }
