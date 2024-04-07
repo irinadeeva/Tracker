@@ -11,7 +11,7 @@ protocol AddTrackerDelegate: AnyObject {
     func didAddTracker(_ tracker: Tracker)
 }
 
-final class AddTrackerViewController: UIViewController{
+final class AddTrackerViewController: UIViewController {
     weak var delegate: AddTrackerDelegate?
 
     private var habitButton: UIButton!
