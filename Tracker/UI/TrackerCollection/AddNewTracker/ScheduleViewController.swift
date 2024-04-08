@@ -46,7 +46,7 @@ final class ScheduleViewController: UIViewController {
         button.setTitle("Готово", for: .normal)
         return button
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 

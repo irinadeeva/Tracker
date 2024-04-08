@@ -23,7 +23,7 @@ final class ColorCollectionViewController: UIViewController {
     private let params: GeometricParams = GeometricParams(cellCount: 6,
                                                           leftInset: 18,
                                                           rightInset: 0,
-                                                          cellSpacing: 6)
+                                                          cellSpacing: 5)
 
    let colorCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -33,7 +33,7 @@ final class ColorCollectionViewController: UIViewController {
 
        collectionView.isScrollEnabled = false
 
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(ColorCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         collectionView.register(
             SupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -73,13 +73,15 @@ extension ColorCollectionViewController: UICollectionViewDataSource {
     }
 
     func collectionView( _ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(
-            withReuseIdentifier: "cell",
-            for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "Cell",
+            for: indexPath) as? ColorCollectionViewCell else {
+                return UICollectionViewCell()
+            }
 
-        cell.backgroundColor = colors[indexPath.row]
-        cell.layer.cornerRadius = 8
-        cell.layer.masksToBounds = true
+        cell.colorView.backgroundColor = colors[indexPath.row]
+        cell.colorView.layer.cornerRadius = 8
+        cell.colorView.layer.masksToBounds = true
         return cell
     }
 
@@ -132,7 +134,7 @@ extension ColorCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return CGFloat(0)
+        return 12
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -140,21 +142,21 @@ extension ColorCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) 
-
-        guard let cell else {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell else {
             return
         }
-// change design here for selection
-        cell.layer.shadowRadius = .greatestFiniteMagnitude
-        cell.layer.cornerRadius = 16
+
+        guard let selectedColor = cell.colorView.backgroundColor else {
+            return
+        }
+
+
+        cell.layer.borderWidth = 3
+        cell.layer.borderColor = selectedColor.withAlphaComponent(0.3).cgColor
+        cell.layer.cornerRadius = 8
         cell.layer.masksToBounds = true
 
-        guard let color = cell.backgroundColor else {
-            return
-        }
-
-        delegate?.didColorSelected(color)
+        delegate?.didColorSelected(selectedColor)
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -164,7 +166,6 @@ extension ColorCollectionViewController: UICollectionViewDelegateFlowLayout {
             return
         }
 
-        // change design here for selection
-        cell.backgroundColor = nil
+        cell.layer.borderWidth = 0
     }
 }

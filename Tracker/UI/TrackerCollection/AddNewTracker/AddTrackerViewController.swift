@@ -29,8 +29,8 @@ final class AddTrackerViewController: UIViewController {
     private var cellTitle: [String] = ["Категория", "Расписание"]
     private var cellsNumber = 0
     private var selectedWeekdays: [WeekDay] = []
-    private var selectedEmoji = "🙂"
-    private var selectedColor: UIColor = .ypSelection1
+    private var selectedEmoji = ""
+    private var selectedColor: UIColor!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -154,14 +154,14 @@ extension AddTrackerViewController {
             emojiCollectionViewController.view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             emojiCollectionViewController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             emojiCollectionViewController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -16),
-            emojiCollectionViewController.view.heightAnchor.constraint(equalToConstant: 204),
+            emojiCollectionViewController.view.heightAnchor.constraint(equalToConstant: 220),
 
 
             colorCollectionViewController.view.topAnchor.constraint(equalTo: emojiCollectionViewController.view.bottomAnchor, constant: 16),
             colorCollectionViewController.view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             colorCollectionViewController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             colorCollectionViewController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -16),
-            colorCollectionViewController.view.heightAnchor.constraint(equalToConstant: 204),
+            colorCollectionViewController.view.heightAnchor.constraint(equalToConstant: 220),
 
             stackView.heightAnchor.constraint(equalToConstant: 60),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
@@ -207,6 +207,7 @@ extension AddTrackerViewController {
             )
 
             delegate?.didAddTracker(newTracker)
+
             dismiss(animated: true, completion: nil)
         } else {
             dismiss(animated: true, completion: nil)
@@ -235,6 +236,22 @@ extension AddTrackerViewController {
         tableView.setNeedsUpdateConstraints()
         tableView.layoutIfNeeded()
         tableViewHeightConstraint.constant = CGFloat(75 * cellsNumber)
+    }
+
+    private func checkConditions() {
+        let flag: Bool
+        let text = textField.text ?? ""
+
+        if cellsNumber == 2 {
+            flag = !text.isEmpty && !selectedWeekdays.isEmpty && !selectedEmoji.isEmpty && selectedColor != nil
+        } else {
+            flag = !text.isEmpty && !selectedEmoji.isEmpty && selectedColor != nil
+        }
+
+        if flag {
+            saveButton.backgroundColor = .ypBlackDay
+            saveButton.isEnabled = true
+        }
     }
 }
 
@@ -290,14 +307,7 @@ extension AddTrackerViewController: UITextFieldDelegate {
     }
 
     func textFieldDidChangeSelection(_ textField: UITextField) {
-        if cellsNumber == 2 && selectedWeekdays.isEmpty {
-            return
-        }
-
-        if let text = textField.text, !text.isEmpty {
-            saveButton.backgroundColor = .ypBlackDay
-            saveButton.isEnabled = true
-        }
+        checkConditions()
     }
 }
 
@@ -309,21 +319,22 @@ extension AddTrackerViewController: ScheduleDelegate {
             }
         }
 
-        if let text = textField.text, !text.isEmpty && !selectedWeekdays.isEmpty {
-            saveButton.backgroundColor = .ypBlackDay
-            saveButton.isEnabled = true
-        }
+        checkConditions()
     }
 }
 
 extension AddTrackerViewController: EmojiMixesDelegate {
     func didEmojiSelected(_ emoji: String) {
         selectedEmoji = emoji
+
+        checkConditions()
     }
 }
 
 extension AddTrackerViewController: ColorDelegate {
     func didColorSelected(_ color: UIColor) {
         selectedColor = color
+        
+        checkConditions()
     }
 }
