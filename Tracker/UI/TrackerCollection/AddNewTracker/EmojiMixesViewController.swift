@@ -18,6 +18,8 @@ final class EmojiMixesViewController: UIViewController {
             collectionViewLayout: UICollectionViewFlowLayout()
         )
 
+        collectionView.isScrollEnabled = false
+
         collectionView.register(EmojiMixCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
         collectionView.register(
             SupplementaryView.self,

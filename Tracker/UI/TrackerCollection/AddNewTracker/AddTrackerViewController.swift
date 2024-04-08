@@ -57,6 +57,7 @@ extension AddTrackerViewController {
         tableView.isHidden = true
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
+        tableView.isScrollEnabled = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.rowHeight = UITableView.automaticDimension
         tableViewHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
@@ -160,7 +161,7 @@ extension AddTrackerViewController {
             stackView.heightAnchor.constraint(equalToConstant: 60),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
-            stackView.topAnchor.constraint(equalTo: colorCollectionViewController.view.bottomAnchor, constant: 16),
+            stackView.topAnchor.constraint(equalTo: colorCollectionViewController.view.bottomAnchor, constant: 34),
             stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0)
         ])
     }

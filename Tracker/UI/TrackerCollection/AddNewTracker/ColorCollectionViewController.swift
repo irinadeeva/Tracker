@@ -8,10 +8,10 @@
 import UIKit
 
 final class ColorCollectionViewController: UIViewController {
-    private let emojies = [
-        "g", "😻", "🌺", "🐶", "❤️", "😱",
-        "😇", "😡", "🥶", "🤔", "🙌", "🍔",
-        "🥦", "🏓", "🥇", "🎸",  "🏝",  "😪"
+    private let colors: [UIColor] = [
+        .ypSelection1, .ypSelection2, .ypSelection3, .ypSelection4, .ypSelection5, .ypSelection6,
+        .ypSelection7, .ypSelection8, .ypSelection9, .ypSelection10, .ypSelection11, .ypSelection12,
+        .ypSelection13, .ypSelection14, .ypSelection15, .ypSelection16, .ypSelection17,  .ypSelection18
     ]
 
     private let params: GeometricParams = GeometricParams(cellCount: 6,
@@ -25,7 +25,9 @@ final class ColorCollectionViewController: UIViewController {
             collectionViewLayout: UICollectionViewFlowLayout()
         )
 
-        collectionView.register(EmojiMixCollectionViewCell.self, forCellWithReuseIdentifier: "Cell")
+       collectionView.isScrollEnabled = false
+
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.register(
             SupplementaryView.self,
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
@@ -59,14 +61,17 @@ final class ColorCollectionViewController: UIViewController {
 
 extension ColorCollectionViewController: UICollectionViewDataSource {
     func collectionView( _ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return emojies.count
+        return colors.count
     }
 
     func collectionView( _ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? EmojiMixCollectionViewCell else { return UICollectionViewCell() }
+        let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "cell",
+            for: indexPath)
 
-        cell.titleLabel.text = emojies[indexPath.row]
-        cell.backgroundColor = .ypSelection1
+        cell.backgroundColor = colors[indexPath.row]
+        cell.layer.cornerRadius = 16
+        cell.layer.masksToBounds = true
         return cell
     }
 
