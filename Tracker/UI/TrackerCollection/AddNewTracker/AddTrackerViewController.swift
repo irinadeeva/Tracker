@@ -21,6 +21,9 @@ final class AddTrackerViewController: UIViewController {
     private var textField: UITextField!
     private var saveButton: UIButton!
     private var stackView: UIStackView!
+    private var emojiCollectionViewController: UIViewController!
+    private var tableViewHeightConstraint: NSLayoutConstraint!
+    private var scrollView: UIScrollView!
     private var selectedTitle: [String] = ["Создание трекера", "Новая привычка", "Новое нерегулярное событие"]
     private var cellTitle: [String] = ["Категория", "Расписание"]
     private var cellsNumber = 0
@@ -43,6 +46,15 @@ extension AddTrackerViewController {
         eventButton = setupButtonUI()
         eventButton.setTitle("Нерегулярное событие", for: .normal)
 
+        scrollView = UIScrollView()
+        scrollView.isScrollEnabled = true
+        scrollView.isHidden = true
+
+        [habitButton, eventButton, scrollView].forEach {
+            view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+
         tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
@@ -50,6 +62,9 @@ extension AddTrackerViewController {
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.rowHeight = UITableView.automaticDimension
+        tableViewHeightConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
+        tableViewHeightConstraint.isActive = true
 
         typeTitle = UILabel()
         typeTitle.text = selectedTitle[0]
@@ -83,15 +98,13 @@ extension AddTrackerViewController {
         stackView.spacing = 8
         stackView.isHidden = true
 
-        view.addSubview(habitButton)
-        view.addSubview(eventButton)
-        view.addSubview(typeTitle)
-        view.addSubview(textField)
-        view.addSubview(tableView)
-        view.addSubview(stackView)
+        emojiCollectionViewController = EmojiMixesViewController()
+        addChild(emojiCollectionViewController)
+        emojiCollectionViewController.didMove(toParent: self)
+        emojiCollectionViewController.view.isHidden = true
 
-        [habitButton, eventButton, typeTitle, textField, tableView, stackView].forEach{
-            view.addSubview($0)
+        [typeTitle, textField, tableView, emojiCollectionViewController.view, stackView].forEach{
+            scrollView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
 
@@ -107,18 +120,29 @@ extension AddTrackerViewController {
             eventButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             eventButton.topAnchor.constraint(equalTo: habitButton.bottomAnchor, constant: 16),
 
-            typeTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 13),
-            typeTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
+            typeTitle.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 13),
+            typeTitle.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
 
             textField.heightAnchor.constraint(equalToConstant: 75),
-            textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            textField.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            textField.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
             textField.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24),
 
             tableView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.bottomAnchor.constraint(equalTo: stackView.topAnchor),
+            tableView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            tableView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -16),
+            tableView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
+
+            emojiCollectionViewController.view.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
+            emojiCollectionViewController.view.bottomAnchor.constraint(equalTo: stackView.topAnchor),
+            emojiCollectionViewController.view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            emojiCollectionViewController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            emojiCollectionViewController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -16),
 
             stackView.heightAnchor.constraint(equalToConstant: 60),
             stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -175,6 +199,8 @@ extension AddTrackerViewController {
         textField.isHidden = false
         tableView.isHidden = false
         stackView.isHidden = false
+        emojiCollectionViewController.view.isHidden = false
+        scrollView.isHidden = false
 
         if sender == habitButton {
             typeTitle.text = selectedTitle[1]
@@ -185,6 +211,9 @@ extension AddTrackerViewController {
         }
 
         tableView.reloadData()
+        tableView.setNeedsUpdateConstraints()
+        tableView.layoutIfNeeded()
+        tableViewHeightConstraint.constant = CGFloat(75 * cellsNumber)
     }
 }
 
