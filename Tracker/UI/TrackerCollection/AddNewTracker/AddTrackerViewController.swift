@@ -22,6 +22,7 @@ final class AddTrackerViewController: UIViewController {
     private var saveButton: UIButton!
     private var stackView: UIStackView!
     private var emojiCollectionViewController: UIViewController!
+    private var colorCollectionViewController: UIViewController!
     private var tableViewHeightConstraint: NSLayoutConstraint!
     private var scrollView: UIScrollView!
     private var selectedTitle: [String] = ["Создание трекера", "Новая привычка", "Новое нерегулярное событие"]
@@ -49,11 +50,6 @@ extension AddTrackerViewController {
         scrollView = UIScrollView()
         scrollView.isScrollEnabled = true
         scrollView.isHidden = true
-
-        [habitButton, eventButton, scrollView].forEach {
-            view.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
-        }
 
         tableView = UITableView()
         tableView.delegate = self
@@ -103,7 +99,17 @@ extension AddTrackerViewController {
         emojiCollectionViewController.didMove(toParent: self)
         emojiCollectionViewController.view.isHidden = true
 
-        [typeTitle, textField, tableView, emojiCollectionViewController.view, stackView].forEach{
+        colorCollectionViewController = ColorCollectionViewController()
+        addChild(colorCollectionViewController)
+        colorCollectionViewController.didMove(toParent: self)
+        colorCollectionViewController.view.isHidden = true
+
+        [habitButton, eventButton, scrollView].forEach {
+            view.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
+        }
+
+        [typeTitle, textField, tableView, emojiCollectionViewController.view, colorCollectionViewController.view,  stackView].forEach{
             scrollView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -139,15 +145,23 @@ extension AddTrackerViewController {
             tableView.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -32),
 
             emojiCollectionViewController.view.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 32),
-            emojiCollectionViewController.view.bottomAnchor.constraint(equalTo: stackView.topAnchor),
             emojiCollectionViewController.view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             emojiCollectionViewController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             emojiCollectionViewController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -16),
+            emojiCollectionViewController.view.heightAnchor.constraint(equalToConstant: 204),
+
+
+            colorCollectionViewController.view.topAnchor.constraint(equalTo: emojiCollectionViewController.view.bottomAnchor, constant: 16),
+            colorCollectionViewController.view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            colorCollectionViewController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            colorCollectionViewController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -16),
+            colorCollectionViewController.view.heightAnchor.constraint(equalToConstant: 204),
 
             stackView.heightAnchor.constraint(equalToConstant: 60),
-            stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -34)
+            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
+            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+            stackView.topAnchor.constraint(equalTo: colorCollectionViewController.view.bottomAnchor, constant: 16),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0)
         ])
     }
 
@@ -200,6 +214,7 @@ extension AddTrackerViewController {
         tableView.isHidden = false
         stackView.isHidden = false
         emojiCollectionViewController.view.isHidden = false
+        colorCollectionViewController.view.isHidden = false
         scrollView.isHidden = false
 
         if sender == habitButton {
