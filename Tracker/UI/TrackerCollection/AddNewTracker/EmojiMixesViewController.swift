@@ -1,6 +1,12 @@
 import UIKit
 
+protocol EmojiMixesDelegate: AnyObject {
+    func didEmojiSelected(_ emoji: String)
+}
+
 final class EmojiMixesViewController: UIViewController {
+    weak var delegate: EmojiMixesDelegate?
+
     private let emojies = [
         "🙂", "😻", "🌺", "🐶", "❤️", "😱",
         "😇", "😡", "🥶", "🤔", "🙌", "🍔",
@@ -12,7 +18,7 @@ final class EmojiMixesViewController: UIViewController {
                                                           rightInset: 0,
                                                           cellSpacing: 5)
 
-   let emojiCollectionView: UICollectionView = {
+    let emojiCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
@@ -26,6 +32,8 @@ final class EmojiMixesViewController: UIViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: SupplementaryView.supplementaryIdentifier
         )
+
+        collectionView.allowsMultipleSelection = false
 
         return collectionView
     }()
@@ -118,5 +126,32 @@ extension EmojiMixesViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return params.cellSpacing
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) as? EmojiMixCollectionViewCell
+
+        guard let cell else {
+            return
+        }
+
+        cell.backgroundColor = .ypLightGay
+        cell.layer.cornerRadius = 16
+        cell.layer.masksToBounds = true
+        guard let emoji = cell.titleLabel.text else {
+            return
+        }
+        
+        delegate?.didEmojiSelected(emoji)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell =  collectionView.cellForItem(at: indexPath) as? EmojiMixCollectionViewCell
+
+        guard let cell else {
+            return
+        }
+
+        cell.backgroundColor = nil
     }
 }

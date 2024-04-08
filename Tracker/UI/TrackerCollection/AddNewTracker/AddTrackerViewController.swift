@@ -21,14 +21,16 @@ final class AddTrackerViewController: UIViewController {
     private var textField: UITextField!
     private var saveButton: UIButton!
     private var stackView: UIStackView!
-    private var emojiCollectionViewController: UIViewController!
-    private var colorCollectionViewController: UIViewController!
+    private var emojiCollectionViewController = EmojiMixesViewController()
+    private var colorCollectionViewController = ColorCollectionViewController()
     private var tableViewHeightConstraint: NSLayoutConstraint!
     private var scrollView: UIScrollView!
     private var selectedTitle: [String] = ["Создание трекера", "Новая привычка", "Новое нерегулярное событие"]
     private var cellTitle: [String] = ["Категория", "Расписание"]
     private var cellsNumber = 0
     private var selectedWeekdays: [WeekDay] = []
+    private var selectedEmoji = "🙂"
+    private var selectedColor: UIColor = .ypSelection1
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,6 +75,9 @@ extension AddTrackerViewController {
         textField.backgroundColor = .ypBackgroundDay
         textField.layer.cornerRadius = 16
         textField.placeholder = "Введите название трекера"
+        let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
+        textField.leftView = leftView
+        textField.leftViewMode = .always
         textField.textAlignment = .left
         textField.isHidden = true
 
@@ -95,12 +100,12 @@ extension AddTrackerViewController {
         stackView.spacing = 8
         stackView.isHidden = true
 
-        emojiCollectionViewController = EmojiMixesViewController()
+        emojiCollectionViewController.delegate = self
         addChild(emojiCollectionViewController)
         emojiCollectionViewController.didMove(toParent: self)
         emojiCollectionViewController.view.isHidden = true
 
-        colorCollectionViewController = ColorCollectionViewController()
+        colorCollectionViewController.delegate = self
         addChild(colorCollectionViewController)
         colorCollectionViewController.didMove(toParent: self)
         colorCollectionViewController.view.isHidden = true
@@ -196,8 +201,8 @@ extension AddTrackerViewController {
             let newTracker = Tracker(
                 id: UUID(),
                 name: trackerName,
-                color: .blue,
-                emoji: "😊",
+                color: selectedColor,
+                emoji: selectedEmoji,
                 timetable: selectedWeekdays
             )
 
@@ -263,6 +268,7 @@ extension AddTrackerViewController: UITableViewDataSource {
         cell.backgroundColor = .ypBackgroundDay
         cell.textLabel?.textColor = .ypBlackDay
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        cell.accessoryType = .disclosureIndicator
 
         return cell
     }
@@ -307,5 +313,17 @@ extension AddTrackerViewController: ScheduleDelegate {
             saveButton.backgroundColor = .ypBlackDay
             saveButton.isEnabled = true
         }
+    }
+}
+
+extension AddTrackerViewController: EmojiMixesDelegate {
+    func didEmojiSelected(_ emoji: String) {
+        selectedEmoji = emoji
+    }
+}
+
+extension AddTrackerViewController: ColorDelegate {
+    func didColorSelected(_ color: UIColor) {
+        selectedColor = color
     }
 }

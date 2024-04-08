@@ -7,7 +7,13 @@
 
 import UIKit
 
+protocol ColorDelegate: AnyObject {
+    func didColorSelected(_ color: UIColor)
+}
+
 final class ColorCollectionViewController: UIViewController {
+    weak var delegate: ColorDelegate?
+
     private let colors: [UIColor] = [
         .ypSelection1, .ypSelection2, .ypSelection3, .ypSelection4, .ypSelection5, .ypSelection6,
         .ypSelection7, .ypSelection8, .ypSelection9, .ypSelection10, .ypSelection11, .ypSelection12,
@@ -17,7 +23,7 @@ final class ColorCollectionViewController: UIViewController {
     private let params: GeometricParams = GeometricParams(cellCount: 6,
                                                           leftInset: 18,
                                                           rightInset: 0,
-                                                          cellSpacing: 5)
+                                                          cellSpacing: 6)
 
    let colorCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
@@ -33,6 +39,8 @@ final class ColorCollectionViewController: UIViewController {
             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
             withReuseIdentifier: SupplementaryView.supplementaryIdentifier
         )
+
+       collectionView.allowsMultipleSelection = false
 
         return collectionView
     }()
@@ -70,7 +78,7 @@ extension ColorCollectionViewController: UICollectionViewDataSource {
             for: indexPath)
 
         cell.backgroundColor = colors[indexPath.row]
-        cell.layer.cornerRadius = 16
+        cell.layer.cornerRadius = 8
         cell.layer.masksToBounds = true
         return cell
     }
@@ -120,7 +128,7 @@ extension ColorCollectionViewController: UICollectionViewDelegateFlowLayout {
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: params.leftInset, bottom: 0, right: params.rightInset)
+        return UIEdgeInsets(top: 6, left: params.leftInset, bottom: 6, right: params.rightInset)
     }
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
@@ -129,5 +137,34 @@ extension ColorCollectionViewController: UICollectionViewDelegateFlowLayout {
 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return params.cellSpacing
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let cell = collectionView.cellForItem(at: indexPath) 
+
+        guard let cell else {
+            return
+        }
+// change design here for selection
+        cell.layer.shadowRadius = .greatestFiniteMagnitude
+        cell.layer.cornerRadius = 16
+        cell.layer.masksToBounds = true
+
+        guard let color = cell.backgroundColor else {
+            return
+        }
+
+        delegate?.didColorSelected(color)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        let cell =  collectionView.cellForItem(at: indexPath)
+
+        guard let cell else {
+            return
+        }
+
+        // change design here for selection
+        cell.backgroundColor = nil
     }
 }
