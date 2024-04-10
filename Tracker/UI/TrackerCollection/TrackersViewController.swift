@@ -8,17 +8,18 @@
 import UIKit
 
 final class TrackersViewController: UIViewController {
+    private let trackerCategoryStore = TrackerCategoryStore()
+    private var trackerRecordStore = TrackerRecordStore()
+
     private var trackerCollection: UICollectionView!
     private var datePicker: UIDatePicker!
     private var searchController: UISearchController!
 
-    private var categories: [TrackerCategory] =
-//    []
-    [trackersHabits, trackersEvents]
+    private var categories: [TrackerCategory] = []
+    private var filteredCategories: [TrackerCategory] = []
+
     private var completedTrackers: Set<TrackerRecord> = []
 
-    private var filteredCategories: [TrackerCategory] = []
-    
     private var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
     }
@@ -27,17 +28,22 @@ final class TrackersViewController: UIViewController {
         searchController.isActive && !isSearchBarEmpty
     }
 
-    private var currentDate: Date = Date()
+    private var currentDate: Date = Date().startOfDay
 
     private let params = GeometricParams(cellCount: 2,
-                                 leftInset: 16,
-                                 rightInset: 16,
-                                 cellSpacing: 9)
+                                         leftInset: 16,
+                                         rightInset: 16,
+                                         cellSpacing: 9)
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
+
+        categories = trackerCategoryStore.categories
+        trackerCategoryStore.delegate = self
+
+        completedTrackers = trackerRecordStore.trackerRecords
 
         setupLayout()
 
@@ -195,7 +201,10 @@ extension TrackersViewController: UICollectionViewDataSource {
         }.count
 
         let flag = completedTrackers.filter {
-            $0.completedTrackerId == tracker.id && $0.completedTrackerDate == currentDate
+            let trackerDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: $0.completedTrackerDate)
+            let currentDateComponents = Calendar.current.dateComponents([.year, .month, .day], from: currentDate)
+
+            return $0.completedTrackerId == tracker.id && trackerDateComponents == currentDateComponents
         }.isEmpty
 
         if flag {
@@ -336,30 +345,70 @@ extension UICollectionView {
 
 extension TrackersViewController: TrackerCellButtonDelegate {
     func didTapButtonInCell(_ cell: TrackerCell) {
-        print("before \(completedTrackers)")
 
-        if Date() >= currentDate {
+        if Date().startOfDay >= currentDate {
             guard let indexPath = trackerCollection.indexPath(for: cell) else { return }
 
             let tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
             let record = TrackerRecord(completedTrackerId: tracker.id, completedTrackerDate: currentDate)
 
-            if completedTrackers.contains(record) {
-                completedTrackers.remove(record)
-            } else {
-                completedTrackers.insert(record)
-            }
+            let flag = completedTrackers.filter {
+                return $0.completedTrackerId == tracker.id && $0.completedTrackerDate == currentDate
+            }.isEmpty
 
-            print("after \(completedTrackers)")
-            trackerCollection.reloadData()
+            if flag {
+                do {
+                    completedTrackers.insert(record)
+                    try trackerRecordStore.addNewTrackerRecord(record)
+                } catch let error as NSError {
+                    print("Ошибка: \(error), \(error.userInfo)")
+                }
+            } else {
+                do {
+                    completedTrackers.remove(record)
+                    try trackerRecordStore.deleteTrackerRecord(record)
+                } catch let error as NSError {
+                    print("Ошибка: \(error), \(error.userInfo)")
+                }
+            }
         }
+
+        
+        trackerCollection.reloadData()
     }
 }
 
 extension TrackersViewController: AddTrackerDelegate {
     func didAddTracker(_ tracker: Tracker) {
-        let trackerCategory = TrackerCategory(title: "Новая категория", trackers: [tracker])
-        categories.append(trackerCategory)
+        let categoryName = "Новая категория"
+        let newCategoryIndex = categories.firstIndex { $0.title ==  categoryName }
+
+        if let newCategoryIndex = newCategoryIndex {
+            do {
+                try trackerCategoryStore.addNewTrackerToTrackerCategory(tracker, with: categoryName)
+            } catch let error as NSError {
+                print("Ошибка: \(error), \(error.userInfo)")
+            }
+        } else {
+            // create a new category with a new Name
+            do {
+                try trackerCategoryStore.addNewTrackerCategory(TrackerCategory(title: "", trackers: []))
+            } catch let error as NSError {
+                print("Ошибка: \(error), \(error.userInfo)")
+            }
+        }
+    }
+}
+
+extension TrackersViewController: TrackerCategoryStoreDelegate {
+    func storeCategory() {
+        categories = trackerCategoryStore.categories
         trackerCollection.reloadData()
+    }
+}
+
+extension Date {
+    var startOfDay: Date {
+        return Calendar.current.startOfDay(for: self)
     }
 }

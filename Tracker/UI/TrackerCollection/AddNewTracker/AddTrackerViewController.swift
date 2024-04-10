@@ -230,6 +230,8 @@ extension AddTrackerViewController {
         } else {
             typeTitle.text = selectedTitle[2]
             cellsNumber = 1
+            let dayNumber = Calendar.current.component(.weekday, from: Date())
+            selectedWeekdays = [WeekDay.allCases[dayNumber - 1]]
         }
 
         tableView.reloadData()

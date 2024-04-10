@@ -136,7 +136,6 @@ extension ScheduleViewController: WeekdayTableViewCellDelegate {
             selectedWeekdays.remove(at: index)
             }
         }
-        print(selectedWeekdays)
     }
 }
 
