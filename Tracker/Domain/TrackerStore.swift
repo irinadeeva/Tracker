@@ -17,32 +17,31 @@ enum TrackerStoreError: Error {
 
 final class TrackerStore {
     private let context: NSManagedObjectContext
-    private var fetchedResultsController: NSFetchedResultsController<TrackerCoreData>!
-
+    
     convenience init() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             self.init()
             return
         }
-
+        
         let context = appDelegate.context
         self.init(context: context)
     }
-
+    
     init(context: NSManagedObjectContext) {
         self.context = context
     }
-
+    
     func addNewTracker(_ tracker: Tracker, with category: TrackerCategoryCoreData) throws {
         let trackerCoreData = TrackerCoreData(context: context)
-
+        
         trackerCoreData.id = tracker.id
         trackerCoreData.name = tracker.name
         trackerCoreData.color = tracker.color as NSObject
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.timetable = tracker.timetable as NSObject
         trackerCoreData.category = category
-
+        
         do {
             try context.save()
         } catch let error as NSError {
@@ -50,13 +49,13 @@ final class TrackerStore {
             context.rollback()
         }
     }
-
+    
     func fetchTrackers() throws -> [Tracker] {
         let fetchRequest = TrackerCoreData.fetchRequest()
         let trackerFromCoreData = try context.fetch(fetchRequest)
         return try trackerFromCoreData.map { try self.tracker(from: $0) }
     }
-
+    
     func tracker(from trackerCoreData: TrackerCoreData) throws -> Tracker {
         guard let id = trackerCoreData.id else {
             throw TrackerStoreError.decodingErrorInvalidId
@@ -73,17 +72,17 @@ final class TrackerStore {
         guard let timetable = trackerCoreData.timetable as? [WeekDay] else {
             throw TrackerStoreError.decodingErrorInvalidId
         }
-
+        
         return Tracker(id: id, name: name, color: color, emoji: emoji, timetable: timetable)
     }
-
+    
     func predicateFetchById(_ trackerId: UUID) -> TrackerCoreData? {
         let request = TrackerCoreData.fetchRequest()
         request.returnsObjectsAsFaults = false
-
+        
         request.predicate = NSPredicate(format: "id == %@", trackerId.uuidString)
         request.fetchLimit = 1
-
+        
         do {
             let results = try context.fetch(request)
             return results.first

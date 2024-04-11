@@ -13,11 +13,11 @@ enum WeekDay: String, CaseIterable, Codable {
     case friday = "Пятница"
     case saturday = "Суббота"
     case sunday = "Воскресенье"
-
+    
     static var allCases: [WeekDay] {
         return [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     }
-
+    
     static var allCasesRawValue: [String] {
         return [
             WeekDay.monday.rawValue,
