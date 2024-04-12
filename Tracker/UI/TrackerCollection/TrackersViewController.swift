@@ -363,22 +363,13 @@ extension TrackersViewController: TrackerCellButtonDelegate {
             }.isEmpty
             
             if flag {
-                do {
-                    completedTrackers.insert(record)
-                    try trackerRecordStore.addNewTrackerRecord(record)
-                } catch let error as NSError {
-                    print("Ошибка: \(error), \(error.userInfo)")
-                }
+                completedTrackers.insert(record)
+                try? trackerRecordStore.addNewTrackerRecord(record)
             } else {
-                do {
-                    completedTrackers.remove(record)
-                    try trackerRecordStore.deleteTrackerRecord(record)
-                } catch let error as NSError {
-                    print("Ошибка: \(error), \(error.userInfo)")
-                }
+                completedTrackers.remove(record)
+                try? trackerRecordStore.deleteTrackerRecord(record)
             }
         }
-        
         
         trackerCollection.reloadData()
     }
@@ -389,19 +380,10 @@ extension TrackersViewController: AddTrackerDelegate {
         let categoryName = "Новая категория"
         let newCategoryIndex = categories.firstIndex { $0.title ==  categoryName }
         
-        if let newCategoryIndex = newCategoryIndex {
-            do {
-                try trackerCategoryStore.addNewTrackerToTrackerCategory(tracker, with: categoryName)
-            } catch let error as NSError {
-                print("Ошибка: \(error), \(error.userInfo)")
-            }
+        if let newCategoryIndex {
+            try? trackerCategoryStore.addNewTrackerToTrackerCategory(tracker, with: categoryName)
         } else {
-            // create a new category with a new Name
-            do {
-                try trackerCategoryStore.addNewTrackerCategory(TrackerCategory(title: "", trackers: []))
-            } catch let error as NSError {
-                print("Ошибка: \(error), \(error.userInfo)")
-            }
+            try? trackerCategoryStore.addNewTrackerCategory(TrackerCategory(title: "", trackers: []))
         }
     }
 }

@@ -310,6 +310,11 @@ extension AddTrackerViewController: UITextFieldDelegate {
     func textFieldDidChangeSelection(_ textField: UITextField) {
         checkConditions()
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
 
 extension AddTrackerViewController: ScheduleDelegate {

@@ -72,8 +72,7 @@ final class TrackerCategoryStore: NSObject {
         
         do {
             try context.save()
-        } catch let error as NSError {
-            print("Ошибка при сохранении: \(error), \(error.userInfo)")
+        } catch {
             context.rollback()
         }
     }
@@ -120,7 +119,6 @@ final class TrackerCategoryStore: NSObject {
             let results = try context.fetch(request)
             return results.first
         } catch {
-            print("Error fetching data: \(error)")
             return nil
         }
     }

@@ -68,10 +68,8 @@ final class TrackerRecordStore: NSObject {
             trackerRecordCoreData.completedTracker = trackerCoreData
             
             do {
-                print(trackerRecordCoreData)
                 try context.save()
-            } catch let error as NSError {
-                print("Ошибка при сохранении: \(error), \(error.userInfo)")
+            } catch {
                 context.rollback()
             }
         }
@@ -84,36 +82,29 @@ final class TrackerRecordStore: NSObject {
             trackerRecord.completedTrackerDate as CVarArg
         )
         
-        do {
-            let records = try context.fetch(fetchRequest)
-            for record in records {
-                if record.completedTracker?.id == trackerRecord.completedTrackerId {
-                    context.delete(record)
-                }
+        let records = try context.fetch(fetchRequest)
+        for record in records {
+            if record.completedTracker?.id == trackerRecord.completedTrackerId {
+                context.delete(record)
             }
-            try context.save()
-        } catch {
-            print("Failed to delete tracker record: \(error.localizedDescription)")
         }
+        
+        try? context.save()
     }
     
     func deleteAllTrackerRecords() {
         let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
         
-        do {
-            let results = try context.fetch(fetchRequest)
+        if let results = try? context.fetch(fetchRequest) {
             for record in results {
                 context.delete(record)
             }
             
             do {
                 try context.save()
-            } catch let error as NSError {
-                print("Ошибка при сохранении: \(error), \(error.userInfo)")
+            } catch {
                 context.rollback()
             }
-        } catch {
-            print("Ошибка при выполнении запроса: \(error.localizedDescription)")
         }
     }
 }

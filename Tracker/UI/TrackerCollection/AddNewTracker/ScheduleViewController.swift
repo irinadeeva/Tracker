@@ -29,9 +29,13 @@ final class ScheduleViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.isScrollEnabled = false
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
         tableView.register(WeekdayTableViewCell.self, forCellReuseIdentifier: "weekdayCell")
+        tableView.rowHeight = UITableView.automaticDimension
+        //        let tableViewHeightConstraint: NSLayoutConstraint = tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * weekdays.count - 1))
+        //        tableViewHeightConstraint.isActive = true
         return tableView
     }()
     
@@ -68,6 +72,7 @@ final class ScheduleViewController: UIViewController {
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableView.bottomAnchor.constraint(equalTo: doneButton.topAnchor),
             
+            doneButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 47),
             doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             doneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
@@ -102,6 +107,7 @@ extension ScheduleViewController: UITableViewDataSource {
         
         return cell
     }
+    
 }
 
 extension ScheduleViewController: UITableViewDelegate {
@@ -158,6 +164,8 @@ class WeekdayTableViewCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+        selectionStyle = .none
         
         addSubview(weekdayLabel)
         addSubview(weekdaySwitch)
