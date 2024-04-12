@@ -121,7 +121,7 @@ extension TrackersViewController {
     
     @objc
     private func addTracker() {
-        let addTrackerViewController = AddTrackerViewController()
+        let addTrackerViewController = ChoiceTrackerViewController()
         addTrackerViewController.delegate = self
         addTrackerViewController.modalPresentationStyle = .automatic
         present(addTrackerViewController, animated: true, completion: nil)
@@ -375,7 +375,7 @@ extension TrackersViewController: TrackerCellButtonDelegate {
     }
 }
 
-extension TrackersViewController: AddTrackerDelegate {
+extension TrackersViewController: ChoiceTrackerDelegate {
     func didAddTracker(_ tracker: Tracker) {
         let categoryName = "Новая категория"
         let newCategoryIndex = categories.firstIndex { $0.title ==  categoryName }
