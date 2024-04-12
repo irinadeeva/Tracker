@@ -19,6 +19,14 @@ protocol TrackerCategoryStoreDelegate: AnyObject {
 }
 
 final class TrackerCategoryStore: NSObject {
+    var categories: [TrackerCategory] {
+        guard
+            let objects = self.fetchedResultsController.fetchedObjects,
+            let categories = try? objects.map({ try self.trackerCategory(from: $0) })
+        else { return [] }
+        return categories
+    }
+    
     weak var delegate: TrackerCategoryStoreDelegate?
     
     private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>
@@ -55,14 +63,6 @@ final class TrackerCategoryStore: NSObject {
         controller.delegate = self
         
         try? controller.performFetch()
-    }
-    
-    var categories: [TrackerCategory] {
-        guard
-            let objects = self.fetchedResultsController.fetchedObjects,
-            let categories = try? objects.map({ try self.trackerCategory(from: $0) })
-        else { return [] }
-        return categories
     }
     
     func addNewTrackerCategory(_ trackerCategory: TrackerCategory) throws {

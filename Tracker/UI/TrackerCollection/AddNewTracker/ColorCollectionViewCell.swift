@@ -18,6 +18,7 @@ final class ColorCollectionViewCell: UICollectionViewCell {
         
         contentView.addSubview(colorView)
     }
+    
     override func layoutSubviews() {
         super.layoutSubviews()
         
