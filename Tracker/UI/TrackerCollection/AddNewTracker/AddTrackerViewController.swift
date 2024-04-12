@@ -13,7 +13,7 @@ protocol AddTrackerDelegate: AnyObject {
 
 final class AddTrackerViewController: UIViewController {
     weak var delegate: AddTrackerDelegate?
-
+    
     private var tableView: UITableView = UITableView()
     private var typeTitle: UILabel = UILabel()
     private var textField: UITextField = UITextField()
@@ -28,7 +28,7 @@ final class AddTrackerViewController: UIViewController {
     private var selectedWeekdays: [WeekDay] = []
     private var selectedEmoji = ""
     private var selectedColor: UIColor = UIColor()
-
+    
     init(cellsNumber: Int) {
         self.cellsNumber = cellsNumber
         super.init(nibName: nil, bundle: nil)
@@ -48,9 +48,9 @@ final class AddTrackerViewController: UIViewController {
 extension AddTrackerViewController {
     private func setupUI() {
         view.backgroundColor = .ypWhite
-
+        
         scrollView.isScrollEnabled = true
-
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.layer.cornerRadius = 16
@@ -67,10 +67,10 @@ extension AddTrackerViewController {
         } else {
             typeTitle.text = selectedTitle[1]
         }
-
+        
         typeTitle.textColor = .ypBlackDay
         typeTitle.font = .systemFont(ofSize: 16, weight: .medium)
-
+        
         textField.delegate = self
         textField.backgroundColor = .ypBackgroundDay
         textField.layer.cornerRadius = 16
@@ -164,7 +164,7 @@ extension AddTrackerViewController {
         
         return button
     }
-
+    
     @objc private func actionButtonTapped(_ sender: UIButton) {
         let trackerName = textField.text as? String ?? ""
         
@@ -183,13 +183,11 @@ extension AddTrackerViewController {
             )
             
             delegate?.didAddTracker(newTracker)
-            
-//            dismiss(animated: true, completion: nil)
         } else {
             dismiss(animated: true, completion: nil)
         }
     }
-
+    
     private func checkConditions() {
         let flag: Bool
         let text = textField.text ?? ""
