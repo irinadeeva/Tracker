@@ -34,8 +34,7 @@ final class ScheduleViewController: UIViewController {
         tableView.layer.masksToBounds = true
         tableView.register(WeekdayTableViewCell.self, forCellReuseIdentifier: "weekdayCell")
         tableView.rowHeight = UITableView.automaticDimension
-        //        let tableViewHeightConstraint: NSLayoutConstraint = tableView.heightAnchor.constraint(equalToConstant: CGFloat(75 * weekdays.count - 1))
-        //        tableViewHeightConstraint.isActive = true
+        tableView.separatorStyle = .none
         return tableView
     }()
 
@@ -70,7 +69,7 @@ final class ScheduleViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.bottomAnchor.constraint(equalTo: doneButton.topAnchor),
+            tableView.heightAnchor.constraint(equalToConstant: 75 * 7),
 
             doneButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 47),
             doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -104,6 +103,10 @@ extension ScheduleViewController: UITableViewDataSource {
 
         cell.weekdaySwitchIsOn(selectedWeekdays.contains(weekday))
         cell.delegate = self
+
+        if indexPath.row == 6 {
+            cell.showSeparator = false
+        }
 
         return cell
     }
@@ -161,6 +164,14 @@ final class WeekdayTableViewCell: UITableViewCell {
         return weekdaySwitch
     }()
 
+     private let customSeparatorView = UIView()
+
+     var showSeparator: Bool = true {
+      didSet {
+       customSeparatorView.isHidden = !showSeparator
+      }
+     }
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
@@ -180,8 +191,23 @@ final class WeekdayTableViewCell: UITableViewCell {
             weekdaySwitch.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
+        setupSeparatorView()
+
         weekdaySwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
     }
+
+    private func setupSeparatorView() {
+      contentView.addSubview(customSeparatorView)
+        customSeparatorView.backgroundColor = .ypLightGay
+      customSeparatorView.translatesAutoresizingMaskIntoConstraints = false
+
+      NSLayoutConstraint.activate([
+       customSeparatorView.heightAnchor.constraint(equalToConstant: 1),
+       customSeparatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+       customSeparatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+       customSeparatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+      ])
+     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -144,8 +144,8 @@ extension AddTrackerViewController {
             colorCollectionViewController.view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             colorCollectionViewController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             colorCollectionViewController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -16),
-            colorCollectionViewController.view.heightAnchor.constraint(equalToConstant: 220),
-            
+            colorCollectionViewController.view.heightAnchor.constraint(equalToConstant: 240),
+
             stackView.heightAnchor.constraint(equalToConstant: 60),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
