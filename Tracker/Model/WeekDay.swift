@@ -5,7 +5,7 @@
 //  Created by Irina Deeva on 24/03/24.
 //
 
-enum WeekDay: String, CaseIterable {
+enum WeekDay: String, CaseIterable, Codable {
     case monday = "Понедельник"
     case tuesday = "Вторник"
     case wednesday = "Среда"
@@ -13,11 +13,11 @@ enum WeekDay: String, CaseIterable {
     case friday = "Пятница"
     case saturday = "Суббота"
     case sunday = "Воскресенье"
-
+    
     static var allCases: [WeekDay] {
         return [.sunday, .monday, .tuesday, .wednesday, .thursday, .friday, .saturday]
     }
-
+    
     static var allCasesRawValue: [String] {
         return [
             WeekDay.monday.rawValue,

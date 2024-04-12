@@ -29,9 +29,12 @@ final class ScheduleViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.isScrollEnabled = false
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
         tableView.register(WeekdayTableViewCell.self, forCellReuseIdentifier: "weekdayCell")
+        tableView.rowHeight = UITableView.automaticDimension
+        tableView.separatorStyle = .none
         return tableView
     }()
 
@@ -54,7 +57,7 @@ final class ScheduleViewController: UIViewController {
         view.addSubview(typeTitle)
         view.addSubview(tableView)
         view.addSubview(doneButton)
-        
+
         typeTitle.translatesAutoresizingMaskIntoConstraints = false
         doneButton.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -66,8 +69,9 @@ final class ScheduleViewController: UIViewController {
             tableView.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.bottomAnchor.constraint(equalTo: doneButton.topAnchor),
+            tableView.heightAnchor.constraint(equalToConstant: 75 * 7),
 
+            doneButton.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: 47),
             doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             doneButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50),
@@ -92,14 +96,18 @@ extension ScheduleViewController: UITableViewDataSource {
         }
 
         let weekday = weekdays[indexPath.row]
-        cell.weekdayLabel.text = weekday
+        cell.updateLabel(title: weekday)
         cell.backgroundColor = .ypBackgroundDay
         cell.textLabel?.textColor = .ypBlackDay
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
 
-        cell.weekdaySwitch.isOn = selectedWeekdays.contains(weekday)
+        cell.weekdaySwitchIsOn(selectedWeekdays.contains(weekday))
         cell.delegate = self
-        
+
+        if indexPath.row == 6 {
+            cell.showSeparator = false
+        }
+
         return cell
     }
 }
@@ -115,13 +123,13 @@ extension ScheduleViewController: UITableViewDelegate {
             return
         }
 
-        cell.weekdaySwitch.setOn(!cell.weekdaySwitch.isOn, animated: false)
+        cell.weekdaySwitchSetOn()
 
-        if cell.weekdaySwitch.isOn {
-            cell.weekdaySwitch.onTintColor = .ypBlue
+        if cell.getWeekdaySwitchIsOn() {
+            cell.setTintWeekdaySwitch()
         }
 
-        switchStateChanged(for: cell.weekdayLabel.text, isOn: cell.weekdaySwitch.isOn)
+        switchStateChanged(for: cell.getLabelText(), isOn: cell.getWeekdaySwitchIsOn())
     }
 }
 
@@ -133,10 +141,9 @@ extension ScheduleViewController: WeekdayTableViewCellDelegate {
             selectedWeekdays.append(weekday)
         } else {
             if let index = selectedWeekdays.firstIndex(of: weekday) {
-            selectedWeekdays.remove(at: index)
+                selectedWeekdays.remove(at: index)
             }
         }
-        print(selectedWeekdays)
     }
 }
 
@@ -144,21 +151,31 @@ protocol WeekdayTableViewCellDelegate: AnyObject {
     func switchStateChanged(for weekday: String?, isOn: Bool)
 }
 
-class WeekdayTableViewCell: UITableViewCell {
-    let weekdayLabel: UILabel = {
+final class WeekdayTableViewCell: UITableViewCell {
+    weak var delegate: WeekdayTableViewCellDelegate?
+
+    private let weekdayLabel: UILabel = {
         let label = UILabel()
         return label
     }()
 
-    let weekdaySwitch: UISwitch = {
+    private let weekdaySwitch: UISwitch = {
         let weekdaySwitch = UISwitch()
         return weekdaySwitch
     }()
 
-    weak var delegate: WeekdayTableViewCellDelegate?
+     private let customSeparatorView = UIView()
+
+     var showSeparator: Bool = true {
+      didSet {
+       customSeparatorView.isHidden = !showSeparator
+      }
+     }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+
+        selectionStyle = .none
 
         addSubview(weekdayLabel)
         addSubview(weekdaySwitch)
@@ -174,14 +191,53 @@ class WeekdayTableViewCell: UITableViewCell {
             weekdaySwitch.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
 
+        setupSeparatorView()
+
         weekdaySwitch.addTarget(self, action: #selector(switchValueChanged(_:)), for: .valueChanged)
     }
+
+    private func setupSeparatorView() {
+      contentView.addSubview(customSeparatorView)
+        customSeparatorView.backgroundColor = .ypLightGay
+      customSeparatorView.translatesAutoresizingMaskIntoConstraints = false
+
+      NSLayoutConstraint.activate([
+       customSeparatorView.heightAnchor.constraint(equalToConstant: 1),
+       customSeparatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+       customSeparatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+       customSeparatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+      ])
+     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func switchValueChanged(_ sender: UISwitch) {
+    @objc private func switchValueChanged(_ sender: UISwitch) {
         delegate?.switchStateChanged(for: weekdayLabel.text ?? "", isOn: sender.isOn)
+    }
+
+    func updateLabel(title: String) {
+        weekdayLabel.text = title
+    }
+
+    func getLabelText() -> String? {
+        return weekdayLabel.text
+    }
+
+    func getWeekdaySwitchIsOn() -> Bool {
+        return weekdaySwitch.isOn
+    }
+
+    func weekdaySwitchIsOn(_ flag: Bool) {
+        weekdaySwitch.isOn = flag
+    }
+
+    func setTintWeekdaySwitch() {
+        weekdaySwitch.onTintColor = .ypBlue
+    }
+
+    func weekdaySwitchSetOn() {
+        weekdaySwitch.setOn(!weekdaySwitch.isOn, animated: false)
     }
 }
