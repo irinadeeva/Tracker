@@ -11,7 +11,7 @@ final class OnboardingPageViewController: UIPageViewController {
     private var doneButton: UIButton = {
         let button = UIButton(type: .system)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
-        button.addTarget(OnboardingPageViewController.self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         button.tintColor = .ypWhite
         button.backgroundColor = .ypBlackDay
         button.layer.cornerRadius = 16
@@ -19,18 +19,8 @@ final class OnboardingPageViewController: UIPageViewController {
         button.setTitle("Вот это технологии!", for: .normal)
         return button
     }()
-    
-    @objc private func buttonTapped(_ sender: UIButton) {
-        dismiss(animated: true, completion: nil)
-        guard let window = UIApplication.shared.windows.first else {
-            assertionFailure("Invalid Configuration")
-            return
-        }
 
-        window.rootViewController = TabBarController()
-    }
-    
-    lazy var pageControl: UIPageControl = {
+    private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
@@ -42,7 +32,7 @@ final class OnboardingPageViewController: UIPageViewController {
         return pageControl
     }()
     
-    lazy var pages: [UIViewController] = {
+    private lazy var pages: [UIViewController] = {
         let first = OnboardingViewController(image: "pageFirst", text: "Отслеживайте только то, что хотите")
         let second = OnboardingViewController(image: "pageSecond", text: "Даже если это не литры воды и йога")
         
@@ -83,6 +73,16 @@ final class OnboardingPageViewController: UIPageViewController {
             doneButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             doneButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 16)
         ])
+    }
+
+    @objc private func buttonTapped(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+        guard let window = UIApplication.shared.windows.first else {
+            assertionFailure("Invalid Configuration")
+            return
+        }
+
+        window.rootViewController = TabBarController()
     }
 }
 
