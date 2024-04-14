@@ -50,7 +50,9 @@ extension OnboardingViewController {
         NSLayoutConstraint.activate([
             image.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             image.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
+            image.widthAnchor.constraint(equalTo: view.widthAnchor),
+            image.heightAnchor.constraint(equalTo: view.heightAnchor),
+
             typeTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 432),
             typeTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             typeTitle.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
