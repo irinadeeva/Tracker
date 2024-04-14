@@ -18,6 +18,8 @@
 		BE64E36B2BC51A99001AE582 /* DaysValueTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E36A2BC51A99001AE582 /* DaysValueTransformer.swift */; };
 		BE64E3902BC5FEF9001AE582 /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E38F2BC5FEF9001AE582 /* UIColorMarshalling.swift */; };
 		BE64E3922BC9388C001AE582 /* ChoiceTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3912BC9388C001AE582 /* ChoiceTrackerViewController.swift */; };
+		BE64E3A32BCB37E4001AE582 /* Binging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3A22BCB37E4001AE582 /* Binging.swift */; };
+		BE64E3AB2BCBC787001AE582 /* CategoriesViewModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3AA2BCBC787001AE582 /* CategoriesViewModal.swift */; };
 		BE75C9972BAC4197000506D3 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C9962BAC4197000506D3 /* Tracker.swift */; };
 		BE75C9992BAC41AF000506D3 /* TrackerCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C9982BAC41AF000506D3 /* TrackerCategory.swift */; };
 		BE75C99B2BAC41BB000506D3 /* TrackerRecord.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C99A2BAC41BB000506D3 /* TrackerRecord.swift */; };
@@ -50,6 +52,8 @@
 		BE64E36A2BC51A99001AE582 /* DaysValueTransformer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DaysValueTransformer.swift; sourceTree = "<group>"; };
 		BE64E38F2BC5FEF9001AE582 /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
 		BE64E3912BC9388C001AE582 /* ChoiceTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceTrackerViewController.swift; sourceTree = "<group>"; };
+		BE64E3A22BCB37E4001AE582 /* Binging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binging.swift; sourceTree = "<group>"; };
+		BE64E3AA2BCBC787001AE582 /* CategoriesViewModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewModal.swift; sourceTree = "<group>"; };
 		BE75C9962BAC4197000506D3 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		BE75C9982BAC41AF000506D3 /* TrackerCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCategory.swift; sourceTree = "<group>"; };
 		BE75C99A2BAC41BB000506D3 /* TrackerRecord.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerRecord.swift; sourceTree = "<group>"; };
@@ -83,6 +87,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BE64E3A12BCB37D1001AE582 /* ViewModal */ = {
+			isa = PBXGroup;
+			children = (
+				BE64E3A22BCB37E4001AE582 /* Binging.swift */,
+				BE64E3AA2BCBC787001AE582 /* CategoriesViewModal.swift */,
+			);
+			path = ViewModal;
+			sourceTree = "<group>";
+		};
 		BE75C99C2BB0BD52000506D3 /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -133,6 +146,7 @@
 		BE7F96D02B987C760073F9FC /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				BE64E3A12BCB37D1001AE582 /* ViewModal */,
 				BE75C9A32BB1C005000506D3 /* StubData.swift */,
 				BE9CF5FC2BC1453200D2DE8D /* UI */,
 				BE9CF5FA2BC1450D00D2DE8D /* Domain */,
@@ -264,6 +278,7 @@
 			files = (
 				BE29CB8A2BA0C25500BA4C7E /* TrackersViewController.swift in Sources */,
 				BE75C9A02BB0E1B1000506D3 /* WeekDay.swift in Sources */,
+				BE64E3AB2BCBC787001AE582 /* CategoriesViewModal.swift in Sources */,
 				BE9CF5FE2BC1456D00D2DE8D /* TrackerStore.swift in Sources */,
 				BE29CB882BA0C1E000BA4C7E /* StatisticViewController.swift in Sources */,
 				BE64E3692BC48BA5001AE582 /* ColorCollectionViewCell.swift in Sources */,
@@ -284,6 +299,7 @@
 				BE29CB8C2BA4516800BA4C7E /* TrackerCell.swift in Sources */,
 				BE9CF5E12BBBDBD100D2DE8D /* Tracker.xcdatamodeld in Sources */,
 				BE64E3612BC4008F001AE582 /* EmojiMixCollectionViewCell.swift in Sources */,
+				BE64E3A32BCB37E4001AE582 /* Binging.swift in Sources */,
 				BE7F96D42B987C760073F9FC /* SceneDelegate.swift in Sources */,
 				BE75C9972BAC4197000506D3 /* Tracker.swift in Sources */,
 				BE64E36B2BC51A99001AE582 /* DaysValueTransformer.swift in Sources */,
