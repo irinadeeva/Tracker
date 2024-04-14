@@ -47,7 +47,6 @@ final class OnboardingPageViewController: UIPageViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -58,15 +57,21 @@ final class OnboardingPageViewController: UIPageViewController {
             setViewControllers([first], direction: .forward, animated: true, completion: nil)
         }
         
+        setupUI()
+    }
+}
+
+extension OnboardingPageViewController {
+    private func setupUI() {
         [pageControl, doneButton].forEach {
             view.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-        
+
         NSLayoutConstraint.activate([
             pageControl.topAnchor.constraint(equalTo: view.topAnchor, constant: 638),
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            
+
             doneButton.heightAnchor.constraint(equalToConstant: 60),
             doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             doneButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
@@ -74,7 +79,7 @@ final class OnboardingPageViewController: UIPageViewController {
             doneButton.topAnchor.constraint(equalTo: pageControl.bottomAnchor, constant: 16)
         ])
     }
-
+    
     @objc private func buttonTapped(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
         guard let window = UIApplication.shared.windows.first else {
@@ -125,4 +130,3 @@ extension OnboardingPageViewController: UIPageViewControllerDelegate {
         }
     }
 }
-

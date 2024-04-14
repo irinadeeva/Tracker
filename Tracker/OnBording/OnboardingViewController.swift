@@ -19,6 +19,7 @@ final class OnboardingViewController: UIViewController {
     
     private var image: UIImageView = {
         let image = UIImageView()
+        image.contentMode = .scaleAspectFill
         return image
     }()
     
