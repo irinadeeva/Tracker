@@ -9,16 +9,13 @@ import UIKit
 
 final class TrackersViewController: UIViewController {
     private let viewModel = CategoriesViewModal()
-//    private let trackerCategoryStore = TrackerCategoryStore()
     private var trackerRecordStore = TrackerRecordStore()
 
     private var trackerCollection: UICollectionView!
     private var datePicker: UIDatePicker!
     private var searchController: UISearchController!
 
-//    private var categories: [TrackerCategory] = []
     private var filteredCategories: [TrackerCategory] = []
-
     private var completedTrackers: Set<TrackerRecord> = []
 
     private var isSearchBarEmpty: Bool {
@@ -43,7 +40,7 @@ final class TrackersViewController: UIViewController {
 
         viewModel.categoriesBinding = { [weak self] categories in
             print("categories \(categories)")
-            self?.updateUI(with: categories)
+            self?.filterContentForData(with: categories)
         }
 
         completedTrackers = trackerRecordStore.trackerRecords
@@ -51,27 +48,6 @@ final class TrackersViewController: UIViewController {
         setupLayout()
 
         filterContentForData(with: viewModel.getCategories())
-        print("filteredCategories \(filteredCategories)")
-    }
-
-    func updateUI(with categories: [TrackerCategory]) {
-        view.backgroundColor = .ypBackgroundDay
-        trackerCollection.reloadData()
-//        let dayNumber = Calendar.current.component(.weekday, from: currentDate)
-//        let currentWeekDate = WeekDay.allCases[dayNumber - 1]
-//        guard !categories.isEmpty else { return }
-//
-//        for category in categories {
-//            let filteredTrackers = category.trackers.filter { tracker in
-//                tracker.timetable.contains(where: { $0 == currentWeekDate})
-//            }
-//
-//            if !filteredTrackers.isEmpty {
-//                filteredCategories.append(TrackerCategory(title: category.title, trackers: filteredTrackers))
-//            }
-//        }
-//
-//        trackerCollection.reloadData()
     }
 }
 
@@ -317,35 +293,20 @@ extension TrackersViewController: UISearchResultsUpdating {
 
         filteredCategories.removeAll()
 
+        let categories = viewModel.getCategories()
+        guard !categories.isEmpty else { return }
 
-        viewModel.categoriesBinding = { [weak self] categories in
-                guard let self = self else { return }
-
-            for category in categories {
-                let filteredTrackers = category.trackers.filter { tracker in
-                    tracker.name.lowercased().contains(searchText.lowercased())
-                }
-
-                if !filteredTrackers.isEmpty {
-                    filteredCategories.append(TrackerCategory(title: category.title, trackers: filteredTrackers))
-                }
+        for category in categories {
+            let filteredTrackers = category.trackers.filter { tracker in
+                tracker.name.lowercased().contains(searchText.lowercased())
             }
 
+            if !filteredTrackers.isEmpty {
+                filteredCategories.append(TrackerCategory(title: category.title, trackers: filteredTrackers))
+            }
         }
 
-//        guard !categories.isEmpty else { return }
-//
-//        for category in categories {
-//            let filteredTrackers = category.trackers.filter { tracker in
-//                tracker.name.lowercased().contains(searchText.lowercased())
-//            }
-//
-//            if !filteredTrackers.isEmpty {
-//                filteredCategories.append(TrackerCategory(title: category.title, trackers: filteredTrackers))
-//            }
-//        }
-//
-//        trackerCollection.reloadData()
+        trackerCollection.reloadData()
     }
 }
 
@@ -413,26 +374,11 @@ extension TrackersViewController: ChoiceTrackerDelegate {
     func didAddTracker(_ tracker: Tracker) {
         let categoryName = "Новая категория"
 
-//        print("didAddTracker \(tracker)")
-
         viewModel.addNewTrackerToTrackerCategory(tracker, with: categoryName)
-//        let newCategoryIndex = categories.firstIndex { $0.title ==  categoryName }
-//
-//        if let newCategoryIndex {
-//            try? trackerCategoryStore.addNewTrackerToTrackerCategory(tracker, with: categoryName)
-//        } else {
-//            try? trackerCategoryStore.addNewTrackerCategory(TrackerCategory(title: "", trackers: []))
-//        }
+
         dismiss(animated: true, completion: nil)
     }
 }
-
-//extension TrackersViewController: TrackerCategoryStoreDelegate {
-//    func storeCategory() {
-//        categories = trackerCategoryStore.categories
-//        trackerCollection.reloadData()
-//    }
-//}
 
 extension Date {
     var startOfDay: Date {
