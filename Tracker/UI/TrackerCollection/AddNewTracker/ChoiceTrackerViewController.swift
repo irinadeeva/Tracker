@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ChoiceTrackerDelegate: AnyObject {
-    func didAddTracker(_ tracker: Tracker)
+    func didAddTracker(_ tracker: Tracker, with categoryName: String)
 }
 
 final class ChoiceTrackerViewController: UIViewController {
@@ -91,8 +91,8 @@ extension ChoiceTrackerViewController {
 }
 
 extension ChoiceTrackerViewController: AddTrackerDelegate {
-    func didAddTracker(_ tracker: Tracker) {
-        delegate?.didAddTracker(tracker)
+    func didAddTracker(_ tracker: Tracker, with categoryName: String) {
+        delegate?.didAddTracker(tracker, with: categoryName)
         dismiss(animated: true, completion: nil)
     }
 }

@@ -12,7 +12,7 @@ protocol AddNewCategoryDelegate: AnyObject {
 
 final class AddNewCategoryViewController: UIViewController {
     weak var delegate: AddNewCategoryDelegate?
-
+    
     private var typeTitle: UILabel = {
         let typeTitle = UILabel()
         typeTitle.text = "Новая категория"
@@ -20,7 +20,7 @@ final class AddNewCategoryViewController: UIViewController {
         typeTitle.font = .systemFont(ofSize: 16, weight: .medium)
         return typeTitle
     }()
-
+    
     private var textField: UITextField = {
         let textField = UITextField()
         textField.backgroundColor = .ypBackgroundDay
@@ -32,7 +32,7 @@ final class AddNewCategoryViewController: UIViewController {
         textField.textAlignment = .left
         return textField
     }()
-
+    
     private var saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
@@ -46,10 +46,10 @@ final class AddNewCategoryViewController: UIViewController {
         button.isEnabled = false
         return button
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupUI()
     }
 }
@@ -57,40 +57,40 @@ final class AddNewCategoryViewController: UIViewController {
 extension AddNewCategoryViewController {
     private func setupUI() {
         view.backgroundColor = .ypWhite
-
+        
         textField.delegate = self
-
+        
         [typeTitle, textField, saveButton].forEach{
             view.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
-
+        
         NSLayoutConstraint.activate([
             typeTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 26),
             typeTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
+            
             textField.heightAnchor.constraint(equalToConstant: 75),
             textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             textField.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24),
-
+            
             saveButton.heightAnchor.constraint(equalToConstant: 60),
             saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             saveButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -50)
         ])
     }
-
+    
     @objc private func actionButtonTapped(_ sender: UIButton) {
         let trackerName = textField.text ?? ""
-
+        
         delegate?.didAddNewCategory(trackerName)
         dismiss(animated: true, completion: nil)
     }
-
+    
     private func checkConditions() {
         let text = textField.text ?? ""
-
+        
         if !text.isEmpty {
             saveButton.backgroundColor = .ypBlackDay
             saveButton.isEnabled = true
@@ -105,7 +105,7 @@ extension AddNewCategoryViewController: UITextFieldDelegate {
                               newText: string,
                               limit: 38)
     }
-
+    
     private func textLimit(existingText: String?,
                            newText: String,
                            limit: Int) -> Bool {
@@ -113,15 +113,13 @@ extension AddNewCategoryViewController: UITextFieldDelegate {
         let isAtLimit = text.count + newText.count <= limit
         return isAtLimit
     }
-
+    
     func textFieldDidChangeSelection(_ textField: UITextField) {
         checkConditions()
     }
-
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
 }
-
-

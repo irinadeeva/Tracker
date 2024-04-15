@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddTrackerDelegate: AnyObject {
-    func didAddTracker(_ tracker: Tracker)
+    func didAddTracker(_ tracker: Tracker, with categoryName: String)
 }
 
 final class AddTrackerViewController: UIViewController {
@@ -28,6 +28,7 @@ final class AddTrackerViewController: UIViewController {
     private var selectedWeekdays: [WeekDay] = []
     private var selectedEmoji = ""
     private var selectedColor: UIColor = UIColor()
+    private var selectedCategory: String = ""
     
     init(cellsNumber: Int) {
         self.cellsNumber = cellsNumber
@@ -145,7 +146,7 @@ extension AddTrackerViewController {
             colorCollectionViewController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             colorCollectionViewController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -16),
             colorCollectionViewController.view.heightAnchor.constraint(equalToConstant: 240),
-
+            
             stackView.heightAnchor.constraint(equalToConstant: 60),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
@@ -182,7 +183,7 @@ extension AddTrackerViewController {
                 timetable: selectedWeekdays
             )
             
-            delegate?.didAddTracker(newTracker)
+            delegate?.didAddTracker(newTracker, with: selectedCategory)
         } else {
             dismiss(animated: true, completion: nil)
         }
@@ -215,12 +216,19 @@ extension AddTrackerViewController: UITableViewDelegate {
         
         if indexPath.row == 0 {
             let destinationViewController = CategoryViewController()
+            destinationViewController.delegate = self
             present(destinationViewController, animated: true, completion: nil)
         } else {
             let destinationViewController = ScheduleViewController()
             destinationViewController.delegate = self
             present(destinationViewController, animated: true, completion: nil)
         }
+    }
+}
+
+extension AddTrackerViewController: CategoryDelegate {
+    func didDoneTapped(_ category: String) {
+        selectedCategory = category
     }
 }
 

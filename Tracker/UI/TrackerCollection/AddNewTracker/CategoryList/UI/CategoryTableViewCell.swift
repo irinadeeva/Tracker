@@ -1,16 +1,18 @@
 import UIKit
 
 final class CategoryTableViewCell: UITableViewCell {
-//    var viewModel: CategoryNameViewModel? {
-//        didSet {
-//            viewModel?.nameBinding = { [weak self] emojis in
-//                self?.categoryLabel.text = emojis
-//            }
-//        }
-//    }
+    var viewModel: CategoryNameViewModel? {
+        didSet {
+            viewModel?.nameBinding = { [weak self] name in
+                self?.categoryLabel.text = name
+            }
+        }
+    }
 
     private let categoryLabel: UILabel = {
         let label = UILabel()
+        label.textColor = .ypBlackDay
+        label.font = .systemFont(ofSize: 17, weight: .regular)
         return label
     }()
 
@@ -26,7 +28,6 @@ final class CategoryTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
         setupUI()
-
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -34,13 +35,14 @@ final class CategoryTableViewCell: UITableViewCell {
     }
 
     private func setupUI() {
+        contentView.backgroundColor = .ypBackgroundDay
+
         addSubview(categoryLabel)
         categoryLabel.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             categoryLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             categoryLabel.centerYAnchor.constraint(equalTo: centerYAnchor)
         ])
-
 
         contentView.addSubview(customSeparatorView)
         customSeparatorView.backgroundColor = .ypLightGay
@@ -53,12 +55,7 @@ final class CategoryTableViewCell: UITableViewCell {
         ])
     }
 
-    func updateLabel(title: String) {
-        categoryLabel.text = title
-    }
-
     func getLabelText() -> String? {
         return categoryLabel.text
     }
 }
-

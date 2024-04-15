@@ -371,9 +371,7 @@ extension TrackersViewController: TrackerCellButtonDelegate {
 }
 
 extension TrackersViewController: ChoiceTrackerDelegate {
-    func didAddTracker(_ tracker: Tracker) {
-        let categoryName = "Новая категория"
-
+    func didAddTracker(_ tracker: Tracker, with categoryName: String) {
         viewModel.addNewTrackerToTrackerCategory(tracker, with: categoryName)
 
         dismiss(animated: true, completion: nil)

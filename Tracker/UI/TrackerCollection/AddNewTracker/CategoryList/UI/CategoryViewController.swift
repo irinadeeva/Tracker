@@ -7,9 +7,7 @@ protocol CategoryDelegate: AnyObject {
 final class CategoryViewController: UIViewController {
     weak var delegate: CategoryDelegate?
 
-    private var categories: [String] =
-    ["Important", "Unimportant"]
-//    []
+    private var viewModel = CategoryNamesViewModel()
     private var selectedCategory: String = ""
 
     private lazy var typeTitle: UILabel = {
@@ -49,6 +47,11 @@ final class CategoryViewController: UIViewController {
         super.viewDidLoad()
 
         setupUI()
+
+        viewModel.namesBinding = { [weak self] _ in
+            guard let self = self else { return }
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -80,7 +83,6 @@ extension CategoryViewController {
     }
 
     @objc private func addButtonTapped(_ sender: UIButton){
-
         let nextController = AddNewCategoryViewController()
         nextController.delegate = self
         nextController.isModalInPresentation = true
@@ -91,18 +93,19 @@ extension CategoryViewController {
 
 extension CategoryViewController: AddNewCategoryDelegate {
     func didAddNewCategory(_ category: String) {
-        categories.append(category)
-        tableView.reloadData()
+        viewModel.addNewTrackerCategory(category)
     }
 }
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if categories.count == 0 {
+        if viewModel.names.count == 0 {
             tableView.setEmptyMessage(message: "Привычки и события можно\nобъединить по смыслу", image: "emptyTracker")
+        } else {
+            tableView.restore()
         }
 
-        return categories.count
+        return viewModel.names.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -110,11 +113,7 @@ extension CategoryViewController: UITableViewDataSource {
             return UITableViewCell()
         }
 
-        let category = categories[indexPath.row]
-        cell.updateLabel(title: category)
-        cell.backgroundColor = .ypBackgroundDay
-        cell.textLabel?.textColor = .ypBlackDay
-        cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        cell.viewModel = viewModel.names[indexPath.row]
 
         if indexPath.row == 6 {
             cell.showSeparator = false
@@ -135,7 +134,11 @@ extension CategoryViewController: UITableViewDelegate {
             return
         }
 
-        delegate?.didDoneTapped(selectedCategory)
+        guard let viewModel = cell.viewModel else {
+            return
+        }
+
+        delegate?.didDoneTapped(viewModel.getName())
         dismiss(animated: true, completion: nil)
     }
 }
@@ -177,4 +180,3 @@ extension UITableView {
         self.backgroundView = nil
     }
 }
-
