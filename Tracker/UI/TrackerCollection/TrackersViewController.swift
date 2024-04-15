@@ -33,13 +33,11 @@ final class TrackersViewController: UIViewController {
                                          rightInset: 16,
                                          cellSpacing: 9)
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
 
         viewModel.categoriesBinding = { [weak self] categories in
-            print("categories \(categories)")
             self?.filterContentForData(with: categories)
         }
 

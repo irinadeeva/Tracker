@@ -167,7 +167,7 @@ extension AddTrackerViewController {
     }
     
     @objc private func actionButtonTapped(_ sender: UIButton) {
-        let trackerName = textField.text as? String ?? ""
+        let trackerName = textField.text ?? ""
         
         if cellsNumber == 1 {
             let dayNumber = Calendar.current.component(.weekday, from: Date())
@@ -215,11 +215,11 @@ extension AddTrackerViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.row == 0 {
-            let destinationViewController = CategoryViewController()
+            let destinationViewController = CategoryViewController(selectedCategory: selectedCategory)
             destinationViewController.delegate = self
             present(destinationViewController, animated: true, completion: nil)
         } else {
-            let destinationViewController = ScheduleViewController()
+            let destinationViewController = ScheduleViewController(selectedWeekdays: selectedWeekdays.map { $0.rawValue })
             destinationViewController.delegate = self
             present(destinationViewController, animated: true, completion: nil)
         }

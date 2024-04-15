@@ -8,7 +8,6 @@ final class CategoryViewController: UIViewController {
     weak var delegate: CategoryDelegate?
 
     private var viewModel = CategoryNamesViewModel()
-    private var selectedCategory: String = ""
 
     private lazy var typeTitle: UILabel = {
         let typeTitle = UILabel()
@@ -22,12 +21,13 @@ final class CategoryViewController: UIViewController {
         let tableView = UITableView()
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.isScrollEnabled = false
+        tableView.isScrollEnabled = true
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
         tableView.register(CategoryTableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
+        tableView.allowsSelection = true
         return tableView
     }()
 
@@ -43,6 +43,17 @@ final class CategoryViewController: UIViewController {
         return button
     }()
 
+    private var selectedCategory: String = ""
+
+    init(selectedCategory: String) {
+        self.selectedCategory = selectedCategory
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,6 +61,7 @@ final class CategoryViewController: UIViewController {
 
         viewModel.namesBinding = { [weak self] _ in
             guard let self = self else { return }
+
             self.tableView.reloadData()
         }
     }
@@ -85,7 +97,6 @@ extension CategoryViewController {
     @objc private func addButtonTapped(_ sender: UIButton){
         let nextController = AddNewCategoryViewController()
         nextController.delegate = self
-        nextController.isModalInPresentation = true
         present(nextController, animated: true)
     }
 }
@@ -115,7 +126,15 @@ extension CategoryViewController: UITableViewDataSource {
 
         cell.viewModel = viewModel.names[indexPath.row]
 
-        if indexPath.row == 6 {
+        guard let viewModelCell = cell.viewModel else {
+            return UITableViewCell()
+        }
+
+        if selectedCategory.elementsEqual(viewModelCell.getName()) {
+            cell.showCheckmark = true
+        }
+
+        if indexPath.row == viewModel.names.count - 1 {
             cell.showSeparator = false
         }
 
