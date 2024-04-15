@@ -17,6 +17,8 @@ final class CategoryViewController: UIViewController {
         return typeTitle
     }()
 
+    private lazy var tableViewHeightConstraint: NSLayoutConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
+
     private lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.delegate = self
@@ -62,6 +64,7 @@ final class CategoryViewController: UIViewController {
         viewModel.namesBinding = { [weak self] _ in
             guard let self = self else { return }
 
+            tableViewHeightConstraint.constant = CGFloat(75 * viewModel.names.count)
             self.tableView.reloadData()
         }
     }
@@ -74,6 +77,9 @@ extension CategoryViewController {
         view.addSubview(tableView)
         view.addSubview(addCategoryButton)
 
+        tableViewHeightConstraint.constant = CGFloat(75 * viewModel.names.count)
+        tableViewHeightConstraint.isActive = true
+
         typeTitle.translatesAutoresizingMaskIntoConstraints = false
         addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -85,7 +91,6 @@ extension CategoryViewController {
             tableView.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.heightAnchor.constraint(equalToConstant: 75 * 7),
 
             addCategoryButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addCategoryButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
