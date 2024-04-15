@@ -116,6 +116,7 @@ extension CategoryViewController: AddNewCategoryDelegate {
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if viewModel.names.count == 0 {
+            tableView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -200).isActive = true
             tableView.setEmptyMessage(message: "Привычки и события можно\nобъединить по смыслу", image: "emptyTracker")
         } else {
             tableView.restore()
