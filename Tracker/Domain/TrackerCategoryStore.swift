@@ -26,95 +26,95 @@ final class TrackerCategoryStore: NSObject {
         else { return [] }
         return categories
     }
-    
+
     weak var delegate: TrackerCategoryStoreDelegate?
-    
+
     private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>
     private let context: NSManagedObjectContext
     private var trackerStore = TrackerStore()
-    
+
     convenience override init() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             self.init()
             return
         }
-        
+
         let context = appDelegate.context
         self.init(context: context)
     }
-    
+
     init(context: NSManagedObjectContext) {
         self.context = context
-        
+
         let fetchRequest = TrackerCategoryCoreData.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \TrackerCategoryCoreData.title, ascending: true)
         ]
-        
+
         let controller = NSFetchedResultsController(
             fetchRequest: fetchRequest,
             managedObjectContext: context,
             sectionNameKeyPath: nil,
             cacheName: nil
         )
-        
+
         self.fetchedResultsController = controller
         super.init()
         controller.delegate = self
-        
+
         try? controller.performFetch()
     }
-    
-    func addNewTrackerCategory(_ trackerCategory: TrackerCategory) throws {
+
+    func addNewTrackerCategory(_ trackerCategoryName: String) throws {
         let trackerCategoryCoreData = TrackerCategoryCoreData(context: context)
-        
-        trackerCategoryCoreData.title = trackerCategory.title
-        
+
+        trackerCategoryCoreData.title = trackerCategoryName
+
         do {
             try context.save()
         } catch {
             context.rollback()
         }
     }
-    
+
     func addNewTrackerToTrackerCategory(_ tracker: Tracker, with categoryTitle: String) throws {
         guard let trackerCategoryCoreData = predicateFetchByTitle(with: categoryTitle) else {
             return
         }
-        
+
         do {
             try trackerStore.addNewTracker(tracker, with: trackerCategoryCoreData)
         } catch {
             throw TrackerCategoryStoreError.addingNewTracker
         }
     }
-    
+
     func fetchTrackerCategories() throws -> [TrackerCategory] {
         let fetchRequest = TrackerCategoryCoreData.fetchRequest()
         let trackerCategoryFromCoreData = try context.fetch(fetchRequest)
         return try trackerCategoryFromCoreData.map { try self.trackerCategory(from: $0) }
     }
-    
+
     private func trackerCategory(from trackerCategoryCoreData: TrackerCategoryCoreData) throws -> TrackerCategory {
         guard let title = trackerCategoryCoreData.title else {
             throw TrackerCategoryStoreError.decodingErrorInvalidTitle
         }
-        
+
         var trackers: [Tracker] = []
         let trackersCoreData = try? fetchTrackersInCategory(trackerCategoryCoreData)
         if let trackersCoreData {
             trackers = try trackersCoreData.map { try TrackerStore().tracker(from: $0) }
         }
-        
+
         return TrackerCategory(title: title, trackers: trackers)
     }
-    
+
     func predicateFetchByTitle(with title: String) -> TrackerCategoryCoreData? {
         let request = TrackerCategoryCoreData.fetchRequest()
         request.returnsObjectsAsFaults = false
         request.predicate = NSPredicate(format: "%K == %@", #keyPath(TrackerCategoryCoreData.title), title)
         request.fetchLimit = 1
-        
+
         do {
             let results = try context.fetch(request)
             return results.first
@@ -122,11 +122,11 @@ final class TrackerCategoryStore: NSObject {
             return nil
         }
     }
-    
+
     func fetchTrackersInCategory(_ category: TrackerCategoryCoreData) throws -> [TrackerCoreData] {
         let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
         fetchRequest.predicate = NSPredicate(format: "category == %@", category)
-        
+
         do {
             let trackers = try context.fetch(fetchRequest)
             return trackers

@@ -8,16 +8,14 @@
 import UIKit
 
 final class TrackersViewController: UIViewController {
-    private let trackerCategoryStore = TrackerCategoryStore()
+    private let viewModel = CategoriesViewModal()
     private var trackerRecordStore = TrackerRecordStore()
 
     private var trackerCollection: UICollectionView!
     private var datePicker: UIDatePicker!
     private var searchController: UISearchController!
 
-    private var categories: [TrackerCategory] = []
     private var filteredCategories: [TrackerCategory] = []
-
     private var completedTrackers: Set<TrackerRecord> = []
 
     private var isSearchBarEmpty: Bool {
@@ -35,25 +33,19 @@ final class TrackersViewController: UIViewController {
                                          rightInset: 16,
                                          cellSpacing: 9)
 
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
 
-        categories = trackerCategoryStore.categories
-
-        if categories.isEmpty {
-            let newCategory = TrackerCategory(title: "Новая категория", trackers: [])
-            try? trackerCategoryStore.addNewTrackerCategory(newCategory)
-            categories.append(newCategory)
+        viewModel.categoriesBinding = { [weak self] categories in
+            self?.filterContentForData(with: categories)
         }
-        trackerCategoryStore.delegate = self
 
         completedTrackers = trackerRecordStore.trackerRecords
 
         setupLayout()
 
-        filterContentForData()
+        filterContentForData(with: viewModel.getCategories())
     }
 }
 
@@ -143,10 +135,10 @@ extension TrackersViewController {
         guard let date = Calendar.current.date(from: components) else { return }
         currentDate = date
 
-        filterContentForData()
+        filterContentForData(with: viewModel.getCategories())
     }
 
-    private func filterContentForData() {
+    private func filterContentForData(with categories: [TrackerCategory]) {
         let dayNumber = Calendar.current.component(.weekday, from: currentDate)
         let currentWeekDate = WeekDay.allCases[dayNumber - 1]
         filteredCategories.removeAll()
@@ -176,7 +168,7 @@ extension TrackersViewController: UICollectionViewDataSource {
                 collectionView.restore()
             }
         } else {
-            filterContentForData()
+            filterContentForData(with: viewModel.getCategories())
             if filteredCategories.isEmpty {
                 collectionView.setEmptyMessage(message: "Что будем отслеживать?", image: "emptyTracker")
             } else {
@@ -299,6 +291,7 @@ extension TrackersViewController: UISearchResultsUpdating {
 
         filteredCategories.removeAll()
 
+        let categories = viewModel.getCategories()
         guard !categories.isEmpty else { return }
 
         for category in categories {
@@ -376,23 +369,10 @@ extension TrackersViewController: TrackerCellButtonDelegate {
 }
 
 extension TrackersViewController: ChoiceTrackerDelegate {
-    func didAddTracker(_ tracker: Tracker) {
-        let categoryName = "Новая категория"
-        let newCategoryIndex = categories.firstIndex { $0.title ==  categoryName }
+    func didAddTracker(_ tracker: Tracker, with categoryName: String) {
+        viewModel.addNewTrackerToTrackerCategory(tracker, with: categoryName)
 
-        if let newCategoryIndex {
-            try? trackerCategoryStore.addNewTrackerToTrackerCategory(tracker, with: categoryName)
-        } else {
-            try? trackerCategoryStore.addNewTrackerCategory(TrackerCategory(title: "", trackers: []))
-        }
         dismiss(animated: true, completion: nil)
-    }
-}
-
-extension TrackersViewController: TrackerCategoryStoreDelegate {
-    func storeCategory() {
-        categories = trackerCategoryStore.categories
-        trackerCollection.reloadData()
     }
 }
 

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol AddTrackerDelegate: AnyObject {
-    func didAddTracker(_ tracker: Tracker)
+    func didAddTracker(_ tracker: Tracker, with categoryName: String)
 }
 
 final class AddTrackerViewController: UIViewController {
@@ -28,6 +28,7 @@ final class AddTrackerViewController: UIViewController {
     private var selectedWeekdays: [WeekDay] = []
     private var selectedEmoji = ""
     private var selectedColor: UIColor = UIColor()
+    private var selectedCategory: String = ""
     
     init(cellsNumber: Int) {
         self.cellsNumber = cellsNumber
@@ -145,7 +146,7 @@ extension AddTrackerViewController {
             colorCollectionViewController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             colorCollectionViewController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor, constant: -16),
             colorCollectionViewController.view.heightAnchor.constraint(equalToConstant: 240),
-
+            
             stackView.heightAnchor.constraint(equalToConstant: 60),
             stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
             stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
@@ -166,7 +167,7 @@ extension AddTrackerViewController {
     }
     
     @objc private func actionButtonTapped(_ sender: UIButton) {
-        let trackerName = textField.text as? String ?? ""
+        let trackerName = textField.text ?? ""
         
         if cellsNumber == 1 {
             let dayNumber = Calendar.current.component(.weekday, from: Date())
@@ -182,7 +183,7 @@ extension AddTrackerViewController {
                 timetable: selectedWeekdays
             )
             
-            delegate?.didAddTracker(newTracker)
+            delegate?.didAddTracker(newTracker, with: selectedCategory)
         } else {
             dismiss(animated: true, completion: nil)
         }
@@ -193,15 +194,45 @@ extension AddTrackerViewController {
         let text = textField.text ?? ""
         
         if cellsNumber == 2 {
-            flag = !text.isEmpty && !selectedWeekdays.isEmpty && !selectedEmoji.isEmpty && selectedColor != nil
+            flag = !text.isEmpty && !selectedWeekdays.isEmpty && !selectedEmoji.isEmpty && selectedColor != nil && !selectedCategory.isEmpty
         } else {
-            flag = !text.isEmpty && !selectedEmoji.isEmpty && selectedColor != nil
+            flag = !text.isEmpty && !selectedEmoji.isEmpty && selectedColor != nil && !selectedCategory.isEmpty
         }
         
         if flag {
             saveButton.backgroundColor = .ypBlackDay
             saveButton.isEnabled = true
         }
+    }
+
+    private func formatSelectedWeekdays() -> String {
+        let sortedWeekdays = selectedWeekdays.sorted { $0.rawValue < $1.rawValue }
+        var resultString = ""
+
+        for day in sortedWeekdays {
+            switch day {
+            case .monday:
+                resultString += "Пн"
+            case .tuesday:
+                resultString += "Вт"
+            case .wednesday:
+                resultString += "Ср"
+            case .thursday:
+                resultString += "Чт"
+            case .friday:
+                resultString += "Пт"
+            case .saturday:
+                resultString += "Сб"
+            case .sunday:
+                resultString += "Вс"
+            }
+
+            if day != sortedWeekdays.last {
+                resultString += ", "
+            }
+        }
+
+        return resultString
     }
 }
 
@@ -214,10 +245,12 @@ extension AddTrackerViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.row == 0 {
-            let destinationViewController = CategoryViewController()
+            let selectedCategoryViewModel = CategoryNamesViewModel(selectedCategory: selectedCategory)
+            let destinationViewController = CategoryViewController(viewModel: selectedCategoryViewModel)
+            destinationViewController.delegate = self
             present(destinationViewController, animated: true, completion: nil)
         } else {
-            let destinationViewController = ScheduleViewController()
+            let destinationViewController = ScheduleViewController(selectedWeekdays: selectedWeekdays.map { $0.rawValue })
             destinationViewController.delegate = self
             present(destinationViewController, animated: true, completion: nil)
         }
@@ -230,9 +263,20 @@ extension AddTrackerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = cellTitle[indexPath.row]
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+
         cell.backgroundColor = .ypBackgroundDay
+
+        if indexPath.row == 0 {
+            cell.detailTextLabel?.text = selectedCategory
+        } else {
+            cell.detailTextLabel?.text = formatSelectedWeekdays()
+        }
+
+        cell.detailTextLabel?.textColor = .ypGray
+        cell.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+
+        cell.textLabel?.text = cellTitle[indexPath.row]
         cell.textLabel?.textColor = .ypBlackDay
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         cell.accessoryType = .disclosureIndicator
@@ -266,18 +310,6 @@ extension AddTrackerViewController: UITextFieldDelegate {
     }
 }
 
-extension AddTrackerViewController: ScheduleDelegate {
-    func didDoneTapped(_ weekdays: [String]) {
-        for string in weekdays {
-            if let weekday = WeekDay(rawValue: string) {
-                self.selectedWeekdays.append(weekday)
-            }
-        }
-        
-        checkConditions()
-    }
-}
-
 extension AddTrackerViewController: EmojiMixesDelegate {
     func didEmojiSelected(_ emoji: String) {
         selectedEmoji = emoji
@@ -291,5 +323,26 @@ extension AddTrackerViewController: ColorDelegate {
         selectedColor = color
         
         checkConditions()
+    }
+}
+
+extension AddTrackerViewController: ScheduleDelegate {
+    func didDoneTapped(_ weekdays: [String]) {
+        for string in weekdays {
+            if let weekday = WeekDay(rawValue: string) {
+                self.selectedWeekdays.append(weekday)
+            }
+        }
+
+        checkConditions()
+        tableView.reloadData()
+    }
+}
+
+extension AddTrackerViewController: CategoryDelegate {
+    func didDoneTapped(_ category: String) {
+        selectedCategory = category
+        checkConditions()
+        tableView.reloadData()
     }
 }

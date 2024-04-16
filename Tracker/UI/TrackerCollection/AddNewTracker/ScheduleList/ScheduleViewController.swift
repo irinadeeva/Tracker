@@ -15,7 +15,6 @@ final class ScheduleViewController: UIViewController {
     weak var delegate: ScheduleDelegate?
 
     private let weekdays = WeekDay.allCasesRawValue
-    private var selectedWeekdays: [String] = []
 
     private lazy var typeTitle: UILabel = {
         let typeTitle = UILabel()
@@ -49,6 +48,17 @@ final class ScheduleViewController: UIViewController {
         button.setTitle("Готово", for: .normal)
         return button
     }()
+
+    private var selectedWeekdays: [String] = []
+
+    init(selectedWeekdays: [String]) {
+        self.selectedWeekdays = selectedWeekdays
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -164,13 +174,13 @@ final class WeekdayTableViewCell: UITableViewCell {
         return weekdaySwitch
     }()
 
-     private let customSeparatorView = UIView()
+    private let customSeparatorView = UIView()
 
-     var showSeparator: Bool = true {
-      didSet {
-       customSeparatorView.isHidden = !showSeparator
-      }
-     }
+    var showSeparator: Bool = true {
+        didSet {
+            customSeparatorView.isHidden = !showSeparator
+        }
+    }
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -197,17 +207,17 @@ final class WeekdayTableViewCell: UITableViewCell {
     }
 
     private func setupSeparatorView() {
-      contentView.addSubview(customSeparatorView)
+        contentView.addSubview(customSeparatorView)
         customSeparatorView.backgroundColor = .ypLightGay
-      customSeparatorView.translatesAutoresizingMaskIntoConstraints = false
+        customSeparatorView.translatesAutoresizingMaskIntoConstraints = false
 
-      NSLayoutConstraint.activate([
-       customSeparatorView.heightAnchor.constraint(equalToConstant: 1),
-       customSeparatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-       customSeparatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-       customSeparatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
-      ])
-     }
+        NSLayoutConstraint.activate([
+            customSeparatorView.heightAnchor.constraint(equalToConstant: 1),
+            customSeparatorView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            customSeparatorView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            customSeparatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
+    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -231,6 +241,9 @@ final class WeekdayTableViewCell: UITableViewCell {
 
     func weekdaySwitchIsOn(_ flag: Bool) {
         weekdaySwitch.isOn = flag
+        if weekdaySwitch.isOn {
+            setTintWeekdaySwitch()
+        }
     }
 
     func setTintWeekdaySwitch() {
