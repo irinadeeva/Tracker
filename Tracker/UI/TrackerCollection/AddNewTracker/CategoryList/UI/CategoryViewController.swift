@@ -45,6 +45,22 @@ final class CategoryViewController: UIViewController {
         return button
     }()
 
+    private lazy var imageStub: UIImageView = {
+        let imageStub = UIImageView()
+        imageStub.image = UIImage(named: "emptyTracker") ?? UIImage()
+        return imageStub
+    }()
+
+    private lazy var labelStub: UILabel = {
+        let labelStub = UILabel()
+        labelStub.text = "Привычки и события можно\nобъединить по смыслу"
+        labelStub.font = .systemFont(ofSize: 12, weight: .medium)
+        labelStub.textColor = .black
+        labelStub.numberOfLines = 2
+        labelStub.textAlignment = .center
+        return labelStub
+    }()
+
     private var selectedCategory: String = ""
 
     init(selectedCategory: String) {
@@ -74,8 +90,15 @@ extension CategoryViewController {
     private func setupUI() {
         view.backgroundColor = .ypWhite
         view.addSubview(typeTitle)
+        view.addSubview(imageStub)
+        view.addSubview(labelStub)
         view.addSubview(tableView)
         view.addSubview(addCategoryButton)
+
+        if viewModel.names.count != 0 {
+            imageStub.isHidden = true
+            labelStub.isHidden = true
+        }
 
         tableViewHeightConstraint.constant = CGFloat(75 * viewModel.names.count)
         tableViewHeightConstraint.isActive = true
@@ -83,8 +106,17 @@ extension CategoryViewController {
         typeTitle.translatesAutoresizingMaskIntoConstraints = false
         addCategoryButton.translatesAutoresizingMaskIntoConstraints = false
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        imageStub.translatesAutoresizingMaskIntoConstraints = false
+        labelStub.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
+            imageStub.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            imageStub.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            labelStub.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            labelStub.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            labelStub.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            labelStub.topAnchor.constraint(equalTo: imageStub.bottomAnchor, constant: 8),
+
             typeTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 26),
             typeTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
@@ -106,22 +138,16 @@ extension CategoryViewController {
     }
 }
 
-
 extension CategoryViewController: AddNewCategoryDelegate {
     func didAddNewCategory(_ category: String) {
         viewModel.addNewTrackerCategory(category)
+        imageStub.isHidden = true
+        labelStub.isHidden = true
     }
 }
 
 extension CategoryViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if viewModel.names.count == 0 {
-            tableView.heightAnchor.constraint(equalTo: view.heightAnchor, constant: -200).isActive = true
-            tableView.setEmptyMessage(message: "Привычки и события можно\nобъединить по смыслу", image: "emptyTracker")
-        } else {
-            tableView.restore()
-        }
-
         return viewModel.names.count
     }
 
@@ -165,43 +191,5 @@ extension CategoryViewController: UITableViewDelegate {
 
         delegate?.didDoneTapped(viewModel.getName())
         dismiss(animated: true, completion: nil)
-    }
-}
-
-extension UITableView {
-    func setEmptyMessage(message: String, image: String) {
-        let emptyView = UIView(frame: CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height))
-        emptyView.backgroundColor = .white
-        emptyView.sizeToFit()
-
-        let imageStub = UIImageView()
-        imageStub.image = UIImage(named: image) ?? UIImage()
-        emptyView.addSubview(imageStub)
-
-        let labelStub = UILabel()
-        labelStub.text = message
-        labelStub.font = .systemFont(ofSize: 12, weight: .medium)
-        labelStub.textColor = .black
-        labelStub.numberOfLines = 2
-        labelStub.textAlignment = .center
-        emptyView.addSubview(labelStub)
-
-        imageStub.translatesAutoresizingMaskIntoConstraints = false
-        labelStub.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            imageStub.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
-            imageStub.centerYAnchor.constraint(equalTo: emptyView.centerYAnchor),
-            labelStub.centerXAnchor.constraint(equalTo: emptyView.centerXAnchor),
-            labelStub.leadingAnchor.constraint(equalTo: emptyView.leadingAnchor, constant: 16),
-            labelStub.trailingAnchor.constraint(equalTo: emptyView.trailingAnchor, constant: -16),
-            labelStub.topAnchor.constraint(equalTo: imageStub.bottomAnchor, constant: 8)
-        ])
-
-        self.backgroundView = emptyView
-    }
-
-    func restore() {
-        self.backgroundView = nil
     }
 }
