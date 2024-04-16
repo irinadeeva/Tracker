@@ -194,9 +194,9 @@ extension AddTrackerViewController {
         let text = textField.text ?? ""
         
         if cellsNumber == 2 {
-            flag = !text.isEmpty && !selectedWeekdays.isEmpty && !selectedEmoji.isEmpty && selectedColor != nil
+            flag = !text.isEmpty && !selectedWeekdays.isEmpty && !selectedEmoji.isEmpty && selectedColor != nil && !selectedCategory.isEmpty
         } else {
-            flag = !text.isEmpty && !selectedEmoji.isEmpty && selectedColor != nil
+            flag = !text.isEmpty && !selectedEmoji.isEmpty && selectedColor != nil && !selectedCategory.isEmpty
         }
         
         if flag {
@@ -341,6 +341,7 @@ extension AddTrackerViewController: ScheduleDelegate {
 extension AddTrackerViewController: CategoryDelegate {
     func didDoneTapped(_ category: String) {
         selectedCategory = category
+        checkConditions()
         tableView.reloadData()
     }
 }
