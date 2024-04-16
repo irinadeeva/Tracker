@@ -204,6 +204,36 @@ extension AddTrackerViewController {
             saveButton.isEnabled = true
         }
     }
+
+    private func formatSelectedWeekdays() -> String {
+        let sortedWeekdays = selectedWeekdays.sorted { $0.rawValue < $1.rawValue }
+        var resultString = ""
+
+        for day in sortedWeekdays {
+            switch day {
+            case .monday:
+                resultString += "Пн"
+            case .tuesday:
+                resultString += "Вт"
+            case .wednesday:
+                resultString += "Ср"
+            case .thursday:
+                resultString += "Чт"
+            case .friday:
+                resultString += "Пт"
+            case .saturday:
+                resultString += "Сб"
+            case .sunday:
+                resultString += "Вс"
+            }
+
+            if day != sortedWeekdays.last {
+                resultString += ", "
+            }
+        }
+
+        return resultString
+    }
 }
 
 extension AddTrackerViewController: UITableViewDelegate {
@@ -226,21 +256,26 @@ extension AddTrackerViewController: UITableViewDelegate {
     }
 }
 
-extension AddTrackerViewController: CategoryDelegate {
-    func didDoneTapped(_ category: String) {
-        selectedCategory = category
-    }
-}
-
 extension AddTrackerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return cellsNumber
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
-        cell.textLabel?.text = cellTitle[indexPath.row]
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: nil)
+
         cell.backgroundColor = .ypBackgroundDay
+
+        if indexPath.row == 0 {
+            cell.detailTextLabel?.text = selectedCategory
+        } else {
+            cell.detailTextLabel?.text = formatSelectedWeekdays()
+        }
+
+        cell.detailTextLabel?.textColor = .ypGray
+        cell.detailTextLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+
+        cell.textLabel?.text = cellTitle[indexPath.row]
         cell.textLabel?.textColor = .ypBlackDay
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
         cell.accessoryType = .disclosureIndicator
@@ -274,18 +309,6 @@ extension AddTrackerViewController: UITextFieldDelegate {
     }
 }
 
-extension AddTrackerViewController: ScheduleDelegate {
-    func didDoneTapped(_ weekdays: [String]) {
-        for string in weekdays {
-            if let weekday = WeekDay(rawValue: string) {
-                self.selectedWeekdays.append(weekday)
-            }
-        }
-        
-        checkConditions()
-    }
-}
-
 extension AddTrackerViewController: EmojiMixesDelegate {
     func didEmojiSelected(_ emoji: String) {
         selectedEmoji = emoji
@@ -299,5 +322,25 @@ extension AddTrackerViewController: ColorDelegate {
         selectedColor = color
         
         checkConditions()
+    }
+}
+
+extension AddTrackerViewController: ScheduleDelegate {
+    func didDoneTapped(_ weekdays: [String]) {
+        for string in weekdays {
+            if let weekday = WeekDay(rawValue: string) {
+                self.selectedWeekdays.append(weekday)
+            }
+        }
+
+        checkConditions()
+        tableView.reloadData()
+    }
+}
+
+extension AddTrackerViewController: CategoryDelegate {
+    func didDoneTapped(_ category: String) {
+        selectedCategory = category
+        tableView.reloadData()
     }
 }
