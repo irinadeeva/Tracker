@@ -7,7 +7,7 @@ protocol CategoryDelegate: AnyObject {
 final class CategoryViewController: UIViewController {
     weak var delegate: CategoryDelegate?
 
-    private var viewModel = CategoryNamesViewModel()
+    private var viewModel: CategoryNamesViewModel
 
     private lazy var typeTitle: UILabel = {
         let typeTitle = UILabel()
@@ -61,10 +61,8 @@ final class CategoryViewController: UIViewController {
         return labelStub
     }()
 
-    private var selectedCategory: String = ""
-
-    init(selectedCategory: String) {
-        self.selectedCategory = selectedCategory
+    init(viewModel: CategoryNamesViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -162,7 +160,7 @@ extension CategoryViewController: UITableViewDataSource {
             return UITableViewCell()
         }
 
-        if selectedCategory.elementsEqual(viewModelCell.getName()) {
+        if viewModel.getSelectedCategory().elementsEqual(viewModelCell.getName()) {
             cell.showCheckmark = true
         }
 

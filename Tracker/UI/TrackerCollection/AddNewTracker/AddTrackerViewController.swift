@@ -245,7 +245,8 @@ extension AddTrackerViewController: UITableViewDelegate {
         tableView.deselectRow(at: indexPath, animated: true)
         
         if indexPath.row == 0 {
-            let destinationViewController = CategoryViewController(selectedCategory: selectedCategory)
+            let selectedCategoryViewModel = CategoryNamesViewModel(selectedCategory: selectedCategory)
+            let destinationViewController = CategoryViewController(viewModel: selectedCategoryViewModel)
             destinationViewController.delegate = self
             present(destinationViewController, animated: true, completion: nil)
         } else {

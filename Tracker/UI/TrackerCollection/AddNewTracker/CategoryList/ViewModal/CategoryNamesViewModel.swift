@@ -8,6 +8,8 @@
 import Foundation
 
 class CategoryNamesViewModel {
+    var namesBinding: Binding<[CategoryNameViewModel]>?
+
     private let trackerCategoryStore = TrackerCategoryStore()
 
     private(set) var names: [CategoryNameViewModel] = [] {
@@ -16,9 +18,10 @@ class CategoryNamesViewModel {
         }
     }
 
-    var namesBinding: Binding<[CategoryNameViewModel]>?
+    private let selectedCategory: String
 
-    init() {
+    init(selectedCategory: String) {
+        self.selectedCategory = selectedCategory
         trackerCategoryStore.delegate = self
         names = trackerCategoryStore.categories.map{
             CategoryNameViewModel(
@@ -29,6 +32,10 @@ class CategoryNamesViewModel {
 
     func addNewTrackerCategory(_ trackerCategoryName: String) {
         try? trackerCategoryStore.addNewTrackerCategory(trackerCategoryName)
+    }
+
+    func getSelectedCategory() -> String {
+        return selectedCategory
     }
 }
 
