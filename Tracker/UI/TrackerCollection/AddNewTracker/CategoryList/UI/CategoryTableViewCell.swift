@@ -47,6 +47,12 @@ final class CategoryTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    override func prepareForReuse() {
+      super.prepareForReuse()
+      customSeparatorView.isHidden = false
+      checkmarkView.isHidden = true
+     }
+
     private func setupUI() {
         contentView.backgroundColor = .ypBackgroundDay
         customSeparatorView.backgroundColor = .ypLightGay
