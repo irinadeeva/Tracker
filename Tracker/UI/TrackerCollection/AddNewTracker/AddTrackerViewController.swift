@@ -206,10 +206,13 @@ extension AddTrackerViewController {
     }
 
     private func formatSelectedWeekdays() -> String {
-        let sortedWeekdays = selectedWeekdays.sorted { $0.rawValue < $1.rawValue }
+        if selectedWeekdays.count == WeekDay.allCases.count {
+            return "Каждый день"
+        }
+
         var resultString = ""
 
-        for day in sortedWeekdays {
+        for day in selectedWeekdays {
             switch day {
             case .monday:
                 resultString += "Пн"
@@ -227,7 +230,7 @@ extension AddTrackerViewController {
                 resultString += "Вс"
             }
 
-            if day != sortedWeekdays.last {
+            if day != selectedWeekdays.last {
                 resultString += ", "
             }
         }
@@ -328,6 +331,8 @@ extension AddTrackerViewController: ColorDelegate {
 
 extension AddTrackerViewController: ScheduleDelegate {
     func didDoneTapped(_ weekdays: [String]) {
+        selectedWeekdays = []
+
         for string in weekdays {
             if let weekday = WeekDay(rawValue: string) {
                 self.selectedWeekdays.append(weekday)

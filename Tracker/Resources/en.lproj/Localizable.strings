@@ -1,0 +1,17 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Irina Deeva on 17/04/24.
+  
+*/
+
+"trakers.title" = "Trackers";
+"trakers.filters" = "Filters";
+"tab.trackers" = "Trackers";
+"tab.statistics" = "Statistics";
+"emptyState.title" = "What are we tracking?";
+
+"delete" = "Delete";
+"delete.confirmation" = "Are you sure you want to delete the tracker?";
+"cancel" = "Dismiss";

@@ -97,7 +97,7 @@ extension TrackersViewController {
             navBar.topItem?.leftBarButtonItem = leftButton
 
             navBar.prefersLargeTitles = true
-            navBar.topItem?.title = "Трекеры"
+            navBar.topItem?.title = NSLocalizedString("trakers.title", comment: "Text displayed navigation bar title")
         }
 
         setUpSearchBar()
@@ -123,6 +123,7 @@ extension TrackersViewController {
         datePicker = UIDatePicker()
         datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
+        datePicker.locale = .current
         datePicker.addTarget(
             self,
             action: #selector(datePickerValueChanged(_:)),
@@ -170,7 +171,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         } else {
             filterContentForData(with: viewModel.getCategories())
             if filteredCategories.isEmpty {
-                collectionView.setEmptyMessage(message: "Что будем отслеживать?", image: "emptyTracker")
+                collectionView.setEmptyMessage(message: NSLocalizedString("emptyState.title", comment: "Text displayed on empty state"), image: "emptyTracker")
             } else {
                 collectionView.restore()
             }
@@ -214,7 +215,13 @@ extension TrackersViewController: UICollectionViewDataSource {
         }
 
         trackerCell.delegate = self
-        trackerCell.counterLabel.text = "\(counter) дней"
+
+        let daysString = String.localizedStringWithFormat(
+            NSLocalizedString("numberOfDays", comment: "Days of tracking a task"),
+            counter
+        )
+
+        trackerCell.counterLabel.text = daysString
         trackerCell.emojiLabel.text = tracker.emoji
         trackerCell.titleLabel.text = tracker.name
         trackerCell.rectangleView.backgroundColor = tracker.color
