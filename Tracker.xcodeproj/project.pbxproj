@@ -17,6 +17,7 @@
 		BE29CB8C2BA4516800BA4C7E /* TrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE29CB8B2BA4516800BA4C7E /* TrackerCell.swift */; };
 		BE601F972BCFB85C00A58082 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE601F952BCFB85C00A58082 /* Localizable.strings */; };
 		BE601F9C2BCFD27400A58082 /* Localizable.stringsdict in Resources */ = {isa = PBXBuildFile; fileRef = BE601F9A2BCFD27400A58082 /* Localizable.stringsdict */; };
+		BE601FA02BCFEA0B00A58082 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE601F9E2BCFEA0B00A58082 /* InfoPlist.strings */; };
 		BE64E3612BC4008F001AE582 /* EmojiMixCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3602BC4008F001AE582 /* EmojiMixCollectionViewCell.swift */; };
 		BE64E3632BC4015A001AE582 /* EmojiMixesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3622BC4015A001AE582 /* EmojiMixesViewController.swift */; };
 		BE64E3652BC43366001AE582 /* ColorCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3642BC43366001AE582 /* ColorCollectionViewController.swift */; };
@@ -62,6 +63,8 @@
 		BE601F992BCFBB4800A58082 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		BE601F9B2BCFD27400A58082 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = en; path = en.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		BE601F9D2BCFD4AC00A58082 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = ru; path = ru.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		BE601F9F2BCFEA0B00A58082 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE601FA12BCFEA1400A58082 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BE64E3602BC4008F001AE582 /* EmojiMixCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMixCollectionViewCell.swift; sourceTree = "<group>"; };
 		BE64E3622BC4015A001AE582 /* EmojiMixesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMixesViewController.swift; sourceTree = "<group>"; };
 		BE64E3642BC43366001AE582 /* ColorCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewController.swift; sourceTree = "<group>"; };
@@ -158,6 +161,7 @@
 			children = (
 				BE601F9A2BCFD27400A58082 /* Localizable.stringsdict */,
 				BE601F952BCFB85C00A58082 /* Localizable.strings */,
+				BE601F9E2BCFEA0B00A58082 /* InfoPlist.strings */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -352,6 +356,7 @@
 				BE601F9C2BCFD27400A58082 /* Localizable.stringsdict in Resources */,
 				BE601F972BCFB85C00A58082 /* Localizable.strings in Resources */,
 				BE7F96DB2B987C770073F9FC /* Assets.xcassets in Resources */,
+				BE601FA02BCFEA0B00A58082 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -419,6 +424,15 @@
 				BE601F9D2BCFD4AC00A58082 /* ru */,
 			);
 			name = Localizable.stringsdict;
+			sourceTree = "<group>";
+		};
+		BE601F9E2BCFEA0B00A58082 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BE601F9F2BCFEA0B00A58082 /* en */,
+				BE601FA12BCFEA1400A58082 /* ru */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 		BE7F96DC2B987C770073F9FC /* LaunchScreen.storyboard */ = {

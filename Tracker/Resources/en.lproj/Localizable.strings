@@ -6,12 +6,68 @@
   
 */
 
+// TrackersViewController
 "trakers.title" = "Trackers";
 "trakers.filters" = "Filters";
 "tab.trackers" = "Trackers";
 "tab.statistics" = "Statistics";
 "emptyState.title" = "What are we tracking?";
 
+//TreckerCell
+"contextMenu.pin" = "Pin";
+"contextMenu.edit" = "Edit";
+"contextMenu.delete" = "Delete";
+
+//ChoiceTrackerViewController
+"choice.title" = "Tracker creation";
+"choice.habitButton" = "Habit";
+"choice.eventButton" = "Occasional event";
+
+//AddTrackerViewController
+"addTracker.selectedTitleHabit" = "New habit";
+"addTracker.selectedTitleEvent" = "New occasional event";
+"addTracker.cellTitleCategory" = "Category";
+"addTracker.cellTitleSchedule" = "Schedule";
+"addTracker.textFieldPlaceholder" = "Enter the name of the tracker";
+"addTracker.discardButton" = "Discard";
+"addTracker.saveButton" = "Create";
+
+"addTracker.detailTextLabelEveryday" = "Every day";
+"addTracker.detailTextLabelMonday" = "Mon";
+"addTracker.detailTextLabelTuesday" = "Tue";
+"addTracker.detailTextLabelWednesday" = "Wed";
+"addTracker.detailTextLabelThursday" = "Thu";
+"addTracker.detailTextLabelFriday" = "Fri";
+"addTracker.detailTextLabelSaturday" = "Sat";
+"addTracker.detailTextLabelSunday" = "Sun";
+
+//ColorCollectionViewController
+"сolorCollection.header" = "Color";
+
+//ScheduleViewController
+"schedule.title" = "Schedule";
+"schedule.doneButton" = "Done";
+
+//WeekDay
+"weekDay.Monday" = "Monday";
+"weekDay.Tuesday" = "Tuesday";
+"weekDay.Wednesday" = "Wednesday";
+"weekDay.Thursday" = "Thursday";
+"weekDay.Friday" = "Friday";
+"weekDay.Saturday" = "Saturday";
+"weekDay.Sunday" = "Sunday";
+
+//CategoryViewController
+"category.title" = "Category";
+"category.addCategoryButton" = "Add Category";
+"category.emptyLabel" = "Habits and events can be\ngrouped by meaning";
+
+//AddNewCategoryViewController
+"addNewCategory.title" = "New Category";
+"addNewCategory.textFieldPlaceholder" = "Enter category name";
+"addNewCategory.doneButton" = "Done";
+
+//
 "delete" = "Delete";
 "delete.confirmation" = "Are you sure you want to delete the tracker?";
 "cancel" = "Dismiss";

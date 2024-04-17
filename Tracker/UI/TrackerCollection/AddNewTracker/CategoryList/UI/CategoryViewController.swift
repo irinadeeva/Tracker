@@ -11,7 +11,7 @@ final class CategoryViewController: UIViewController {
 
     private lazy var typeTitle: UILabel = {
         let typeTitle = UILabel()
-        typeTitle.text = "Категория"
+        typeTitle.text = NSLocalizedString("category.title", comment: "")
         typeTitle.textColor = .ypBlackDay
         typeTitle.font = .systemFont(ofSize: 16, weight: .medium)
         return typeTitle
@@ -41,7 +41,7 @@ final class CategoryViewController: UIViewController {
         button.backgroundColor = .ypBlackDay
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.setTitle("Добавить категорию", for: .normal)
+        button.setTitle(NSLocalizedString("category.addCategoryButton", comment: ""), for: .normal)
         return button
     }()
 
@@ -53,7 +53,7 @@ final class CategoryViewController: UIViewController {
 
     private lazy var labelStub: UILabel = {
         let labelStub = UILabel()
-        labelStub.text = "Привычки и события можно\nобъединить по смыслу"
+        labelStub.text = NSLocalizedString("category.emptyLabel", comment: "")
         labelStub.font = .systemFont(ofSize: 12, weight: .medium)
         labelStub.textColor = .black
         labelStub.numberOfLines = 2

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol ScheduleDelegate: AnyObject {
-    func didDoneTapped(_ weekdays: [String])
+    func didDoneTapped(_ weekdays: [WeekDay])
 }
 
 final class ScheduleViewController: UIViewController {
@@ -18,7 +18,7 @@ final class ScheduleViewController: UIViewController {
 
     private lazy var typeTitle: UILabel = {
         let typeTitle = UILabel()
-        typeTitle.text = "Расписание"
+        typeTitle.text = NSLocalizedString("schedule.title", comment: "")
         typeTitle.textColor = .ypBlackDay
         typeTitle.font = .systemFont(ofSize: 16, weight: .medium)
         return typeTitle
@@ -45,13 +45,13 @@ final class ScheduleViewController: UIViewController {
         button.backgroundColor = .ypBlackDay
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(NSLocalizedString("schedule.doneButton", comment: ""), for: .normal)
         return button
     }()
 
-    private var selectedWeekdays: [String] = []
+    private var selectedWeekdays: [WeekDay] = []
 
-    init(selectedWeekdays: [String]) {
+    init(selectedWeekdays: [WeekDay]) {
         self.selectedWeekdays = selectedWeekdays
         super.init(nibName: nil, bundle: nil)
     }
@@ -106,7 +106,8 @@ extension ScheduleViewController: UITableViewDataSource {
         }
 
         let weekday = weekdays[indexPath.row]
-        cell.updateLabel(title: weekday)
+        cell.weekday = weekday
+        cell.weekdayLabel.text = weekday.localizedString
         cell.backgroundColor = .ypBackgroundDay
         cell.textLabel?.textColor = .ypBlackDay
         cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
@@ -139,12 +140,12 @@ extension ScheduleViewController: UITableViewDelegate {
             cell.setTintWeekdaySwitch()
         }
 
-        switchStateChanged(for: cell.getLabelText(), isOn: cell.getWeekdaySwitchIsOn())
+        switchStateChanged(for: cell.weekday, isOn: cell.getWeekdaySwitchIsOn())
     }
 }
 
 extension ScheduleViewController: WeekdayTableViewCellDelegate {
-    func switchStateChanged(for weekday: String?, isOn: Bool) {
+    func switchStateChanged(for weekday: WeekDay?, isOn: Bool) {
         guard let weekday else { return }
 
         if isOn {
@@ -158,13 +159,15 @@ extension ScheduleViewController: WeekdayTableViewCellDelegate {
 }
 
 protocol WeekdayTableViewCellDelegate: AnyObject {
-    func switchStateChanged(for weekday: String?, isOn: Bool)
+    func switchStateChanged(for weekday: WeekDay?, isOn: Bool)
 }
 
 final class WeekdayTableViewCell: UITableViewCell {
     weak var delegate: WeekdayTableViewCellDelegate?
 
-    private let weekdayLabel: UILabel = {
+    var weekday: WeekDay?
+
+    var weekdayLabel: UILabel = {
         let label = UILabel()
         return label
     }()
@@ -224,15 +227,7 @@ final class WeekdayTableViewCell: UITableViewCell {
     }
 
     @objc private func switchValueChanged(_ sender: UISwitch) {
-        delegate?.switchStateChanged(for: weekdayLabel.text ?? "", isOn: sender.isOn)
-    }
-
-    func updateLabel(title: String) {
-        weekdayLabel.text = title
-    }
-
-    func getLabelText() -> String? {
-        return weekdayLabel.text
+        delegate?.switchStateChanged(for: weekday, isOn: sender.isOn)
     }
 
     func getWeekdaySwitchIsOn() -> Bool {

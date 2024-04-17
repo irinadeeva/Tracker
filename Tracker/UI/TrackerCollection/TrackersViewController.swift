@@ -222,9 +222,7 @@ extension TrackersViewController: UICollectionViewDataSource {
         )
 
         trackerCell.counterLabel.text = daysString
-        trackerCell.emojiLabel.text = tracker.emoji
-        trackerCell.titleLabel.text = tracker.name
-        trackerCell.rectangleView.backgroundColor = tracker.color
+        trackerCell.viewModel = TrackerCellViewModel(emojiLabel: tracker.emoji, titleLabel: tracker.name, viewColor: tracker.color)
         trackerCell.addButton.backgroundColor = tracker.color
 
         return trackerCell
@@ -372,6 +370,18 @@ extension TrackersViewController: TrackerCellButtonDelegate {
         }
 
         trackerCollection.reloadData()
+    }
+
+    func didTapPinCell(_ cell: TrackerCell) {
+        print("pin")
+    }
+
+    func didTapEditCell(_ cell: TrackerCell) {
+        print("edit")
+    }
+
+    func didTapDeleteCell(_ cell: TrackerCell) {
+        print("delete")
     }
 }
 

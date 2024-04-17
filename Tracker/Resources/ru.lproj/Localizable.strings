@@ -6,12 +6,68 @@
   
 */
 
+// TrackersViewController
 "trakers.title" = "Трекеры";
 "trakers.filters" = "Фильтры";
 "tab.trackers" = "Трекеры";
 "tab.statistics" = "Статистика";
 "emptyState.title" = "Что будем отслеживать?";
 
+//TreckerCell
+"contextMenu.pin" = "Закрепить";
+"contextMenu.edit" = "Редактировать";
+"contextMenu.delete" = "Удалить";
+
+//ChoiceTrackerViewController
+"choice.title" = "Создание трекера";
+"choice.habitButton" = "Привычка";
+"choice.eventButton" = "Нерегулярное событие";
+
+//AddTrackerViewController
+"addTracker.selectedTitleHabit" = "Новая привычка";
+"addTracker.selectedTitleEvent" = "Новое нерегулярное событие";
+"addTracker.cellTitleCategory" = "Категория";
+"addTracker.cellTitleSchedule" = "Расписание";
+"addTracker.textFieldPlaceholder" = "Введите название трекера";
+"addTracker.discardButton" = "Отменить";
+"addTracker.saveButton" = "Создать";
+
+"addTracker.detailTextLabelEveryday" = "Каждый день";
+"addTracker.detailTextLabelMonday" = "Пн";
+"addTracker.detailTextLabelTuesday" = "Вт";
+"addTracker.detailTextLabelWednesday" = "Ср";
+"addTracker.detailTextLabelThursday" = "Чт";
+"addTracker.detailTextLabelFriday" = "Пт";
+"addTracker.detailTextLabelSaturday" = "Сб";
+"addTracker.detailTextLabelSunday" = "Вс";
+
+//ColorCollectionViewController
+"сolorCollection.header" = "Цвет";
+
+//ScheduleViewController
+"schedule.title" = "Расписание";
+"schedule.doneButton" = "Готово";
+
+//WeekDay
+"weekDay.Monday" = "Понедельник";
+"weekDay.Tuesday" = "Вторник";
+"weekDay.Wednesday" = "Среда";
+"weekDay.Thursday" = "Четверг";
+"weekDay.Friday" = "Пятница";
+"weekDay.Saturday" = "Суббота";
+"weekDay.Sunday" = "Воскресенье";
+
+//CategoryViewController
+"category.title" = "Категория";
+"category.addCategoryButton" = "Добавить категорию";
+"category.emptyLabel" = "Привычки и события можно\nобъединить по смыслу";
+
+//AddNewCategoryViewController
+"addNewCategory.title" = "Новая категория";
+"addNewCategory.textFieldPlaceholder" = "Введите название категории";
+"addNewCategory.doneButton" = "Готово";
+
+//
 "delete" = "Удалить";
 "delete.confirmation" = "Уверены что хотите удалить трекер?";
 "cancel" = "Отменить"; 

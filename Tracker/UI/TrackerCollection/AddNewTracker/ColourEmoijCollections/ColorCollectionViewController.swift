@@ -104,7 +104,7 @@ extension ColorCollectionViewController: UICollectionViewDataSource {
             return UICollectionReusableView()
         }
         
-        view.titleLabel.text = "Цвет"
+        view.titleLabel.text = NSLocalizedString("сolorCollection.header", comment: "")
         return view
     }
 }

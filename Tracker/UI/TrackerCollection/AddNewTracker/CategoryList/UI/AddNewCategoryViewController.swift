@@ -15,7 +15,7 @@ final class AddNewCategoryViewController: UIViewController {
     
     private var typeTitle: UILabel = {
         let typeTitle = UILabel()
-        typeTitle.text = "Новая категория"
+        typeTitle.text = NSLocalizedString("addNewCategory.title", comment: "")
         typeTitle.textColor = .ypBlackDay
         typeTitle.font = .systemFont(ofSize: 16, weight: .medium)
         return typeTitle
@@ -25,7 +25,7 @@ final class AddNewCategoryViewController: UIViewController {
         let textField = UITextField()
         textField.backgroundColor = .ypBackgroundDay
         textField.layer.cornerRadius = 16
-        textField.placeholder = "Введите название категории"
+        textField.placeholder = NSLocalizedString("addNewCategory.textFieldPlaceholder", comment: "")
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftView = leftView
         textField.leftViewMode = .always
@@ -40,7 +40,7 @@ final class AddNewCategoryViewController: UIViewController {
         button.tintColor = .ypWhite
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.setTitle("Готово", for: .normal)
+        button.setTitle(NSLocalizedString("addNewCategory.doneButton", comment: ""), for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .ypGray
         button.isEnabled = false
@@ -97,7 +97,6 @@ extension AddNewCategoryViewController {
         }
     }
 }
-
 
 extension AddNewCategoryViewController: UITextFieldDelegate {
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
