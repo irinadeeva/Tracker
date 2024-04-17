@@ -10,6 +10,11 @@
 "onboarding.secondTitle" = "Even if it's not liters of water and yoga";
 "onboarding.doneButton" = "Wow, technology!";
 
+//StatisticViewController
+"emptyStatistic.title" = "Nothing to analyze yet";
+"statistic.title" = "Statistics";
+"completedStatisticCard.title" = "Completed trackers";
+
 // TrackersViewController
 "trakers.title" = "Trackers";
 "trakers.filters" = "Filters";

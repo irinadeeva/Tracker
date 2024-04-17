@@ -12,6 +12,11 @@
 "onboarding.secondTitle" = "Даже если это не литры воды и йога";
 "onboarding.doneButton" = "Вот это технологии!";
 
+//StatisticViewController
+"emptyStatistic.title" = "Анализировать пока нечего";
+"statistic.title" = "Статистика";
+"completedStatisticCard.title" = "Трекеров завершено";
+
 // TrackersViewController
 "trakers.title" = "Трекеры";
 "trakers.filters" = "Фильтры";

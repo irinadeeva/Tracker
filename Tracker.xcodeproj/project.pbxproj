@@ -20,6 +20,7 @@
 		BE601FA02BCFEA0B00A58082 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BE601F9E2BCFEA0B00A58082 /* InfoPlist.strings */; };
 		BE601FA72BD017A100A58082 /* TrackerCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FA62BD017A100A58082 /* TrackerCellViewModel.swift */; };
 		BE601FA92BD017C700A58082 /* TrackerCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FA82BD017C700A58082 /* TrackerCardView.swift */; };
+		BE601FAB2BD0682100A58082 /* StatisticCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FAA2BD0682100A58082 /* StatisticCardView.swift */; };
 		BE64E3612BC4008F001AE582 /* EmojiMixCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3602BC4008F001AE582 /* EmojiMixCollectionViewCell.swift */; };
 		BE64E3632BC4015A001AE582 /* EmojiMixesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3622BC4015A001AE582 /* EmojiMixesViewController.swift */; };
 		BE64E3652BC43366001AE582 /* ColorCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3642BC43366001AE582 /* ColorCollectionViewController.swift */; };
@@ -69,6 +70,7 @@
 		BE601FA12BCFEA1400A58082 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BE601FA62BD017A100A58082 /* TrackerCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCellViewModel.swift; sourceTree = "<group>"; };
 		BE601FA82BD017C700A58082 /* TrackerCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCardView.swift; sourceTree = "<group>"; };
+		BE601FAA2BD0682100A58082 /* StatisticCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticCardView.swift; sourceTree = "<group>"; };
 		BE64E3602BC4008F001AE582 /* EmojiMixCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMixCollectionViewCell.swift; sourceTree = "<group>"; };
 		BE64E3622BC4015A001AE582 /* EmojiMixesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMixesViewController.swift; sourceTree = "<group>"; };
 		BE64E3642BC43366001AE582 /* ColorCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewController.swift; sourceTree = "<group>"; };
@@ -225,6 +227,7 @@
 			isa = PBXGroup;
 			children = (
 				BE29CB872BA0C1E000BA4C7E /* StatisticViewController.swift */,
+				BE601FAA2BD0682100A58082 /* StatisticCardView.swift */,
 			);
 			path = Statictic;
 			sourceTree = "<group>";
@@ -404,6 +407,7 @@
 				BE75C99B2BAC41BB000506D3 /* TrackerRecord.swift in Sources */,
 				BE29CB8C2BA4516800BA4C7E /* TrackerCell.swift in Sources */,
 				BE9CF5E12BBBDBD100D2DE8D /* Tracker.xcdatamodeld in Sources */,
+				BE601FAB2BD0682100A58082 /* StatisticCardView.swift in Sources */,
 				BE64E3D32BCC1048001AE582 /* OnboardingPageViewController.swift in Sources */,
 				BE1351942BCD34BA00910172 /* CategoryTableViewCell.swift in Sources */,
 				BE64E3612BC4008F001AE582 /* EmojiMixCollectionViewCell.swift in Sources */,
