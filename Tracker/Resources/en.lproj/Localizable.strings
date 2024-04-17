@@ -5,6 +5,10 @@
   Created by Irina Deeva on 17/04/24.
   
 */
+//OnboardingPageViewController
+"onboarding.firstTitle" = "Track only what you want";
+"onboarding.secondTitle" = "Even if it's not liters of water and yoga";
+"onboarding.doneButton" = "Wow, technology!";
 
 // TrackersViewController
 "trakers.title" = "Trackers";
@@ -12,6 +16,7 @@
 "tab.trackers" = "Trackers";
 "tab.statistics" = "Statistics";
 "emptyState.title" = "What are we tracking?";
+"emptySearch.title" = "Nothing was found";
 
 //TreckerCell
 "contextMenu.pin" = "Pin";

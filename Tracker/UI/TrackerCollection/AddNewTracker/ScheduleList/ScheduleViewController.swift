@@ -73,7 +73,7 @@ final class ScheduleViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            typeTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 26),
+            typeTitle.topAnchor.constraint(equalTo: view.topAnchor, constant: 13),
             typeTitle.centerXAnchor.constraint(equalTo: view.centerXAnchor),
 
             tableView.topAnchor.constraint(equalTo: typeTitle.bottomAnchor, constant: 24),

@@ -164,7 +164,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         if isFiltering {
             if filteredCategories.isEmpty {
-                collectionView.setEmptyMessage(message: "Ничего не найдено", image: "emptySearch")
+                collectionView.setEmptyMessage(message: NSLocalizedString("emptySearch.title", comment: ""), image: "emptySearch")
             } else {
                 collectionView.restore()
             }

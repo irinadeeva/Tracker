@@ -10,7 +10,7 @@ import UIKit
 final class OnboardingViewController: UIViewController {
     private var typeTitle: UILabel = {
         let typeTitle = UILabel()
-        typeTitle.textColor = .ypBlackDay
+        typeTitle.textColor = .ypBlackAny
         typeTitle.font = .systemFont(ofSize: 32, weight: .bold)
         typeTitle.numberOfLines = 2
         typeTitle.textAlignment = .center

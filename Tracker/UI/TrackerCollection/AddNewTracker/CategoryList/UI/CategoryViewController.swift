@@ -55,7 +55,7 @@ final class CategoryViewController: UIViewController {
         let labelStub = UILabel()
         labelStub.text = NSLocalizedString("category.emptyLabel", comment: "")
         labelStub.font = .systemFont(ofSize: 12, weight: .medium)
-        labelStub.textColor = .black
+        labelStub.textColor = .ypBlackDay
         labelStub.numberOfLines = 2
         labelStub.textAlignment = .center
         return labelStub

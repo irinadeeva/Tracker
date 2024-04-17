@@ -6,12 +6,19 @@
   
 */
 
+
+//OnboardingPageViewController
+"onboarding.firstTitle" = "Отслеживайте только то, что хотите";
+"onboarding.secondTitle" = "Даже если это не литры воды и йога";
+"onboarding.doneButton" = "Вот это технологии!";
+
 // TrackersViewController
 "trakers.title" = "Трекеры";
 "trakers.filters" = "Фильтры";
 "tab.trackers" = "Трекеры";
 "tab.statistics" = "Статистика";
 "emptyState.title" = "Что будем отслеживать?";
+"emptySearch.title" = "Ничего не найдено";
 
 //TreckerCell
 "contextMenu.pin" = "Закрепить";
