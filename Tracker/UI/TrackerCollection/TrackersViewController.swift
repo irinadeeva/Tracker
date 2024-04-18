@@ -399,7 +399,11 @@ extension TrackersViewController: FilterChoiceDelegate {
         selectedFilter = filter
 
         if selectedFilter == .all {
-            // code
+            let components = Calendar.current.dateComponents([.year, .month, .day], from: datePicker.date)
+            guard let date = Calendar.current.date(from: components) else { return }
+            currentDate = date
+
+            filterContentForData(with: viewModel.getCategories())
         }
         if selectedFilter == .today {
             currentDate = Date().startOfDay
