@@ -19,7 +19,7 @@ final class TrackerCell: UICollectionViewCell {
 
     var counterLabel: UILabel!
     var addButton: UIButton!
-    var viewModel: TrackerCellViewModel! {
+    var viewModel: TrackerCellViewModel? {
         didSet {
             trackerCardView.viewModel = viewModel
             trackerCardView.setUpView()
@@ -56,12 +56,11 @@ extension TrackerCell {
 
     private func setupContextMenu() {
         let contextMenu = UIContextMenuInteraction(delegate: self)
-        trackerCardView.isUserInteractionEnabled = true
+//        trackerCardView.isUserInteractionEnabled = true
         trackerCardView.addInteraction(contextMenu)
     }
 
     private func setupConstraints() {
-
         NSLayoutConstraint.activate([
             trackerCardView.topAnchor.constraint(equalTo: contentView.topAnchor),
             trackerCardView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

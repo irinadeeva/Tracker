@@ -8,10 +8,11 @@
 import UIKit
 
 final class TrackerCardView: UIView {
-    var emojiLabel: UILabel!
-    var titleLabel: UILabel!
     var viewModel: TrackerCellViewModel?
-    var rectangleView: UIView!
+    
+    private var emojiLabel: UILabel!
+    private var titleLabel: UILabel!
+    private var rectangleView: UIView!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -24,6 +25,9 @@ final class TrackerCardView: UIView {
 
     private func setupLayout() {
         backgroundColor = .clear
+        layer.cornerRadius = 16
+        layer.masksToBounds = true
+
         setupRectangleView()
         setupTitleLabel()
         setupEmojiLabel()
