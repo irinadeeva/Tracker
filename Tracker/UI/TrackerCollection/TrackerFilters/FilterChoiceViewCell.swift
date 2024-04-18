@@ -1,14 +1,6 @@
 import UIKit
 
-final class SampleTableViewCell: UITableViewCell {
-    var viewModel: CategoryNameViewModel? {
-        didSet {
-            viewModel?.nameBinding = { [weak self] name in
-                self?.categoryLabel.text = name
-            }
-        }
-    }
-
+final class FilterChoiceViewCell: UITableViewCell {
     private let checkmarkView: UIImageView = {
         let view = UIImageView(image: UIImage(named: "ypCheck"))
         view.isHidden = true
@@ -22,7 +14,7 @@ final class SampleTableViewCell: UITableViewCell {
         }
     }
 
-    private let categoryLabel: UILabel = {
+    var categoryLabel: UILabel = {
         let label = UILabel()
         label.textColor = .ypBlackDay
         label.font = .systemFont(ofSize: 17, weight: .regular)
@@ -80,8 +72,5 @@ final class SampleTableViewCell: UITableViewCell {
             customSeparatorView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-
-    func getLabelText() -> String? {
-        return categoryLabel.text
-    }
 }
+

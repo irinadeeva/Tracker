@@ -26,7 +26,7 @@ final class CategoryViewController: UIViewController {
         tableView.isScrollEnabled = true
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
-        tableView.register(SampleTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CategoryNameTableViewCell.self, forCellReuseIdentifier: "cell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         tableView.allowsSelection = true
@@ -150,7 +150,7 @@ extension CategoryViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? SampleTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? CategoryNameTableViewCell else {
             return UITableViewCell()
         }
 
@@ -179,7 +179,7 @@ extension CategoryViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        guard let cell = tableView.cellForRow(at: indexPath) as? SampleTableViewCell else {
+        guard let cell = tableView.cellForRow(at: indexPath) as? CategoryNameTableViewCell else {
             return
         }
 

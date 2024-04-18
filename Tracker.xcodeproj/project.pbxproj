@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BE1351942BCD34BA00910172 /* SampleTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1351932BCD34BA00910172 /* SampleTableViewCell.swift */; };
+		BE1351942BCD34BA00910172 /* CategoryNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1351932BCD34BA00910172 /* CategoryNameTableViewCell.swift */; };
 		BE1351962BCD34DE00910172 /* AddNewCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1351952BCD34DE00910172 /* AddNewCategoryViewController.swift */; };
 		BE1351992BCD388100910172 /* CategoryNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1351982BCD388100910172 /* CategoryNameViewModel.swift */; };
 		BE13519C2BCD38B000910172 /* CategoryNamesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE13519B2BCD38B000910172 /* CategoryNamesViewModel.swift */; };
@@ -23,6 +23,7 @@
 		BE601FAB2BD0682100A58082 /* StatisticCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FAA2BD0682100A58082 /* StatisticCardView.swift */; };
 		BE601FAE2BD13A7900A58082 /* FilterChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FAD2BD13A7900A58082 /* FilterChoiceViewController.swift */; };
 		BE601FB02BD13BDC00A58082 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FAF2BD13BDC00A58082 /* Filter.swift */; };
+		BE601FB32BD1471100A58082 /* FilterChoiceViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FB22BD1471100A58082 /* FilterChoiceViewCell.swift */; };
 		BE64E3612BC4008F001AE582 /* EmojiMixCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3602BC4008F001AE582 /* EmojiMixCollectionViewCell.swift */; };
 		BE64E3632BC4015A001AE582 /* EmojiMixesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3622BC4015A001AE582 /* EmojiMixesViewController.swift */; };
 		BE64E3652BC43366001AE582 /* ColorCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3642BC43366001AE582 /* ColorCollectionViewController.swift */; };
@@ -54,7 +55,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		BE1351932BCD34BA00910172 /* SampleTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleTableViewCell.swift; sourceTree = "<group>"; };
+		BE1351932BCD34BA00910172 /* CategoryNameTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryNameTableViewCell.swift; sourceTree = "<group>"; };
 		BE1351952BCD34DE00910172 /* AddNewCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewCategoryViewController.swift; sourceTree = "<group>"; };
 		BE1351982BCD388100910172 /* CategoryNameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryNameViewModel.swift; sourceTree = "<group>"; };
 		BE13519B2BCD38B000910172 /* CategoryNamesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryNamesViewModel.swift; sourceTree = "<group>"; };
@@ -74,6 +75,7 @@
 		BE601FAA2BD0682100A58082 /* StatisticCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticCardView.swift; sourceTree = "<group>"; };
 		BE601FAD2BD13A7900A58082 /* FilterChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChoiceViewController.swift; sourceTree = "<group>"; };
 		BE601FAF2BD13BDC00A58082 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
+		BE601FB22BD1471100A58082 /* FilterChoiceViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChoiceViewCell.swift; sourceTree = "<group>"; };
 		BE64E3602BC4008F001AE582 /* EmojiMixCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMixCollectionViewCell.swift; sourceTree = "<group>"; };
 		BE64E3622BC4015A001AE582 /* EmojiMixesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMixesViewController.swift; sourceTree = "<group>"; };
 		BE64E3642BC43366001AE582 /* ColorCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewController.swift; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 		BE13519A2BCD388A00910172 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				BE1351932BCD34BA00910172 /* CategoryNameTableViewCell.swift */,
 				BE9CF5B82BB5783C00D2DE8D /* CategoryViewController.swift */,
 				BE1351952BCD34DE00910172 /* AddNewCategoryViewController.swift */,
 			);
@@ -186,16 +189,9 @@
 			isa = PBXGroup;
 			children = (
 				BE601FAD2BD13A7900A58082 /* FilterChoiceViewController.swift */,
+				BE601FB22BD1471100A58082 /* FilterChoiceViewCell.swift */,
 			);
 			path = TrackerFilters;
-			sourceTree = "<group>";
-		};
-		BE601FB12BD1448E00A58082 /* Sample */ = {
-			isa = PBXGroup;
-			children = (
-				BE1351932BCD34BA00910172 /* SampleTableViewCell.swift */,
-			);
-			path = Sample;
 			sourceTree = "<group>";
 		};
 		BE64E3A12BCB37D1001AE582 /* ViewModal */ = {
@@ -233,7 +229,6 @@
 		BE75C99D2BB0C35F000506D3 /* TrackerCollection */ = {
 			isa = PBXGroup;
 			children = (
-				BE601FB12BD1448E00A58082 /* Sample */,
 				BE601FAC2BD13A5200A58082 /* TrackerFilters */,
 				BE9CF5B52BB577AA00D2DE8D /* AddNewTracker */,
 				BE601FA22BD0177900A58082 /* TrackelCell */,
@@ -421,6 +416,7 @@
 				BE64E3632BC4015A001AE582 /* EmojiMixesViewController.swift in Sources */,
 				BE29CB862BA0B48700BA4C7E /* TabBarController.swift in Sources */,
 				BE75C9A62BB1C54B000506D3 /* SupplementaryView.swift in Sources */,
+				BE601FB32BD1471100A58082 /* FilterChoiceViewCell.swift in Sources */,
 				BE601FAE2BD13A7900A58082 /* FilterChoiceViewController.swift in Sources */,
 				BE7F96D22B987C760073F9FC /* AppDelegate.swift in Sources */,
 				BE64E3652BC43366001AE582 /* ColorCollectionViewController.swift in Sources */,
@@ -429,7 +425,7 @@
 				BE9CF5E12BBBDBD100D2DE8D /* Tracker.xcdatamodeld in Sources */,
 				BE601FAB2BD0682100A58082 /* StatisticCardView.swift in Sources */,
 				BE64E3D32BCC1048001AE582 /* OnboardingPageViewController.swift in Sources */,
-				BE1351942BCD34BA00910172 /* SampleTableViewCell.swift in Sources */,
+				BE1351942BCD34BA00910172 /* CategoryNameTableViewCell.swift in Sources */,
 				BE64E3612BC4008F001AE582 /* EmojiMixCollectionViewCell.swift in Sources */,
 				BE64E3A32BCB37E4001AE582 /* Binging.swift in Sources */,
 				BE7F96D42B987C760073F9FC /* SceneDelegate.swift in Sources */,

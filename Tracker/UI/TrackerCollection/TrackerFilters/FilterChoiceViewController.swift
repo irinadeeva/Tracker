@@ -32,7 +32,7 @@ final class FilterChoiceViewController: UIViewController {
         tableView.isScrollEnabled = false
         tableView.layer.cornerRadius = 16
         tableView.layer.masksToBounds = true
-        tableView.register(SampleTableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(FilterChoiceViewCell.self, forCellReuseIdentifier: "cell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.separatorStyle = .none
         return tableView
@@ -77,15 +77,22 @@ extension FilterChoiceViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? SampleTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? FilterChoiceViewCell else {
             return UITableViewCell()
         }
         
         let filter = filters[indexPath.row]
         cell.backgroundColor = .ypBackgroundDay
-        cell.textLabel?.text = filter.localizedString
-        cell.textLabel?.textColor = .ypBlackDay
-        cell.textLabel?.font = .systemFont(ofSize: 17, weight: .regular)
+        cell.categoryLabel.text = filter.localizedString
+
+
+        if filter == selectedFilter {
+            cell.showCheckmark = true
+        }
+
+        if indexPath.row == filters.count - 1 {
+            cell.showSeparator = false
+        }
 
         return cell
     }
@@ -98,7 +105,7 @@ extension FilterChoiceViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
-        guard let cell = tableView.cellForRow(at: indexPath) as? SampleTableViewCell else {
+        guard let cell = tableView.cellForRow(at: indexPath) as? FilterChoiceViewCell else {
             return
         }
 
