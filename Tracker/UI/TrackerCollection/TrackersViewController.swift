@@ -206,9 +206,11 @@ extension TrackersViewController: UICollectionViewDataSource {
         } else {
             filterContentForData(with: viewModel.getCategories())
             if filteredCategories.isEmpty {
-                collectionView.setEmptyMessage(message: NSLocalizedString("emptyState.title", comment: "Text displayed on empty state"), image: "emptyTracker")
+                collectionView.setEmptyMessage(message: NSLocalizedString("emptyState.title", comment: ""), image: "emptyTracker")
+                filtersButton.isHidden = true
             } else {
                 collectionView.restore()
+                filtersButton.isHidden = false
             }
         }
         return filteredCategories.count
