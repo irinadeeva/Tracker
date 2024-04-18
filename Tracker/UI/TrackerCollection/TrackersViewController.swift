@@ -386,7 +386,20 @@ extension TrackersViewController: TrackerCellButtonDelegate {
     }
 
     func didTapDeleteCell(_ cell: TrackerCell) {
-        print("delete")
+        let alertController = UIAlertController(title: nil, message: NSLocalizedString("trackersAlert.message", comment: ""), preferredStyle: .actionSheet)
+
+        let deleteAction = UIAlertAction(title: NSLocalizedString("trackersActionDelete.title", comment: ""), style: .destructive) { _ in
+
+            print("delete")
+            // Действие, которое будет выполнено при нажатии на кнопку "Удалить"
+//            self.deleteTracker()
+        }
+        let cancelAction = UIAlertAction(title: NSLocalizedString("trackersActionDiscard.title", comment: ""), style: .cancel, handler: nil)
+
+        alertController.addAction(deleteAction)
+        alertController.addAction(cancelAction)
+
+        present(alertController, animated: true, completion: nil)
     }
 }
 

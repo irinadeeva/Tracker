@@ -22,6 +22,9 @@
 "tab.statistics" = "Statistics";
 "emptyState.title" = "What are we tracking?";
 "emptySearch.title" = "Nothing was found";
+"trackersAlert.message" = "Are you sure you want to delete the tracker?";
+"trackersActionDelete.title" = "Delete";
+"trackersActionDiscard.title" = "Cancel";
 
 //TreckerCell
 "contextMenu.pin" = "Pin";

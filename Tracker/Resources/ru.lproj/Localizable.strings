@@ -24,6 +24,10 @@
 "tab.statistics" = "Статистика";
 "emptyState.title" = "Что будем отслеживать?";
 "emptySearch.title" = "Ничего не найдено";
+"trackersAlert.message" = "Уверены, что хотите удалить трекер?";
+"trackersActionDelete.title" = "Удалить";
+"trackersActionDiscard.title" = "Отменить";
+
 
 //TreckerCell
 "contextMenu.pin" = "Закрепить";
