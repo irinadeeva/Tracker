@@ -133,21 +133,6 @@ extension TrackersViewController {
         navigationItem.searchController = searchController
     }
 
-    @objc private func filtersButtonTapped(_ sender: UIButton) {
-        let nextController = FilterChoiceViewController(selectedFilter: selectedFilter)
-        nextController.delegate = self
-        nextController.isModalInPresentation = true
-        present(nextController, animated: true)
-    }
-
-    @objc
-    private func addTracker() {
-        let addTrackerViewController = ChoiceTrackerViewController()
-        addTrackerViewController.delegate = self
-        addTrackerViewController.modalPresentationStyle = .automatic
-        present(addTrackerViewController, animated: true, completion: nil)
-    }
-
     private func setUpDatePicker() {
         datePicker = UIDatePicker()
         datePicker.preferredDatePickerStyle = .compact
@@ -168,6 +153,23 @@ extension TrackersViewController {
         filterContentForData(with: viewModel.getCategories())
     }
 
+    @objc private func filtersButtonTapped(_ sender: UIButton) {
+        let nextController = FilterChoiceViewController(selectedFilter: selectedFilter)
+        nextController.delegate = self
+        nextController.isModalInPresentation = true
+        present(nextController, animated: true)
+    }
+
+    @objc
+    private func addTracker() {
+        let addTrackerViewController = ChoiceTrackerViewController()
+        addTrackerViewController.delegate = self
+        addTrackerViewController.modalPresentationStyle = .automatic
+        present(addTrackerViewController, animated: true, completion: nil)
+    }
+}
+
+extension TrackersViewController {
     private func filterContentForData(with categories: [TrackerCategory]) {
         let dayNumber = Calendar.current.component(.weekday, from: currentDate)
         let currentWeekDate = WeekDay.allCases[dayNumber - 1]
@@ -185,6 +187,10 @@ extension TrackersViewController {
             }
         }
 
+        trackerCollection.reloadData()
+    }
+
+    private func filterContentForCompletion(with categories: [TrackerCategory]) {
         trackerCollection.reloadData()
     }
 }
@@ -391,5 +397,20 @@ extension TrackersViewController: ChoiceTrackerDelegate {
 extension TrackersViewController: FilterChoiceDelegate {
     func didDoneTapped(_ filter: Filter) {
         selectedFilter = filter
+
+        if selectedFilter == .all {
+            // code
+        }
+        if selectedFilter == .today {
+            currentDate = Date().startOfDay
+            datePicker.date = currentDate
+            filterContentForData(with: viewModel.getCategories())
+        }
+        if selectedFilter == .completed {
+            // code
+        }
+        if selectedFilter == .uncompleted {
+            // code
+        }
     }
 }
