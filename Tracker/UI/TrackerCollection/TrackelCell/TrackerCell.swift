@@ -26,7 +26,7 @@ final class TrackerCell: UICollectionViewCell {
       }
     }
 
-    private var trackerCardView: TrackerCardView!
+    private var trackerCardView = TrackerCardView()
 
     weak var delegate: TrackerCellButtonDelegate?
     private var isButtonSelected: Bool = false
@@ -47,7 +47,6 @@ extension TrackerCell {
         setupCounterLabel()
         setupAddButton()
 
-        trackerCardView = TrackerCardView()
         trackerCardView.translatesAutoresizingMaskIntoConstraints = false
 
         contentView.addSubview(trackerCardView)
