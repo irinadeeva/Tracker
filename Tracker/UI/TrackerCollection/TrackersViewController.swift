@@ -8,7 +8,7 @@
 import UIKit
 
 final class TrackersViewController: UIViewController {
-    private let viewModel = CategoriesViewModal()
+    private let viewModel = TrackersViewModal()
     private var trackerRecordStore = TrackerRecordStore()
 
     private var trackerCollection: UICollectionView!
