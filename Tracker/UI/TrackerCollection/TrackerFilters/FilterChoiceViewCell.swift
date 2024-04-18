@@ -1,13 +1,6 @@
 import UIKit
 
 final class FilterChoiceViewCell: UITableViewCell {
-    private let checkmarkView: UIImageView = {
-        let view = UIImageView(image: UIImage(named: "ypCheck"))
-        view.isHidden = true
-
-        return view
-    }()
-
     var showCheckmark: Bool = false {
         didSet {
             checkmarkView.isHidden = !showCheckmark
@@ -21,13 +14,22 @@ final class FilterChoiceViewCell: UITableViewCell {
         return label
     }()
 
-    private let customSeparatorView = UIView()
+    var filter: Filter?
 
     var showSeparator: Bool = true {
         didSet {
             customSeparatorView.isHidden = !showSeparator
         }
     }
+
+    private let checkmarkView: UIImageView = {
+        let view = UIImageView(image: UIImage(named: "ypCheck"))
+        view.isHidden = true
+
+        return view
+    }()
+
+    private let customSeparatorView = UIView()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

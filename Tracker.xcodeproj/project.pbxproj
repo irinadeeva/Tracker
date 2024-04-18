@@ -24,6 +24,8 @@
 		BE601FAE2BD13A7900A58082 /* FilterChoiceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FAD2BD13A7900A58082 /* FilterChoiceViewController.swift */; };
 		BE601FB02BD13BDC00A58082 /* Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FAF2BD13BDC00A58082 /* Filter.swift */; };
 		BE601FB32BD1471100A58082 /* FilterChoiceViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FB22BD1471100A58082 /* FilterChoiceViewCell.swift */; };
+		BE601FB62BD14A8400A58082 /* DataExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FB52BD14A8400A58082 /* DataExtention.swift */; };
+		BE601FB82BD14ABA00A58082 /* UICollectionExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE601FB72BD14ABA00A58082 /* UICollectionExtention.swift */; };
 		BE64E3612BC4008F001AE582 /* EmojiMixCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3602BC4008F001AE582 /* EmojiMixCollectionViewCell.swift */; };
 		BE64E3632BC4015A001AE582 /* EmojiMixesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3622BC4015A001AE582 /* EmojiMixesViewController.swift */; };
 		BE64E3652BC43366001AE582 /* ColorCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3642BC43366001AE582 /* ColorCollectionViewController.swift */; };
@@ -76,6 +78,8 @@
 		BE601FAD2BD13A7900A58082 /* FilterChoiceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChoiceViewController.swift; sourceTree = "<group>"; };
 		BE601FAF2BD13BDC00A58082 /* Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filter.swift; sourceTree = "<group>"; };
 		BE601FB22BD1471100A58082 /* FilterChoiceViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterChoiceViewCell.swift; sourceTree = "<group>"; };
+		BE601FB52BD14A8400A58082 /* DataExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataExtention.swift; sourceTree = "<group>"; };
+		BE601FB72BD14ABA00A58082 /* UICollectionExtention.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UICollectionExtention.swift; sourceTree = "<group>"; };
 		BE64E3602BC4008F001AE582 /* EmojiMixCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMixCollectionViewCell.swift; sourceTree = "<group>"; };
 		BE64E3622BC4015A001AE582 /* EmojiMixesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiMixesViewController.swift; sourceTree = "<group>"; };
 		BE64E3642BC43366001AE582 /* ColorCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCollectionViewController.swift; sourceTree = "<group>"; };
@@ -194,6 +198,15 @@
 			path = TrackerFilters;
 			sourceTree = "<group>";
 		};
+		BE601FB42BD14A7200A58082 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				BE601FB52BD14A8400A58082 /* DataExtention.swift */,
+				BE601FB72BD14ABA00A58082 /* UICollectionExtention.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		BE64E3A12BCB37D1001AE582 /* ViewModal */ = {
 			isa = PBXGroup;
 			children = (
@@ -266,6 +279,7 @@
 		BE7F96D02B987C760073F9FC /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				BE601FB42BD14A7200A58082 /* Helpers */,
 				BE601F922BCFB7E000A58082 /* Resources */,
 				BE64E3D12BCC1025001AE582 /* OnBording */,
 				BE64E3A12BCB37D1001AE582 /* ViewModal */,
@@ -400,6 +414,7 @@
 			files = (
 				BE29CB8A2BA0C25500BA4C7E /* TrackersViewController.swift in Sources */,
 				BE601FB02BD13BDC00A58082 /* Filter.swift in Sources */,
+				BE601FB82BD14ABA00A58082 /* UICollectionExtention.swift in Sources */,
 				BE75C9A02BB0E1B1000506D3 /* WeekDay.swift in Sources */,
 				BE64E3AB2BCBC787001AE582 /* TrackersViewModal.swift in Sources */,
 				BE9CF5FE2BC1456D00D2DE8D /* TrackerStore.swift in Sources */,
@@ -436,6 +451,7 @@
 				BE64E3902BC5FEF9001AE582 /* UIColorMarshalling.swift in Sources */,
 				BE1351992BCD388100910172 /* CategoryNameViewModel.swift in Sources */,
 				BE601FA72BD017A100A58082 /* TrackerCellViewModel.swift in Sources */,
+				BE601FB62BD14A8400A58082 /* DataExtention.swift in Sources */,
 				BE9CF5B42BB55B3800D2DE8D /* AddTrackerViewController.swift in Sources */,
 				BE64E3D52BCC1094001AE582 /* OnboardingViewController.swift in Sources */,
 			);

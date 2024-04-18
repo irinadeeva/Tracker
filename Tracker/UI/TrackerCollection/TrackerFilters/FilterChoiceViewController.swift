@@ -38,9 +38,9 @@ final class FilterChoiceViewController: UIViewController {
         return tableView
     }()
 
-    private var selectedFilter: Filter
+    private var selectedFilter: Filter?
 
-    init(selectedFilter: Filter) {
+    init(selectedFilter: Filter?) {
         self.selectedFilter = selectedFilter
         super.init(nibName: nil, bundle: nil)
     }
@@ -82,9 +82,9 @@ extension FilterChoiceViewController: UITableViewDataSource {
         }
         
         let filter = filters[indexPath.row]
+        cell.filter = filter
         cell.backgroundColor = .ypBackgroundDay
         cell.categoryLabel.text = filter.localizedString
-
 
         if filter == selectedFilter {
             cell.showCheckmark = true
@@ -109,8 +109,11 @@ extension FilterChoiceViewController: UITableViewDelegate {
             return
         }
 
-        // here send to delegate
-//        delegate?.didDoneTapped(<#T##filter: Filter##Filter#>)
+        guard let filter = cell.filter else {
+            return
+        }
+
+        delegate?.didDoneTapped(filter)
         dismiss(animated: true, completion: nil)
     }
 }
