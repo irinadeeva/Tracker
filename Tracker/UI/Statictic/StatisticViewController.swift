@@ -39,8 +39,12 @@ final class StatisticViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .ypWhite
 
-
         setupUI()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
         setupStatistic()
     }
 }
@@ -75,7 +79,10 @@ extension StatisticViewController {
 
         if completedTrackers == 0 {
             completedTrackersCard.isHidden = true
+            imageStub.isHidden = false
+            labelStub.isHidden = false
         } else {
+            completedTrackersCard.isHidden = false
             imageStub.isHidden = true
             labelStub.isHidden = true
 

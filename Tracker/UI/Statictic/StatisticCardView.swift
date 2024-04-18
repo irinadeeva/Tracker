@@ -19,7 +19,7 @@ final class StatisticCardView: UIView {
     private let counterLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 34, weight: .bold)
-        label.textColor = .ypWhite
+        label.textColor = .ypBlackDay
         label.textAlignment = .left
         return label
     }()
@@ -92,13 +92,11 @@ extension StatisticCardView {
             rectangular.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -1),
             rectangular.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -1),
 
-            counterLabel.leadingAnchor.constraint(equalTo: rectangular.leadingAnchor, constant: 11),
-            counterLabel.topAnchor.constraint(equalTo: rectangular.topAnchor, constant: 11),
-            counterLabel.heightAnchor.constraint(equalToConstant: 41),
+            counterLabel.leadingAnchor.constraint(equalTo: rectangular.leadingAnchor, constant: 12),
+            counterLabel.topAnchor.constraint(equalTo: rectangular.topAnchor, constant: 12),
 
-            statisticCardNameLabel.leadingAnchor.constraint(equalTo: rectangular.leadingAnchor, constant: 11),
-            statisticCardNameLabel.topAnchor.constraint(equalTo: counterLabel.bottomAnchor, constant: 7),
-            statisticCardNameLabel.heightAnchor.constraint(equalToConstant: 18)
+            statisticCardNameLabel.leadingAnchor.constraint(equalTo: rectangular.leadingAnchor, constant: 12),
+            statisticCardNameLabel.topAnchor.constraint(equalTo: counterLabel.bottomAnchor, constant: 7)
         ])
     }
 }
