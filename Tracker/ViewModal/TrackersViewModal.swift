@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class CategoriesViewModal {
+final class TrackersViewModal {
     private let trackerCategoryStore = TrackerCategoryStore()
 
     private var categories: [TrackerCategory] = [] {
@@ -32,7 +32,7 @@ final class CategoriesViewModal {
     }
 }
 
-extension CategoriesViewModal: TrackerCategoryStoreDelegate {
+extension TrackersViewModal: TrackerCategoryStoreDelegate {
     func storeCategory() {
         categories = trackerCategoryStore.categories
     }

@@ -29,7 +29,7 @@
 		BE64E3902BC5FEF9001AE582 /* UIColorMarshalling.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E38F2BC5FEF9001AE582 /* UIColorMarshalling.swift */; };
 		BE64E3922BC9388C001AE582 /* ChoiceTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3912BC9388C001AE582 /* ChoiceTrackerViewController.swift */; };
 		BE64E3A32BCB37E4001AE582 /* Binging.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3A22BCB37E4001AE582 /* Binging.swift */; };
-		BE64E3AB2BCBC787001AE582 /* CategoriesViewModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3AA2BCBC787001AE582 /* CategoriesViewModal.swift */; };
+		BE64E3AB2BCBC787001AE582 /* TrackersViewModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3AA2BCBC787001AE582 /* TrackersViewModal.swift */; };
 		BE64E3D32BCC1048001AE582 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3D22BCC1048001AE582 /* OnboardingPageViewController.swift */; };
 		BE64E3D52BCC1094001AE582 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64E3D42BCC1094001AE582 /* OnboardingViewController.swift */; };
 		BE75C9972BAC4197000506D3 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75C9962BAC4197000506D3 /* Tracker.swift */; };
@@ -79,7 +79,7 @@
 		BE64E38F2BC5FEF9001AE582 /* UIColorMarshalling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorMarshalling.swift; sourceTree = "<group>"; };
 		BE64E3912BC9388C001AE582 /* ChoiceTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoiceTrackerViewController.swift; sourceTree = "<group>"; };
 		BE64E3A22BCB37E4001AE582 /* Binging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Binging.swift; sourceTree = "<group>"; };
-		BE64E3AA2BCBC787001AE582 /* CategoriesViewModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewModal.swift; sourceTree = "<group>"; };
+		BE64E3AA2BCBC787001AE582 /* TrackersViewModal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewModal.swift; sourceTree = "<group>"; };
 		BE64E3D22BCC1048001AE582 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		BE64E3D42BCC1094001AE582 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		BE75C9962BAC4197000506D3 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
@@ -186,7 +186,7 @@
 			isa = PBXGroup;
 			children = (
 				BE64E3A22BCB37E4001AE582 /* Binging.swift */,
-				BE64E3AA2BCBC787001AE582 /* CategoriesViewModal.swift */,
+				BE64E3AA2BCBC787001AE582 /* TrackersViewModal.swift */,
 			);
 			path = ViewModal;
 			sourceTree = "<group>";
@@ -386,7 +386,7 @@
 			files = (
 				BE29CB8A2BA0C25500BA4C7E /* TrackersViewController.swift in Sources */,
 				BE75C9A02BB0E1B1000506D3 /* WeekDay.swift in Sources */,
-				BE64E3AB2BCBC787001AE582 /* CategoriesViewModal.swift in Sources */,
+				BE64E3AB2BCBC787001AE582 /* TrackersViewModal.swift in Sources */,
 				BE9CF5FE2BC1456D00D2DE8D /* TrackerStore.swift in Sources */,
 				BE29CB882BA0C1E000BA4C7E /* StatisticViewController.swift in Sources */,
 				BE64E3692BC48BA5001AE582 /* ColorCollectionViewCell.swift in Sources */,
