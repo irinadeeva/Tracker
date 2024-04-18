@@ -200,8 +200,10 @@ extension TrackersViewController: UICollectionViewDataSource {
         if isFiltering {
             if filteredCategories.isEmpty {
                 collectionView.setEmptyMessage(message: NSLocalizedString("emptySearch.title", comment: ""), image: "emptySearch")
+                filtersButton.isHidden = true
             } else {
                 collectionView.restore()
+                filtersButton.isHidden = false
             }
         } else {
             filterContentForData(with: viewModel.getCategories())
