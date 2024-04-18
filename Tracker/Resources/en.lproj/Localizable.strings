@@ -81,3 +81,12 @@
 "delete" = "Delete";
 "delete.confirmation" = "Are you sure you want to delete the tracker?";
 "cancel" = "Dismiss";
+
+//Filters
+"filters.all" = "All trackers";
+"filters.today" = "Trackers for today";
+"filters.completed" = "Completed";
+"filters.uncompleted" = "Uncompleted";
+
+// FilterChoiceViewController
+"filterChoice.title" = "Filters";

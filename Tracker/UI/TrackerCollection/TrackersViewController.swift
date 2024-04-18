@@ -14,9 +14,11 @@ final class TrackersViewController: UIViewController {
     private var trackerCollection: UICollectionView!
     private var datePicker: UIDatePicker!
     private var searchController: UISearchController!
+    private var filtersButton: UIButton!
 
     private var filteredCategories: [TrackerCategory] = []
     private var completedTrackers: Set<TrackerRecord> = []
+    private var selectedFilter: Filter = .all
 
     private var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
@@ -53,6 +55,27 @@ extension TrackersViewController {
     private func setupLayout() {
         setupNavigationBar()
         setupTrackerCollectionView()
+        setupFiltersButton()
+    }
+
+    private func setupFiltersButton() {
+        filtersButton = UIButton(type: .system)
+        filtersButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
+        filtersButton.setTitle(NSLocalizedString("trakers.filters", comment: ""), for: .normal)
+        filtersButton.addTarget(self, action: #selector(filtersButtonTapped(_:)), for: .touchUpInside)
+        filtersButton.tintColor = .ypWhite
+        filtersButton.backgroundColor = .ypBlue
+        filtersButton.layer.cornerRadius = 16
+        filtersButton.layer.masksToBounds = true
+
+        view.addSubview(filtersButton)
+        filtersButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            filtersButton.heightAnchor.constraint(equalToConstant: 50),
+            filtersButton.widthAnchor.constraint(equalToConstant: 114),
+            filtersButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            filtersButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16)
+        ])
     }
 
     private func setupTrackerCollectionView() {
@@ -74,7 +97,6 @@ extension TrackersViewController {
         )
 
         view.addSubview(trackerCollection)
-
         trackerCollection.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
@@ -109,6 +131,13 @@ extension TrackersViewController {
         searchController.searchResultsUpdater = self
 
         navigationItem.searchController = searchController
+    }
+
+    @objc private func filtersButtonTapped(_ sender: UIButton) {
+        let nextController = FilterChoiceViewController(selectedFilter: selectedFilter)
+        nextController.delegate = self
+        nextController.isModalInPresentation = true
+        present(nextController, animated: true)
     }
 
     @objc
@@ -390,6 +419,12 @@ extension TrackersViewController: ChoiceTrackerDelegate {
         viewModel.addNewTrackerToTrackerCategory(tracker, with: categoryName)
 
         dismiss(animated: true, completion: nil)
+    }
+}
+
+extension TrackersViewController: FilterChoiceDelegate {
+    func didDoneTapped(_ filter: Filter) {
+        
     }
 }
 

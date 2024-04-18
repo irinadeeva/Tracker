@@ -1,6 +1,6 @@
 import UIKit
 
-final class CategoryTableViewCell: UITableViewCell {
+final class SampleTableViewCell: UITableViewCell {
     var viewModel: CategoryNameViewModel? {
         didSet {
             viewModel?.nameBinding = { [weak self] name in

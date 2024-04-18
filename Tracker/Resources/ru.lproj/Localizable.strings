@@ -83,3 +83,12 @@
 "delete" = "Удалить";
 "delete.confirmation" = "Уверены что хотите удалить трекер?";
 "cancel" = "Отменить"; 
+
+//Filters
+"filters.all" = "Все трекеры";
+"filters.today" = "Трекеры на сегодня";
+"filters.completed" = "Завершенные";
+"filters.uncompleted" = "Не завершенные";
+
+// FilterChoiceViewController
+"filterChoice.title" = "Фильтры";
