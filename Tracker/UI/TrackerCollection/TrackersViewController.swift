@@ -19,7 +19,7 @@ final class TrackersViewController: UIViewController {
 
     private var filteredCategories: [TrackerCategory] = []
     private var completedTrackers: Set<TrackerRecord> = []
-    private var selectedFilter: Filter?
+    private var selectedFilter: Filter = .all
 
     private var isSearchBarEmpty: Bool {
         return searchController.searchBar.text?.isEmpty ?? true
@@ -163,7 +163,7 @@ extension TrackersViewController {
 
     @objc private func filtersButtonTapped(_ sender: UIButton) {
         analyticsService.report(event: "click", params: ["screen": "Main", "item": "filter"])
-        
+
         let nextController = FilterChoiceViewController(selectedFilter: selectedFilter)
         nextController.delegate = self
         nextController.isModalInPresentation = true
@@ -171,13 +171,13 @@ extension TrackersViewController {
     }
 
     @objc private func addTracker() {
-    analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
 
-    let addTrackerViewController = ChoiceTrackerViewController()
-    addTrackerViewController.delegate = self
-    addTrackerViewController.modalPresentationStyle = .automatic
-    present(addTrackerViewController, animated: true, completion: nil)
-}
+        let addTrackerViewController = ChoiceTrackerViewController()
+        addTrackerViewController.delegate = self
+        addTrackerViewController.modalPresentationStyle = .automatic
+        present(addTrackerViewController, animated: true, completion: nil)
+    }
 }
 
 extension TrackersViewController {
@@ -196,6 +196,58 @@ extension TrackersViewController {
             if !filteredTrackers.isEmpty {
                 filteredCategories.append(TrackerCategory(title: category.title, trackers: filteredTrackers))
             }
+        }
+
+        if selectedFilter == .completed {
+            var completedTrackerCurrentDay = completedTrackers.filter { $0.completedTrackerDate == currentDate }
+            let categories = filteredCategories
+            let completedTrackerIds = completedTrackerCurrentDay.map { $0.completedTrackerId }
+            var matchingCategories: [TrackerCategory] = []
+
+            for category in categories {
+                let matchingTrackers = category.trackers.filter { tracker in
+                    completedTrackerIds.contains(tracker.id)
+                }
+
+                if !matchingTrackers.isEmpty {
+                    matchingCategories.append(TrackerCategory(title: category.title, trackers: matchingTrackers))
+                }
+            }
+            filteredCategories = matchingCategories
+        }
+
+        if selectedFilter == .uncompleted {
+            var completedTrackerCurrentDay = completedTrackers.filter { $0.completedTrackerDate == currentDate }
+            let completedTrackerIds = completedTrackerCurrentDay.map { $0.completedTrackerId }
+            var matchingCategories: [TrackerCategory] = []
+
+            for category in filteredCategories {
+                let matchingTrackers = category.trackers.filter { tracker in
+                    completedTrackerIds.contains(tracker.id)
+                }
+
+                if !matchingTrackers.isEmpty {
+                    matchingCategories.append(TrackerCategory(title: category.title, trackers: matchingTrackers))
+                }
+            }
+            filteredCategories = matchingCategories
+        }
+
+        if selectedFilter == .uncompleted {
+            var completedTrackerCurrentDay = completedTrackers.filter { $0.completedTrackerDate == currentDate }
+            let completedTrackerIds = completedTrackerCurrentDay.map { $0.completedTrackerId }
+            var matchingCategories: [TrackerCategory] = []
+
+            for category in filteredCategories {
+                let matchingTrackers = category.trackers.filter { tracker in
+                    !completedTrackerIds.contains(tracker.id)
+                }
+
+                if !matchingTrackers.isEmpty {
+                    matchingCategories.append(TrackerCategory(title: category.title, trackers: matchingTrackers))
+                }
+            }
+            filteredCategories = matchingCategories
         }
 
         trackerCollection.reloadData()
@@ -409,7 +461,7 @@ extension TrackersViewController: TrackerCellButtonDelegate {
 
             print("delete")
             // Действие, которое будет выполнено при нажатии на кнопку "Удалить"
-//            self.deleteTracker()
+            // self.deleteTracker()
         }
         let cancelAction = UIAlertAction(title: NSLocalizedString("trackersActionDiscard.title", comment: ""), style: .cancel, handler: nil)
 
@@ -436,19 +488,13 @@ extension TrackersViewController: FilterChoiceDelegate {
             let components = Calendar.current.dateComponents([.year, .month, .day], from: datePicker.date)
             guard let date = Calendar.current.date(from: components) else { return }
             currentDate = date
-
-            filterContentForData(with: viewModel.getCategories())
         }
+
         if selectedFilter == .today {
             currentDate = Date().startOfDay
             datePicker.date = currentDate
-            filterContentForData(with: viewModel.getCategories())
         }
-        if selectedFilter == .completed {
-            // code
-        }
-        if selectedFilter == .uncompleted {
-            // code
-        }
+
+        filterContentForData(with: viewModel.getCategories())
     }
 }
