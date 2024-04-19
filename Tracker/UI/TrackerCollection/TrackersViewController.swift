@@ -10,6 +10,7 @@ import UIKit
 final class TrackersViewController: UIViewController {
     private let viewModel = TrackersViewModal()
     private var trackerRecordStore = TrackerRecordStore()
+    private let analyticsService = AnalyticsService()
 
     private var trackerCollection: UICollectionView!
     private var datePicker: UIDatePicker!
@@ -48,6 +49,16 @@ final class TrackersViewController: UIViewController {
         setupLayout()
 
         filterContentForData(with: viewModel.getCategories())
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        analyticsService.report(event: "open", params: ["screen": "Main"])
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: "close", params: ["screen": "Main"])
     }
 }
 
@@ -154,6 +165,8 @@ extension TrackersViewController {
     }
 
     @objc private func filtersButtonTapped(_ sender: UIButton) {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "filter"])
+        
         let nextController = FilterChoiceViewController(selectedFilter: selectedFilter)
         nextController.delegate = self
         nextController.isModalInPresentation = true
@@ -162,6 +175,8 @@ extension TrackersViewController {
 
     @objc
     private func addTracker() {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
+
         let addTrackerViewController = ChoiceTrackerViewController()
         addTrackerViewController.delegate = self
         addTrackerViewController.modalPresentationStyle = .automatic
@@ -354,6 +369,7 @@ extension TrackersViewController: UISearchResultsUpdating {
 
 extension TrackersViewController: TrackerCellButtonDelegate {
     func didTapButtonInCell(_ cell: TrackerCell) {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "track"])
 
         if Date().startOfDay >= currentDate {
             guard let indexPath = trackerCollection.indexPath(for: cell) else { return }
@@ -382,10 +398,14 @@ extension TrackersViewController: TrackerCellButtonDelegate {
     }
 
     func didTapEditCell(_ cell: TrackerCell) {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "edit"])
+
         print("edit")
     }
 
     func didTapDeleteCell(_ cell: TrackerCell) {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "delete"])
+
         let alertController = UIAlertController(title: nil, message: NSLocalizedString("trackersAlert.message", comment: ""), preferredStyle: .actionSheet)
 
         let deleteAction = UIAlertAction(title: NSLocalizedString("trackersActionDelete.title", comment: ""), style: .destructive) { _ in
