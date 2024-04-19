@@ -157,10 +157,7 @@ extension TrackersViewController {
     }
 
     @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
-        let components = Calendar.current.dateComponents([.year, .month, .day], from: sender.date)
-        guard let date = Calendar.current.date(from: components) else { return }
-        currentDate = date
-
+        currentDate = sender.date.startOfDay
         filterContentForData(with: viewModel.getCategories())
     }
 
@@ -173,15 +170,14 @@ extension TrackersViewController {
         present(nextController, animated: true)
     }
 
-    @objc
-    private func addTracker() {
-        analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
+    @objc private func addTracker() {
+    analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
 
-        let addTrackerViewController = ChoiceTrackerViewController()
-        addTrackerViewController.delegate = self
-        addTrackerViewController.modalPresentationStyle = .automatic
-        present(addTrackerViewController, animated: true, completion: nil)
-    }
+    let addTrackerViewController = ChoiceTrackerViewController()
+    addTrackerViewController.delegate = self
+    addTrackerViewController.modalPresentationStyle = .automatic
+    present(addTrackerViewController, animated: true, completion: nil)
+}
 }
 
 extension TrackersViewController {
@@ -384,6 +380,7 @@ extension TrackersViewController: TrackerCellButtonDelegate {
             if flag {
                 completedTrackers.insert(record)
                 try? trackerRecordStore.addNewTrackerRecord(record)
+                print(record)
             } else {
                 completedTrackers.remove(record)
                 try? trackerRecordStore.deleteTrackerRecord(record)

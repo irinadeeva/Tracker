@@ -62,14 +62,18 @@ final class TrackerRecordStore: NSObject {
     func addNewTrackerRecord(_ trackerRecord: TrackerRecord) throws {
         let trackerCoreData = trackerStore.predicateFetchById(trackerRecord.completedTrackerId)
 
+        print(trackerCoreData)
+
         if let trackerCoreData {
             let trackerRecordCoreData = TrackerRecordCoreData(context: context)
             trackerRecordCoreData.completedTrackerDate = trackerRecord.completedTrackerDate
             trackerRecordCoreData.completedTracker = trackerCoreData
 
+            print(trackerRecordCoreData)
             do {
                 try context.save()
-            } catch {
+            } catch let error{
+                print(error)
                 context.rollback()
             }
         }
