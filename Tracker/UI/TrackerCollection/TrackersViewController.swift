@@ -217,24 +217,19 @@ extension TrackersViewController {
         }
 
         if selectedFilter == .uncompleted {
-            var completedTrackerCurrentDay = completedTrackers.filter { $0.completedTrackerDate == currentDate }
+
+            let completedTrackerCurrentDay = completedTrackers.filter { $0.completedTrackerDate == currentDate }
             let completedTrackerIds = completedTrackerCurrentDay.map { $0.completedTrackerId }
             var matchingCategories: [TrackerCategory] = []
 
             for category in filteredCategories {
-                let matchingTrackers = category.trackers.filter { tracker in
-                    completedTrackerIds.contains(tracker.id)
-                }
+                    let uncompletedTrackers = category.trackers.filter { !completedTrackerIds.contains($0.id) }
 
-                if !matchingTrackers.isEmpty {
-                    matchingCategories.append(TrackerCategory(title: category.title, trackers: matchingTrackers))
+                    if !uncompletedTrackers.isEmpty {
+                        matchingCategories.append(TrackerCategory(title: category.title, trackers: uncompletedTrackers))
+                    }
                 }
-            }
             filteredCategories = matchingCategories
-        }
-
-        if selectedFilter == .uncompleted {
-            //
         }
 
         trackerCollection.reloadData()
