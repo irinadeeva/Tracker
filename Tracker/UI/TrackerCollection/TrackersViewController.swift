@@ -440,7 +440,13 @@ extension TrackersViewController: TrackerCellButtonDelegate {
     func didTapEditCell(_ cell: TrackerCell) {
         analyticsService.report(event: "click", params: ["screen": "Main", "item": "edit"])
 
-        print("edit")
+        guard let indexPath =  trackerCollection.indexPath(for: cell) else { return }
+        let category = filteredCategories[indexPath.section]
+        let tracker = category.trackers[indexPath.row]
+        let editTrackerViewController = EditTrackerViewController(tracker: tracker, categoryName: category.title)
+        editTrackerViewController.delegate = self
+        editTrackerViewController.isModalInPresentation = true
+        present(editTrackerViewController, animated: true, completion: nil)
     }
 
     func didTapDeleteCell(_ cell: TrackerCell) {
@@ -489,5 +495,12 @@ extension TrackersViewController: FilterChoiceDelegate {
         }
 
         filterContentForData(with: viewModel.getCategories())
+    }
+}
+
+extension TrackersViewController: EditTrackerDelegate {
+    func didEditTracker(_ tracker: Tracker, with categoryName: String) {
+        print(tracker)
+        print(categoryName)
     }
 }

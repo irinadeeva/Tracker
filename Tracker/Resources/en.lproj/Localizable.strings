@@ -54,6 +54,9 @@
 "addTracker.detailTextLabelSaturday" = "Sat";
 "addTracker.detailTextLabelSunday" = "Sun";
 
+//EditTrackerViewController
+"editTracker.titleEvent" = "Habit Editing";
+
 //ColorCollectionViewController
 "сolorCollection.header" = "Color";
 

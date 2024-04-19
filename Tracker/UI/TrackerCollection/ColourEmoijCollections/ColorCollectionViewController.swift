@@ -13,7 +13,8 @@ protocol ColorDelegate: AnyObject {
 
 final class ColorCollectionViewController: UIViewController {
     weak var delegate: ColorDelegate?
-    
+    var selectedColor: UIColor?
+
     private let colors: [UIColor] = [
         .ypSelection1, .ypSelection2, .ypSelection3, .ypSelection4, .ypSelection5, .ypSelection6,
         .ypSelection7, .ypSelection8, .ypSelection9, .ypSelection10, .ypSelection11, .ypSelection12,
@@ -82,6 +83,14 @@ extension ColorCollectionViewController: UICollectionViewDataSource {
         cell.colorView.backgroundColor = colors[indexPath.row]
         cell.colorView.layer.cornerRadius = 8
         cell.colorView.layer.masksToBounds = true
+
+        if let selectedColor, selectedColor == colors[indexPath.row] {
+            cell.layer.borderWidth = 3
+            cell.layer.borderColor = colors[indexPath.row].withAlphaComponent(0.3).cgColor
+            cell.layer.cornerRadius = 8
+            cell.layer.masksToBounds = true
+        }
+
         return cell
     }
     
@@ -146,17 +155,25 @@ extension ColorCollectionViewController: UICollectionViewDelegateFlowLayout {
             return
         }
         
-        guard let selectedColor = cell.colorView.backgroundColor else {
+        guard let currentSelectedColor = cell.colorView.backgroundColor else {
             return
         }
         
-        
         cell.layer.borderWidth = 3
-        cell.layer.borderColor = selectedColor.withAlphaComponent(0.3).cgColor
+        cell.layer.borderColor = currentSelectedColor.withAlphaComponent(0.3).cgColor
         cell.layer.cornerRadius = 8
         cell.layer.masksToBounds = true
         
-        delegate?.didColorSelected(selectedColor)
+        delegate?.didColorSelected(currentSelectedColor)
+
+        guard let selectedColor else { return }
+        guard let selectedIndex = colors.firstIndex(of: selectedColor) else { return }
+
+        let indexPath = IndexPath(row: selectedIndex, section: 0)
+        guard let cell = colorCollectionView.cellForItem(at: indexPath) as? ColorCollectionViewCell else { return }
+        cell.layer.borderWidth = 0
+
+        self.selectedColor = currentSelectedColor
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {

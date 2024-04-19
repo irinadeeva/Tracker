@@ -57,6 +57,9 @@
 "addTracker.detailTextLabelSaturday" = "Сб";
 "addTracker.detailTextLabelSunday" = "Вс";
 
+//EditTrackerViewController
+"editTracker.titleEvent" = "Редактирование привычки";
+
 //ColorCollectionViewController
 "сolorCollection.header" = "Цвет";
 

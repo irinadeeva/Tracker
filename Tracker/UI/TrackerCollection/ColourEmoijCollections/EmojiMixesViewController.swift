@@ -5,6 +5,8 @@ protocol EmojiMixesDelegate: AnyObject {
 }
 
 final class EmojiMixesViewController: UIViewController {
+    var selectedEmoji: String?
+    
     weak var delegate: EmojiMixesDelegate?
     
     private let emojies = [
@@ -17,7 +19,7 @@ final class EmojiMixesViewController: UIViewController {
                                                           leftInset: 18,
                                                           rightInset: 0,
                                                           cellSpacing: 5)
-    
+
     private let emojiCollectionView: UICollectionView = {
         let collectionView = UICollectionView(
             frame: .zero,
@@ -67,8 +69,15 @@ extension EmojiMixesViewController: UICollectionViewDataSource {
     
     func collectionView( _ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as? EmojiMixCollectionViewCell else { return UICollectionViewCell() }
-        
+
         cell.updateLabel(title: emojies[indexPath.row])
+
+        if selectedEmoji == emojies[indexPath.row] {
+            cell.backgroundColor = .ypLightGay
+            cell.layer.cornerRadius = 16
+            cell.layer.masksToBounds = true
+        }
+
         return cell
     }
     
@@ -129,20 +138,27 @@ extension EmojiMixesViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let cell = collectionView.cellForItem(at: indexPath) as? EmojiMixCollectionViewCell
-        
-        guard let cell else {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? EmojiMixCollectionViewCell else {
             return
         }
-        
+
         cell.backgroundColor = .ypLightGay
         cell.layer.cornerRadius = 16
         cell.layer.masksToBounds = true
         guard let emoji = cell.getLabelText() else {
             return
         }
-        
+
         delegate?.didEmojiSelected(emoji)
+
+        guard let selectedEmoji else { return }
+        guard let selectedIndex = emojies.firstIndex(of: selectedEmoji) else { return }
+
+        let indexPath = IndexPath(row: selectedIndex, section: 0)
+        guard let cell = emojiCollectionView.cellForItem(at: indexPath) as? EmojiMixCollectionViewCell else { return }
+        cell.backgroundColor = nil
+
+        self.selectedEmoji = emoji
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
