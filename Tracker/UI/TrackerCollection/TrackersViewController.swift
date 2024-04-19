@@ -234,20 +234,7 @@ extension TrackersViewController {
         }
 
         if selectedFilter == .uncompleted {
-            var completedTrackerCurrentDay = completedTrackers.filter { $0.completedTrackerDate == currentDate }
-            let completedTrackerIds = completedTrackerCurrentDay.map { $0.completedTrackerId }
-            var matchingCategories: [TrackerCategory] = []
-
-            for category in filteredCategories {
-                let matchingTrackers = category.trackers.filter { tracker in
-                    !completedTrackerIds.contains(tracker.id)
-                }
-
-                if !matchingTrackers.isEmpty {
-                    matchingCategories.append(TrackerCategory(title: category.title, trackers: matchingTrackers))
-                }
-            }
-            filteredCategories = matchingCategories
+            //
         }
 
         trackerCollection.reloadData()
@@ -263,16 +250,27 @@ extension TrackersViewController: UICollectionViewDataSource {
         if isFiltering {
             if filteredCategories.isEmpty {
                 collectionView.setEmptyMessage(message: NSLocalizedString("emptySearch.title", comment: ""), image: "emptySearch")
-                filtersButton.isHidden = true
+                if selectedFilter == .all {
+                    filtersButton.isHidden = true
+                }
             } else {
                 collectionView.restore()
                 filtersButton.isHidden = false
             }
         } else {
             filterContentForData(with: viewModel.getCategories())
+
             if filteredCategories.isEmpty {
                 collectionView.setEmptyMessage(message: NSLocalizedString("emptyState.title", comment: ""), image: "emptyTracker")
-                filtersButton.isHidden = true
+            } else {
+                collectionView.restore()
+            }
+
+            if selectedFilter != .all && filteredCategories.isEmpty {
+                collectionView.setEmptyMessage(message: NSLocalizedString("emptySearch.title", comment: ""), image: "emptySearch")
+                if selectedFilter == .all {
+                    filtersButton.isHidden = true
+                }
             } else {
                 collectionView.restore()
                 filtersButton.isHidden = false
