@@ -448,11 +448,13 @@ extension TrackersViewController: TrackerCellButtonDelegate {
 
         let alertController = UIAlertController(title: nil, message: NSLocalizedString("trackersAlert.message", comment: ""), preferredStyle: .actionSheet)
 
-        let deleteAction = UIAlertAction(title: NSLocalizedString("trackersActionDelete.title", comment: ""), style: .destructive) { _ in
+        let deleteAction = UIAlertAction(title: NSLocalizedString("trackersActionDelete.title", comment: ""), style: .destructive) { [weak self] _ in
 
             print("delete")
-            // Действие, которое будет выполнено при нажатии на кнопку "Удалить"
-            // self.deleteTracker()
+            guard let self else { return }
+            guard let indexPath =  trackerCollection.indexPath(for: cell) else { return }
+            let tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
+            viewModel.deleteTrackerFromTrackerCategory(tracker)
         }
         let cancelAction = UIAlertAction(title: NSLocalizedString("trackersActionDiscard.title", comment: ""), style: .cancel, handler: nil)
 

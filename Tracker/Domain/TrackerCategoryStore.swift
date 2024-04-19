@@ -89,6 +89,14 @@ final class TrackerCategoryStore: NSObject {
         }
     }
 
+    func deleteTrackerFromTrackerCategory(_ tracker: Tracker) throws {
+        do {
+            try trackerStore.deleteTracker(tracker)
+        } catch {
+            throw TrackerCategoryStoreError.addingNewTracker
+        }
+    }
+
     func fetchTrackerCategories() throws -> [TrackerCategory] {
         let fetchRequest = TrackerCategoryCoreData.fetchRequest()
         let trackerCategoryFromCoreData = try context.fetch(fetchRequest)

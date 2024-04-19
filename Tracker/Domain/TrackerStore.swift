@@ -48,7 +48,15 @@ final class TrackerStore {
             context.rollback()
         }
     }
-    
+
+    func deleteTracker(_ tracker: Tracker) throws {
+        guard let tracker = predicateFetchById(tracker.id) else { return }
+
+        context.delete(tracker)
+
+        try? context.save()
+    }
+
     func fetchTrackers() throws -> [Tracker] {
         let fetchRequest = TrackerCoreData.fetchRequest()
         let trackerFromCoreData = try context.fetch(fetchRequest)
