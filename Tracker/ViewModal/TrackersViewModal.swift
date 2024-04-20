@@ -31,6 +31,11 @@ final class TrackersViewModal {
         try? trackerCategoryStore.deleteTrackerFromTrackerCategory(tracker)
     }
 
+    func editTrackerAtTrackerCategory(_ tracker: Tracker) {
+        try? trackerCategoryStore.editTrackerAtTrackerCategory(tracker)
+        storeCategory()
+    }
+
     func getCategories() -> [TrackerCategory] {
         categories
     }

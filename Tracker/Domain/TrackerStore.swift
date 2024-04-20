@@ -57,6 +57,23 @@ final class TrackerStore {
         try? context.save()
     }
 
+    func editTracker(_ tracker: Tracker) throws {
+        guard let trackerCoreData = predicateFetchById(tracker.id) else {
+            throw TrackerStoreError.decodingErrorInvalidId
+        }
+
+        trackerCoreData.name = tracker.name
+        trackerCoreData.color = tracker.color as NSObject
+        trackerCoreData.emoji = tracker.emoji
+        trackerCoreData.timetable = tracker.timetable as NSObject
+
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+        }
+    }
+
     func fetchTrackers() throws -> [Tracker] {
         let fetchRequest = TrackerCoreData.fetchRequest()
         let trackerFromCoreData = try context.fetch(fetchRequest)

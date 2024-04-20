@@ -97,6 +97,14 @@ final class TrackerCategoryStore: NSObject {
         }
     }
 
+    func editTrackerAtTrackerCategory(_ tracker: Tracker) throws {
+        do {
+            try trackerStore.editTracker(tracker)
+        } catch {
+            throw TrackerCategoryStoreError.addingNewTracker
+        }
+    }
+
     func fetchTrackerCategories() throws -> [TrackerCategory] {
         let fetchRequest = TrackerCategoryCoreData.fetchRequest()
         let trackerCategoryFromCoreData = try context.fetch(fetchRequest)

@@ -108,7 +108,6 @@ extension EditTrackerViewController {
         emojiCollectionViewController.didMove(toParent: self)
 
         colorCollectionViewController.selectedColor = selectedColor
-        print(selectedColor)
         colorCollectionViewController.delegate = self
         addChild(colorCollectionViewController)
         colorCollectionViewController.didMove(toParent: self)
@@ -177,7 +176,7 @@ extension EditTrackerViewController {
 
         if sender == saveButton {
             let newTracker = Tracker(
-                id: UUID(),
+                id: id,
                 name: trackerName,
                 color: selectedColor,
                 emoji: selectedEmoji,

@@ -423,7 +423,6 @@ extension TrackersViewController: TrackerCellButtonDelegate {
             if flag {
                 completedTrackers.insert(record)
                 try? trackerRecordStore.addNewTrackerRecord(record)
-                print(record)
             } else {
                 completedTrackers.remove(record)
                 try? trackerRecordStore.deleteTrackerRecord(record)
@@ -456,7 +455,6 @@ extension TrackersViewController: TrackerCellButtonDelegate {
 
         let deleteAction = UIAlertAction(title: NSLocalizedString("trackersActionDelete.title", comment: ""), style: .destructive) { [weak self] _ in
 
-            print("delete")
             guard let self else { return }
             guard let indexPath =  trackerCollection.indexPath(for: cell) else { return }
             let tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
@@ -500,7 +498,6 @@ extension TrackersViewController: FilterChoiceDelegate {
 
 extension TrackersViewController: EditTrackerDelegate {
     func didEditTracker(_ tracker: Tracker, with categoryName: String) {
-        print(tracker)
-        print(categoryName)
+        viewModel.editTrackerAtTrackerCategory(tracker)
     }
 }
