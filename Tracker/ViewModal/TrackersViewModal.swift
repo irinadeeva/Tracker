@@ -36,6 +36,11 @@ final class TrackersViewModal {
         storeCategory()
     }
 
+    func changeTrackerCategory(with categoryTitle: String, for tracker: Tracker) {
+        try? trackerCategoryStore.changeTrackerCategory(with: categoryTitle, for: tracker)
+        storeCategory()
+    }
+
     func getCategories() -> [TrackerCategory] {
         categories
     }

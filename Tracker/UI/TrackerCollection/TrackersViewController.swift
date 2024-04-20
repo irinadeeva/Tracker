@@ -499,5 +499,6 @@ extension TrackersViewController: FilterChoiceDelegate {
 extension TrackersViewController: EditTrackerDelegate {
     func didEditTracker(_ tracker: Tracker, with categoryName: String) {
         viewModel.editTrackerAtTrackerCategory(tracker)
+        viewModel.changeTrackerCategory(with: categoryName, for: tracker)
     }
 }
