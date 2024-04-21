@@ -41,14 +41,55 @@ final class TrackerStore {
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.timetable = tracker.timetable as NSObject
         trackerCoreData.category = category
-        
+        trackerCoreData.isPinned = tracker.isPinned
+
         do {
             try context.save()
         } catch {
             context.rollback()
         }
     }
-    
+
+    func deleteTracker(_ tracker: Tracker) throws {
+        guard let tracker = predicateFetchById(tracker.id) else { return }
+
+        context.delete(tracker)
+
+        try? context.save()
+    }
+
+    func editTracker(_ tracker: Tracker) throws {
+        guard let trackerCoreData = predicateFetchById(tracker.id) else {
+            throw TrackerStoreError.decodingErrorInvalidId
+        }
+
+        trackerCoreData.name = tracker.name
+        trackerCoreData.color = tracker.color as NSObject
+        trackerCoreData.emoji = tracker.emoji
+        trackerCoreData.timetable = tracker.timetable as NSObject
+        trackerCoreData.isPinned = tracker.isPinned
+
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+        }
+    }
+
+    func updateIsPinTracker(_ tracker: Tracker) throws {
+        guard let trackerCoreData = predicateFetchById(tracker.id) else {
+            throw TrackerStoreError.decodingErrorInvalidId
+        }
+
+        trackerCoreData.isPinned = tracker.isPinned
+
+        do {
+            try context.save()
+        } catch {
+            context.rollback()
+        }
+    }
+
     func fetchTrackers() throws -> [Tracker] {
         let fetchRequest = TrackerCoreData.fetchRequest()
         let trackerFromCoreData = try context.fetch(fetchRequest)
@@ -60,19 +101,21 @@ final class TrackerStore {
             throw TrackerStoreError.decodingErrorInvalidId
         }
         guard let name = trackerCoreData.name else {
-            throw TrackerStoreError.decodingErrorInvalidId
+            throw TrackerStoreError.decodingErrorInvalidName
         }
         guard let color = trackerCoreData.color as? UIColor else {
-            throw TrackerStoreError.decodingErrorInvalidId
+            throw TrackerStoreError.decodingErrorInvalidColor
         }
         guard let emoji = trackerCoreData.emoji else {
-            throw TrackerStoreError.decodingErrorInvalidId
+            throw TrackerStoreError.decodingErrorInvalidEmoji
         }
         guard let timetable = trackerCoreData.timetable as? [WeekDay] else {
-            throw TrackerStoreError.decodingErrorInvalidId
+            throw TrackerStoreError.decodingErrorInvalidTimetable
         }
-        
-        return Tracker(id: id, name: name, color: color, emoji: emoji, timetable: timetable)
+
+        let isPinned = trackerCoreData.isPinned
+
+        return Tracker(id: id, name: name, color: color, emoji: emoji, timetable: timetable, isPinned: isPinned)
     }
     
     func predicateFetchById(_ trackerId: UUID) -> TrackerCoreData? {

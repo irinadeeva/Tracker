@@ -30,13 +30,13 @@ extension ChoiceTrackerViewController {
         view.backgroundColor = .ypWhite
         
         habitButton = setupButtonUI()
-        habitButton.setTitle("Привычка", for: .normal)
-        
+        habitButton.setTitle(NSLocalizedString("choice.habitButton", comment: "Text displayed habit button title"), for: .normal)
+
         eventButton = setupButtonUI()
-        eventButton.setTitle("Нерегулярное событие", for: .normal)
-        
+        eventButton.setTitle(NSLocalizedString("choice.eventButton", comment: "Text displayed event button title"), for: .normal)
+
         typeTitle = UILabel()
-        typeTitle.text = "Создание трекера"
+        typeTitle.text = NSLocalizedString("choice.title", comment: "Text displayed view title")
         typeTitle.textColor = .ypBlackDay
         typeTitle.font = .systemFont(ofSize: 16, weight: .medium)
         

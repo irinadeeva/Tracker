@@ -1,0 +1,99 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Irina Deeva on 17/04/24.
+  
+*/
+//OnboardingPageViewController
+"onboarding.firstTitle" = "Track only what you want";
+"onboarding.secondTitle" = "Even if it's not liters of water and yoga";
+"onboarding.doneButton" = "Wow, technology!";
+
+//StatisticViewController
+"emptyStatistic.title" = "Nothing to analyze yet";
+"statistic.title" = "Statistics";
+"completedStatisticCard.title" = "Completed trackers";
+
+// TrackersViewController
+"trakers.title" = "Trackers";
+"trakers.filters" = "Filters";
+"tab.trackers" = "Trackers";
+"tab.statistics" = "Statistics";
+"emptyState.title" = "What are we tracking?";
+"emptySearch.title" = "Nothing was found";
+"trackersAlert.message" = "Are you sure you want to delete the tracker?";
+"trackersActionDelete.title" = "Delete";
+"trackersActionDiscard.title" = "Cancel";
+
+//TreckerCell
+"contextMenu.pin" = "Pin";
+"contextMenu.unpin" = "Unpin";
+"contextMenu.edit" = "Edit";
+"contextMenu.delete" = "Delete";
+
+//ChoiceTrackerViewController
+"choice.title" = "Tracker creation";
+"choice.habitButton" = "Habit";
+"choice.eventButton" = "Occasional event";
+
+//AddTrackerViewController
+"addTracker.selectedTitleHabit" = "New habit";
+"addTracker.selectedTitleEvent" = "New occasional event";
+"addTracker.cellTitleCategory" = "Category";
+"addTracker.cellTitleSchedule" = "Schedule";
+"addTracker.textFieldPlaceholder" = "Enter the name of the tracker";
+"addTracker.discardButton" = "Discard";
+"addTracker.saveButton" = "Create";
+
+"addTracker.detailTextLabelEveryday" = "Every day";
+"addTracker.detailTextLabelMonday" = "Mon";
+"addTracker.detailTextLabelTuesday" = "Tue";
+"addTracker.detailTextLabelWednesday" = "Wed";
+"addTracker.detailTextLabelThursday" = "Thu";
+"addTracker.detailTextLabelFriday" = "Fri";
+"addTracker.detailTextLabelSaturday" = "Sat";
+"addTracker.detailTextLabelSunday" = "Sun";
+
+//EditTrackerViewController
+"editTracker.titleEvent" = "Habit Editing";
+
+//ColorCollectionViewController
+"сolorCollection.header" = "Color";
+
+//ScheduleViewController
+"schedule.title" = "Schedule";
+"schedule.doneButton" = "Done";
+
+//WeekDay
+"weekDay.Monday" = "Monday";
+"weekDay.Tuesday" = "Tuesday";
+"weekDay.Wednesday" = "Wednesday";
+"weekDay.Thursday" = "Thursday";
+"weekDay.Friday" = "Friday";
+"weekDay.Saturday" = "Saturday";
+"weekDay.Sunday" = "Sunday";
+
+//CategoryViewController
+"category.title" = "Category";
+"category.addCategoryButton" = "Add Category";
+"category.emptyLabel" = "Habits and events can be\ngrouped by meaning";
+
+//AddNewCategoryViewController
+"addNewCategory.title" = "New Category";
+"addNewCategory.textFieldPlaceholder" = "Enter category name";
+"addNewCategory.doneButton" = "Done";
+
+//
+"delete" = "Delete";
+"delete.confirmation" = "Are you sure you want to delete the tracker?";
+"cancel" = "Dismiss";
+
+//Filters
+"filters.all" = "All trackers";
+"filters.today" = "Trackers for today";
+"filters.completed" = "Completed";
+"filters.uncompleted" = "Uncompleted";
+
+// FilterChoiceViewController
+"filterChoice.title" = "Filters";

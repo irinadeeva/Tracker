@@ -107,4 +107,14 @@ final class TrackerRecordStore: NSObject {
             }
         }
     }
+
+    func fetchAllTrackerRecords() -> Int? {
+        let fetchRequest: NSFetchRequest<TrackerRecordCoreData> = TrackerRecordCoreData.fetchRequest()
+
+        if let results = try? context.fetch(fetchRequest) {
+            return results.count
+        } else {
+            return nil
+        }
+    }
 }

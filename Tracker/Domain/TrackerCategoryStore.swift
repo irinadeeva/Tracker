@@ -12,6 +12,8 @@ enum TrackerCategoryStoreError: Error {
     case decodingErrorInvalidTitle
     case decodingErrorInvalidTrackers
     case addingNewTracker
+    case searchingTracker
+    case removingTracker
 }
 
 protocol TrackerCategoryStoreDelegate: AnyObject {
@@ -77,8 +79,10 @@ final class TrackerCategoryStore: NSObject {
         }
     }
 
-    func addNewTrackerToTrackerCategory(_ tracker: Tracker, with categoryTitle: String) throws {
+    func addNew(_ tracker: Tracker, to categoryTitle: String) throws {
         guard let trackerCategoryCoreData = predicateFetchByTitle(with: categoryTitle) else {
+            try addNewTrackerCategory(categoryTitle)
+            try addNew(tracker, to: categoryTitle)
             return
         }
 
@@ -89,24 +93,47 @@ final class TrackerCategoryStore: NSObject {
         }
     }
 
+    func deleteTrackerFromTrackerCategory(_ tracker: Tracker) throws {
+        do {
+            try trackerStore.deleteTracker(tracker)
+        } catch {
+            throw TrackerCategoryStoreError.addingNewTracker
+        }
+    }
+
+    func editTrackerAtTrackerCategory(_ tracker: Tracker) throws {
+        do {
+            try trackerStore.editTracker(tracker)
+        } catch {
+            throw TrackerCategoryStoreError.addingNewTracker
+        }
+    }
+
+    func changeTrackerCategory(with categoryTitle: String, for tracker: Tracker) throws {
+        guard let trackerCoreData = trackerStore.predicateFetchById(tracker.id) else {
+            throw TrackerStoreError.decodingErrorInvalidId
+        }
+
+        let title = trackerCoreData.category?.title
+
+        if let title, title != categoryTitle {
+            let trackerCategoryCoreData = predicateFetchByTitle(with: categoryTitle)
+
+            if trackerCategoryCoreData == nil {
+                try addNewTrackerCategory(categoryTitle)
+                let trackerCategoryCoreData = predicateFetchByTitle(with: categoryTitle)
+
+                trackerCoreData.category = trackerCategoryCoreData
+            } else {
+                trackerCoreData.category = trackerCategoryCoreData
+            }
+        }
+    }
+
     func fetchTrackerCategories() throws -> [TrackerCategory] {
         let fetchRequest = TrackerCategoryCoreData.fetchRequest()
         let trackerCategoryFromCoreData = try context.fetch(fetchRequest)
         return try trackerCategoryFromCoreData.map { try self.trackerCategory(from: $0) }
-    }
-
-    private func trackerCategory(from trackerCategoryCoreData: TrackerCategoryCoreData) throws -> TrackerCategory {
-        guard let title = trackerCategoryCoreData.title else {
-            throw TrackerCategoryStoreError.decodingErrorInvalidTitle
-        }
-
-        var trackers: [Tracker] = []
-        let trackersCoreData = try? fetchTrackersInCategory(trackerCategoryCoreData)
-        if let trackersCoreData {
-            trackers = try trackersCoreData.map { try TrackerStore().tracker(from: $0) }
-        }
-
-        return TrackerCategory(title: title, trackers: trackers)
     }
 
     func predicateFetchByTitle(with title: String) -> TrackerCategoryCoreData? {
@@ -133,6 +160,28 @@ final class TrackerCategoryStore: NSObject {
         } catch {
             throw error
         }
+    }
+
+    func updateIsPinFor(_ tracker: Tracker) {
+        do {
+            try trackerStore.updateIsPinTracker(tracker)
+        } catch {
+            return
+        }
+    }
+
+    private func trackerCategory(from trackerCategoryCoreData: TrackerCategoryCoreData) throws -> TrackerCategory {
+        guard let title = trackerCategoryCoreData.title else {
+            throw TrackerCategoryStoreError.decodingErrorInvalidTitle
+        }
+
+        var trackers: [Tracker] = []
+        let trackersCoreData = try? fetchTrackersInCategory(trackerCategoryCoreData)
+        if let trackersCoreData {
+            trackers = try trackersCoreData.map { try TrackerStore().tracker(from: $0) }
+        }
+
+        return TrackerCategory(title: title, trackers: trackers)
     }
 }
 

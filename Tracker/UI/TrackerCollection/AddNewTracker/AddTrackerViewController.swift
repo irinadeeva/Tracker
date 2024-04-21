@@ -22,8 +22,8 @@ final class AddTrackerViewController: UIViewController {
     private var colorCollectionViewController = ColorCollectionViewController()
     private lazy var tableViewHeightConstraint: NSLayoutConstraint = tableView.heightAnchor.constraint(equalToConstant: 0)
     private var scrollView: UIScrollView = UIScrollView()
-    private var selectedTitle: [String] = ["Новая привычка", "Новое нерегулярное событие"]
-    private var cellTitle: [String] = ["Категория", "Расписание"]
+    private var selectedTitle: [String] = [NSLocalizedString("addTracker.selectedTitleHabit", comment: ""), NSLocalizedString("addTracker.selectedTitleEvent", comment: "")]
+    private var cellTitle: [String] = [NSLocalizedString("addTracker.cellTitleCategory", comment: ""), NSLocalizedString("addTracker.cellTitleSchedule", comment: "")]
     private var cellsNumber: Int
     private var selectedWeekdays: [WeekDay] = []
     private var selectedEmoji = ""
@@ -75,21 +75,21 @@ extension AddTrackerViewController {
         textField.delegate = self
         textField.backgroundColor = .ypBackgroundDay
         textField.layer.cornerRadius = 16
-        textField.placeholder = "Введите название трекера"
+        textField.placeholder = NSLocalizedString("addTracker.textFieldPlaceholder", comment: "")
         let leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftView = leftView
         textField.leftViewMode = .always
         textField.textAlignment = .left
         
         let discardButton = setupActionButtonUI()
-        discardButton.setTitle("Отменить", for: .normal)
+        discardButton.setTitle(NSLocalizedString("addTracker.discardButton", comment: ""), for: .normal)
         discardButton.setTitleColor(.ypRed, for: .normal)
         discardButton.backgroundColor = .ypWhite
         discardButton.layer.borderColor = UIColor.ypRed.cgColor
         discardButton.layer.borderWidth = 1.0
         
         saveButton = setupActionButtonUI()
-        saveButton.setTitle("Создать", for: .normal)
+        saveButton.setTitle(NSLocalizedString("addTracker.saveButton", comment: ""), for: .normal)
         saveButton.setTitleColor(.ypWhite, for: .normal)
         saveButton.backgroundColor = .ypGray
         saveButton.isEnabled = false
@@ -180,7 +180,8 @@ extension AddTrackerViewController {
                 name: trackerName,
                 color: selectedColor,
                 emoji: selectedEmoji,
-                timetable: selectedWeekdays
+                timetable: selectedWeekdays,
+                isPinned: false
             )
             
             delegate?.didAddTracker(newTracker, with: selectedCategory)
@@ -206,28 +207,31 @@ extension AddTrackerViewController {
     }
 
     private func formatSelectedWeekdays() -> String {
-        let sortedWeekdays = selectedWeekdays.sorted { $0.rawValue < $1.rawValue }
+        if selectedWeekdays.count == WeekDay.allCases.count {
+            return NSLocalizedString("addTracker.detailTextLabelEveryday", comment: "")
+        }
+
         var resultString = ""
 
-        for day in sortedWeekdays {
+        for day in selectedWeekdays {
             switch day {
             case .monday:
-                resultString += "Пн"
+                resultString += NSLocalizedString("addTracker.detailTextLabelMonday", comment: "")
             case .tuesday:
-                resultString += "Вт"
+                resultString += NSLocalizedString("addTracker.detailTextLabelTuesday", comment: "")
             case .wednesday:
-                resultString += "Ср"
+                resultString += NSLocalizedString("addTracker.detailTextLabelWednesday", comment: "")
             case .thursday:
-                resultString += "Чт"
+                resultString += NSLocalizedString("addTracker.detailTextLabelThursday", comment: "")
             case .friday:
-                resultString += "Пт"
+                resultString += NSLocalizedString("addTracker.detailTextLabelFriday", comment: "")
             case .saturday:
-                resultString += "Сб"
+                resultString += NSLocalizedString("addTracker.detailTextLabelSaturday", comment: "")
             case .sunday:
-                resultString += "Вс"
+                resultString += NSLocalizedString("addTracker.detailTextLabelSunday", comment: "")
             }
 
-            if day != sortedWeekdays.last {
+            if day != selectedWeekdays.last {
                 resultString += ", "
             }
         }
@@ -250,7 +254,7 @@ extension AddTrackerViewController: UITableViewDelegate {
             destinationViewController.delegate = self
             present(destinationViewController, animated: true, completion: nil)
         } else {
-            let destinationViewController = ScheduleViewController(selectedWeekdays: selectedWeekdays.map { $0.rawValue })
+            let destinationViewController = ScheduleViewController(selectedWeekdays: selectedWeekdays)
             destinationViewController.delegate = self
             present(destinationViewController, animated: true, completion: nil)
         }
@@ -327,13 +331,8 @@ extension AddTrackerViewController: ColorDelegate {
 }
 
 extension AddTrackerViewController: ScheduleDelegate {
-    func didDoneTapped(_ weekdays: [String]) {
-        for string in weekdays {
-            if let weekday = WeekDay(rawValue: string) {
-                self.selectedWeekdays.append(weekday)
-            }
-        }
-
+    func didDoneTapped(_ weekdays: [WeekDay]) {
+        selectedWeekdays = weekdays
         checkConditions()
         tableView.reloadData()
     }
