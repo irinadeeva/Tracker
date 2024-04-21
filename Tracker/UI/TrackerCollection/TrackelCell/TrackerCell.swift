@@ -10,6 +10,7 @@ import UIKit
 protocol TrackerCellButtonDelegate: AnyObject {
     func didTapButtonInCell(_ cell: TrackerCell)
     func didTapPinCell(_ cell: TrackerCell)
+    func didTapUnPinCell(_ cell: TrackerCell)
     func didTapEditCell(_ cell: TrackerCell)
     func didTapDeleteCell(_ cell: TrackerCell)
 }
@@ -19,6 +20,7 @@ final class TrackerCell: UICollectionViewCell {
 
     var counterLabel: UILabel!
     var addButton: UIButton!
+    var isPinned: Bool = false
     var viewModel: TrackerCellViewModel? {
         didSet {
             trackerCardView.viewModel = viewModel
@@ -26,9 +28,9 @@ final class TrackerCell: UICollectionViewCell {
       }
     }
 
-    private var trackerCardView = TrackerCardView()
-
     weak var delegate: TrackerCellButtonDelegate?
+
+    private var trackerCardView = TrackerCardView()
     private var isButtonSelected: Bool = false
 
     override init(frame: CGRect) {
@@ -107,15 +109,24 @@ extension TrackerCell: UIContextMenuInteractionDelegate {
     func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
         return UIContextMenuConfiguration(identifier: nil, previewProvider: nil) { _ in
 
+            let unPin = UIAction(title: NSLocalizedString("contextMenu.unpin", comment: "")) { _ in
+                self.delegate?.didTapUnPinCell(self)
+            }
+
             let pin = UIAction(title: NSLocalizedString("contextMenu.pin", comment: "")) { _ in
                 self.delegate?.didTapPinCell(self)
             }
+
             let edit = UIAction(title: NSLocalizedString("contextMenu.edit", comment: "")) { _ in
                 self.delegate?.didTapEditCell(self)
-
             }
+
             let delete = UIAction(title: NSLocalizedString("contextMenu.delete", comment: ""), attributes: .destructive) { _ in
                 self.delegate?.didTapDeleteCell(self)
+            }
+
+            if self.isPinned {
+                return UIMenu(title: "", children: [unPin, edit, delete])
             }
 
             return UIMenu(title: "", children: [pin, edit, delete])

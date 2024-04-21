@@ -12,6 +12,8 @@ enum TrackerCategoryStoreError: Error {
     case decodingErrorInvalidTitle
     case decodingErrorInvalidTrackers
     case addingNewTracker
+    case searchingTracker
+    case removingTracker
 }
 
 protocol TrackerCategoryStoreDelegate: AnyObject {
@@ -77,8 +79,10 @@ final class TrackerCategoryStore: NSObject {
         }
     }
 
-    func addNewTrackerToTrackerCategory(_ tracker: Tracker, with categoryTitle: String) throws {
+    func addNew(_ tracker: Tracker, to categoryTitle: String) throws {
         guard let trackerCategoryCoreData = predicateFetchByTitle(with: categoryTitle) else {
+            try addNewTrackerCategory(categoryTitle)
+            try addNew(tracker, to: categoryTitle)
             return
         }
 
@@ -155,6 +159,14 @@ final class TrackerCategoryStore: NSObject {
             return trackers
         } catch {
             throw error
+        }
+    }
+
+    func updateIsPinFor(_ tracker: Tracker) {
+        do {
+            try trackerStore.updateIsPinTracker(tracker)
+        } catch {
+            return
         }
     }
 

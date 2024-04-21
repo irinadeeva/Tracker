@@ -13,6 +13,8 @@ final class TrackerCardView: UIView {
     private var emojiLabel: UILabel!
     private var titleLabel: UILabel!
     private var rectangleView: UIView!
+    private var pinImage: UIImageView!
+    private var isPinned: Bool?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -23,6 +25,21 @@ final class TrackerCardView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func setUpView() {
+        if let viewModel {
+            titleLabel?.text = viewModel.getTitleLabel()
+            rectangleView?.backgroundColor = viewModel.getViewColor()
+            emojiLabel?.text = viewModel.getEmojiLabel()
+            isPinned = viewModel.getIsPinned()
+
+            if let isPinned, isPinned {
+                pinImage.isHidden = false
+            } else {
+                pinImage.isHidden = true
+            }
+        }
+    }
+
     private func setupLayout() {
         backgroundColor = .clear
         layer.cornerRadius = 16
@@ -31,6 +48,7 @@ final class TrackerCardView: UIView {
         setupRectangleView()
         setupTitleLabel()
         setupEmojiLabel()
+        setupPinImage()
         setupConstraints()
     }
 
@@ -46,7 +64,7 @@ final class TrackerCardView: UIView {
     private func setupTitleLabel() {
         titleLabel = UILabel()
         titleLabel.font = .systemFont(ofSize: 12, weight: .medium)
-        titleLabel.textColor = .ypWhite
+        titleLabel.textColor = .ypWhiteAny
         titleLabel.numberOfLines = 0
         titleLabel.lineBreakMode = .byWordWrapping
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -66,12 +84,25 @@ final class TrackerCardView: UIView {
         addSubview(emojiLabel)
     }
 
+    private func setupPinImage() {
+        pinImage = UIImageView(image: UIImage(named: "ypPin"))
+        pinImage.isHidden = true
+        pinImage.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(pinImage)
+    }
+
     private func setupConstraints() {
         NSLayoutConstraint.activate([
             rectangleView.topAnchor.constraint(equalTo: topAnchor),
             rectangleView.leadingAnchor.constraint(equalTo: leadingAnchor),
             rectangleView.trailingAnchor.constraint(equalTo: trailingAnchor),
             rectangleView.heightAnchor.constraint(equalToConstant: 90),
+
+            pinImage.widthAnchor.constraint(equalToConstant: 24),
+            pinImage.heightAnchor.constraint(equalToConstant: 24),
+            pinImage.topAnchor.constraint(equalTo: topAnchor, constant: 12),
+            pinImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -4),
 
             emojiLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             emojiLabel.topAnchor.constraint(equalTo: topAnchor, constant: 12),
@@ -82,11 +113,5 @@ final class TrackerCardView: UIView {
             titleLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -12),
             titleLabel.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
         ])
-    }
-
-    func setUpView() {
-        titleLabel?.text = viewModel?.getTitleLabel()
-        rectangleView?.backgroundColor = viewModel?.getViewColor()
-        emojiLabel?.text = viewModel?.getEmojiLabel()
     }
 }

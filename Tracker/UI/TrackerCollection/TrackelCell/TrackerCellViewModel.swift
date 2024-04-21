@@ -11,11 +11,13 @@ final class TrackerCellViewModel {
     private let emojiLabel: String
     private let titleLabel: String
     private let viewColor: UIColor
+    private let isPinned: Bool
 
-    init(emojiLabel: String, titleLabel: String, viewColor: UIColor) {
+    init(emojiLabel: String, titleLabel: String, viewColor: UIColor, isPinned: Bool) {
         self.emojiLabel = emojiLabel
         self.titleLabel = titleLabel
         self.viewColor = viewColor
+        self.isPinned = isPinned
     }
 
     func getEmojiLabel() -> String {
@@ -28,5 +30,9 @@ final class TrackerCellViewModel {
 
     func getViewColor() -> UIColor {
         return viewColor
+    }
+
+    func getIsPinned() -> Bool {
+        return isPinned
     }
 }

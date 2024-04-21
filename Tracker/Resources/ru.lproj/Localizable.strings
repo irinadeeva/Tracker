@@ -31,6 +31,7 @@
 
 //TreckerCell
 "contextMenu.pin" = "Закрепить";
+"contextMenu.unpin" = "Открепить";
 "contextMenu.edit" = "Редактировать";
 "contextMenu.delete" = "Удалить";
 

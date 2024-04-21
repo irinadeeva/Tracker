@@ -28,6 +28,7 @@
 
 //TreckerCell
 "contextMenu.pin" = "Pin";
+"contextMenu.unpin" = "Unpin";
 "contextMenu.edit" = "Edit";
 "contextMenu.delete" = "Delete";
 

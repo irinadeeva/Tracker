@@ -18,6 +18,7 @@ final class TrackersViewController: UIViewController {
     private var filtersButton: UIButton!
 
     private var filteredCategories: [TrackerCategory] = []
+    private var pinnedCategories: TrackerCategory = TrackerCategory(title: "Закрепленные", trackers: [])
     private var completedTrackers: Set<TrackerRecord> = []
     private var selectedFilter: Filter = .all
 
@@ -74,7 +75,7 @@ extension TrackersViewController {
         filtersButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .medium)
         filtersButton.setTitle(NSLocalizedString("trakers.filters", comment: ""), for: .normal)
         filtersButton.addTarget(self, action: #selector(filtersButtonTapped(_:)), for: .touchUpInside)
-        filtersButton.tintColor = .ypWhite
+        filtersButton.tintColor = .ypWhiteAny
         filtersButton.backgroundColor = .ypBlue
         filtersButton.layer.cornerRadius = 16
         filtersButton.layer.masksToBounds = true
@@ -95,7 +96,7 @@ extension TrackersViewController {
         trackerCollection = UICollectionView(frame: .zero, collectionViewLayout: layout)
         trackerCollection.delegate = self
         trackerCollection.dataSource = self
-
+        trackerCollection.backgroundColor = .ypWhite
         trackerCollection.register(
             TrackerCell.self,
             forCellWithReuseIdentifier: TrackerCell.reuseIdentifier
@@ -217,7 +218,6 @@ extension TrackersViewController {
         }
 
         if selectedFilter == .uncompleted {
-
             let completedTrackerCurrentDay = completedTrackers.filter { $0.completedTrackerDate == currentDate }
             let completedTrackerIds = completedTrackerCurrentDay.map { $0.completedTrackerId }
             var matchingCategories: [TrackerCategory] = []
@@ -230,6 +230,10 @@ extension TrackersViewController {
                     }
                 }
             filteredCategories = matchingCategories
+        }
+
+        if !pinnedCategories.trackers.isEmpty {
+            filteredCategories.insert(pinnedCategories, at: 0)
         }
 
         trackerCollection.reloadData()
@@ -315,7 +319,8 @@ extension TrackersViewController: UICollectionViewDataSource {
         )
 
         trackerCell.counterLabel.text = daysString
-        trackerCell.viewModel = TrackerCellViewModel(emojiLabel: tracker.emoji, titleLabel: tracker.name, viewColor: tracker.color)
+        trackerCell.viewModel = TrackerCellViewModel(emojiLabel: tracker.emoji, titleLabel: tracker.name, viewColor: tracker.color, isPinned: tracker.isPinned)
+        trackerCell.isPinned = tracker.isPinned
         trackerCell.addButton.backgroundColor = tracker.color
 
         return trackerCell
@@ -433,7 +438,25 @@ extension TrackersViewController: TrackerCellButtonDelegate {
     }
 
     func didTapPinCell(_ cell: TrackerCell) {
-        print("pin")
+        guard let indexPath = trackerCollection.indexPath(for: cell) else { return }
+        var tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
+
+        tracker.isPinned = true
+        viewModel.changeTrackerIsPinned(tracker)
+        pinnedCategories.trackers.append(tracker)
+        filterContentForData(with: viewModel.getCategories())
+    }
+
+    func didTapUnPinCell(_ cell: TrackerCell) {
+        guard let indexPath = trackerCollection.indexPath(for: cell) else { return }
+        var tracker = filteredCategories[indexPath.section].trackers[indexPath.row]
+
+        tracker.isPinned = false
+        viewModel.changeTrackerIsPinned(tracker)
+
+        let filteredTrackers = pinnedCategories.trackers.filter { $0.id != tracker.id }
+        pinnedCategories.trackers = filteredTrackers
+        filterContentForData(with: viewModel.getCategories())
     }
 
     func didTapEditCell(_ cell: TrackerCell) {

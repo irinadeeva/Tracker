@@ -180,7 +180,8 @@ extension AddTrackerViewController {
                 name: trackerName,
                 color: selectedColor,
                 emoji: selectedEmoji,
-                timetable: selectedWeekdays
+                timetable: selectedWeekdays,
+                isPinned: false
             )
             
             delegate?.didAddTracker(newTracker, with: selectedCategory)

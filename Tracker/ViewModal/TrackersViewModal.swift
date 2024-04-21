@@ -24,7 +24,8 @@ final class TrackersViewModal {
     }
 
     func addNewTrackerToTrackerCategory(_ tracker: Tracker, with categoryTitle: String) {
-        try? trackerCategoryStore.addNewTrackerToTrackerCategory(tracker, with: categoryTitle)
+        try? trackerCategoryStore.addNew(tracker, to: categoryTitle)
+        storeCategory()
     }
 
     func deleteTrackerFromTrackerCategory(_ tracker: Tracker) {
@@ -38,6 +39,11 @@ final class TrackersViewModal {
 
     func changeTrackerCategory(with categoryTitle: String, for tracker: Tracker) {
         try? trackerCategoryStore.changeTrackerCategory(with: categoryTitle, for: tracker)
+        storeCategory()
+    }
+
+    func changeTrackerIsPinned(_ tracker: Tracker) {
+        trackerCategoryStore.updateIsPinFor(tracker)
         storeCategory()
     }
 

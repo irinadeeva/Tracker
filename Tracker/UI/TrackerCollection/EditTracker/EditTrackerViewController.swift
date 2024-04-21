@@ -29,6 +29,7 @@ final class EditTrackerViewController: UIViewController {
     private var selectedColor: UIColor
     private var selectedCategory: String
     private var trackerName: String
+    private var isPinned: Bool
     private var id: UUID
 
     init(tracker: Tracker, categoryName: String) {
@@ -38,6 +39,7 @@ final class EditTrackerViewController: UIViewController {
         self.selectedCategory = categoryName
         self.id = tracker.id
         self.trackerName = tracker.name
+        self.isPinned = tracker.isPinned
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -180,7 +182,8 @@ extension EditTrackerViewController {
                 name: trackerName,
                 color: selectedColor,
                 emoji: selectedEmoji,
-                timetable: selectedWeekdays
+                timetable: selectedWeekdays,
+                isPinned: isPinned
             )
 
             delegate?.didEditTracker(newTracker, with: selectedCategory)
