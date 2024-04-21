@@ -18,7 +18,7 @@ final class TrackersViewController: UIViewController {
     private var filtersButton: UIButton!
 
     private var filteredCategories: [TrackerCategory] = []
-    private var pinnedCategories: TrackerCategory = TrackerCategory(title: "Закрепленные", trackers: [])
+    private var pinnedCategory: TrackerCategory = TrackerCategory(title: "Закрепленные", trackers: [])
     private var completedTrackers: Set<TrackerRecord> = []
     private var selectedFilter: Filter = .all
 
@@ -191,7 +191,7 @@ extension TrackersViewController {
 
         for category in categories {
             let filteredTrackers = category.trackers.filter { tracker in
-                tracker.timetable.contains(where: { $0 == currentWeekDate})
+                tracker.isPinned == false && tracker.timetable.contains(where: { $0 == currentWeekDate}) 
             }
 
             if !filteredTrackers.isEmpty {
@@ -200,7 +200,7 @@ extension TrackersViewController {
         }
 
         if selectedFilter == .completed {
-            var completedTrackerCurrentDay = completedTrackers.filter { $0.completedTrackerDate == currentDate }
+            let completedTrackerCurrentDay = completedTrackers.filter { $0.completedTrackerDate == currentDate }
             let categories = filteredCategories
             let completedTrackerIds = completedTrackerCurrentDay.map { $0.completedTrackerId }
             var matchingCategories: [TrackerCategory] = []
@@ -214,6 +214,7 @@ extension TrackersViewController {
                     matchingCategories.append(TrackerCategory(title: category.title, trackers: matchingTrackers))
                 }
             }
+
             filteredCategories = matchingCategories
         }
 
@@ -232,8 +233,8 @@ extension TrackersViewController {
             filteredCategories = matchingCategories
         }
 
-        if !pinnedCategories.trackers.isEmpty {
-            filteredCategories.insert(pinnedCategories, at: 0)
+        if !pinnedCategory.trackers.isEmpty {
+            filteredCategories = [pinnedCategory] + filteredCategories
         }
 
         trackerCollection.reloadData()
@@ -443,7 +444,7 @@ extension TrackersViewController: TrackerCellButtonDelegate {
 
         tracker.isPinned = true
         viewModel.changeTrackerIsPinned(tracker)
-        pinnedCategories.trackers.append(tracker)
+        pinnedCategory.trackers.append(tracker)
         filterContentForData(with: viewModel.getCategories())
     }
 
@@ -454,8 +455,8 @@ extension TrackersViewController: TrackerCellButtonDelegate {
         tracker.isPinned = false
         viewModel.changeTrackerIsPinned(tracker)
 
-        let filteredTrackers = pinnedCategories.trackers.filter { $0.id != tracker.id }
-        pinnedCategories.trackers = filteredTrackers
+        let filteredTrackers = pinnedCategory.trackers.filter { $0.id != tracker.id }
+        pinnedCategory.trackers = filteredTrackers
         filterContentForData(with: viewModel.getCategories())
     }
 
