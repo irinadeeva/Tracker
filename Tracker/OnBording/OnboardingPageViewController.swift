@@ -12,11 +12,11 @@ final class OnboardingPageViewController: UIPageViewController {
         let button = UIButton(type: .system)
         button.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
         button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
-        button.tintColor = .ypWhite
-        button.backgroundColor = .ypBlackDay
+        button.tintColor = .ypWhiteAny
+        button.backgroundColor = .ypBlackAny
         button.layer.cornerRadius = 16
         button.layer.masksToBounds = true
-        button.setTitle("Вот это технологии!", for: .normal)
+        button.setTitle(NSLocalizedString("onboarding.doneButton", comment: ""), for: .normal)
         return button
     }()
 
@@ -25,7 +25,7 @@ final class OnboardingPageViewController: UIPageViewController {
         pageControl.numberOfPages = pages.count
         pageControl.currentPage = 0
         
-        pageControl.currentPageIndicatorTintColor = .ypBlackDay
+        pageControl.currentPageIndicatorTintColor = .ypBlackAny
         pageControl.pageIndicatorTintColor = .ypGray
         
         pageControl.translatesAutoresizingMaskIntoConstraints = false
@@ -33,9 +33,9 @@ final class OnboardingPageViewController: UIPageViewController {
     }()
     
     private lazy var pages: [UIViewController] = {
-        let first = OnboardingViewController(image: "pageFirst", text: "Отслеживайте только то, что хотите")
-        let second = OnboardingViewController(image: "pageSecond", text: "Даже если это не литры воды и йога")
-        
+        let first = OnboardingViewController(image: "pageFirst", text: NSLocalizedString("onboarding.firstTitle", comment: ""))
+        let second = OnboardingViewController(image: "pageSecond", text: NSLocalizedString("onboarding.secondTitle", comment: ""))
+
         return [first, second]
     }()
     
